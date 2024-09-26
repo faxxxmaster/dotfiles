@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 iatest=$(expr index "$-" i)
 
+## ver 0.1
+
+
 #######################################################
-#bearbeitet von github
-#und wieder von hand
 # SOURCED ALIAS'S AND SCRIPTS BY zachbrowne.me
 #######################################################
 if [ -f /usr/bin/fastfetch ]; then
