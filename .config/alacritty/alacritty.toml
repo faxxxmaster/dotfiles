@@ -1,0 +1,42 @@
+live_config_reload = true
+working_directory = "None"
+import = [ "/usr/lib/node_modules/alacritty-themes/themes/Pulp.toml" ]
+
+[window]
+title = "Alacritty"
+decorations = "transparent"
+blur = true
+opacity = 0.7
+
+  [window.padding]
+  x = 10
+  y = 10
+
+  [window.dimensions]
+  columns = 140
+  lines = 40
+
+[cursor.style]
+shape = "Beam"
+blinking = "Never"
+
+[colors]
+draw_bold_text_with_bright_colors = true
+
+[env]
+TERM = "xterm-256color"
+
+[font]
+size = 12
+
+  [font.normal]
+  family = "MesloLGS Nerd Font Mono"
+  style = "Regular"
+
+  [font.bold]
+  family = "MesloLGS Nerd Font Mono"
+  style = "Bold"
+
+  [font.italic]
+  family = "MesloLGS Nerd Font Mono"
+  style = "Italic"
