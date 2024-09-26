@@ -2,6 +2,7 @@
 iatest=$(expr index "$-" i)
 
 #######################################################
+#bearbeitet von github
 # SOURCED ALIAS'S AND SCRIPTS BY zachbrowne.me
 #######################################################
 if [ -f /usr/bin/fastfetch ]; then
