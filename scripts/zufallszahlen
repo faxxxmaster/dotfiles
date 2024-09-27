@@ -1,0 +1,53 @@
+#!/bin/bash
+
+#zufallszahlengenerator
+zahl=$((RANDOM % 20 + 1))
+echo "###############################################################"
+
+read -p "wieviele versuche brauchst du um meine Zahl zu erraten? " chancen
+echo " "
+echo "Du hast $chancen Versuche zu erraten an welche Zahl ich denke"
+echo "###############################################################"
+# eingabe und prüfen der Zahlen
+
+#durchlafen  sooft wie gewünschte chancen
+for ((i = 1; i <= chancen; i++)); do
+    echo " "
+    read -p "Versuch $i: Tipp eingeben: " versuch
+    echo " "
+    # Überprüfen, ob die Eingabe eine Zahl ist
+    if ! [[ "$versuch" =~ ^[0-9]+$ ]]; then
+        echo "Das war keine Zahl."
+
+        # überprüfen ob kleiner als 20
+    elif [ "$versuch" -lt "20" ]; then
+        # ist es die richtige Zahl
+        if [ "$versuch" -eq "$zahl" ]; then
+            echo " "
+            echo "YIPPI! Gut geraten!!"
+            echo " "
+            exit 0
+            # ist der tipp kleiner/grösser als die Zahl oder sogar höher als 20
+        elif [ "$versuch" -lt "$zahl" ]; then
+            echo " "
+            echo "dein Tipp ist drunter"
+            echo " "
+        else
+            echo " "
+            echo "dein Tipp ist drüber"
+            echo " "
+        fi
+    else
+        echo " "
+        echo "Die Zahl ist höher als 20"
+        echo " "
+    fi
+
+done
+
+# wenn nix passte dann
+
+echo " "
+echo "Das war nix! Die Zahl war $zahl."
+echo " "
+exit 0

@@ -1,0 +1,60 @@
+#!/bin/bash
+
+# Funktion, um zu überprüfen, ob eine Zahl eine Primzahl ist
+
+ist_primzahl() {
+    local zahl=$1
+
+    # Check if number is less than 2
+    ((zahl < 2)) && return
+
+    # Check all numbers up to the square root of the number
+    for ((i=2; i*i <= zahl; i++)); do
+        ((zahl % i == 0)) && return
+    done
+
+    # If the loop completes, the number is prime
+    echo "$zahl"
+}
+
+ausgabe() {
+    #wurde ein Parameter eingegeben?
+    if [[ $# -gt 0 ]]; then
+        limit=$1
+        # prüfen ob eine Zahl eingegeben wurde
+        if [[ $limit =~ ^-?[0-9]+$ ]]; then
+            # Prüfen alle Zahlen bis Parameter
+            for ((num=2; num <= limit; num+=2)) do
+                if [[ $((num%5)) -eq 0 ]]; then
+                    printf "%d " $((num*num))
+                else
+                    ist_primzahl $num
+                fi
+            done
+        else
+            echo "es wurde keine ZAHL eingegeben!!" >&2
+            return 1
+        fi
+    else
+        #wenn nix eingegeben wurd Paramter erfragen
+        read -p "bitte maximum eingeben: " max
+        # Prüfen ob eine Zahl eingegeben wurde
+        if [[ $max =~ ^-?[0-9]+$ ]]; then
+            # Prüfen der Zahl bis Paramter
+            for ((num=2; num <= max; num+=2)) do
+                if [[ $((num%5)) -eq 0 ]]; then
+                    printf "%d " $((num*num))
+                else
+                    ist_primzahl $num
+                fi
+            done
+        else
+            echo "es wurde keine ZAHL eingegeben!!" >&2
+            return 1
+        fi
+    fi
+}
+
+# los gehts.
+erg=$(ausgabe $1)
+echo $erg | tr '\t' ' '

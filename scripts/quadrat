@@ -1,0 +1,39 @@
+#!/bin/bash
+
+lines=$(tput lines)
+cols=$(tput cols)
+diff=1
+
+#echo "max breite sind $cols"
+rows=$((lines - diff))
+#echo "max höhe ist $rows"
+
+# Benutzereingabe für Zeilen und Spalten
+read -p "Geben Sie die breite ein: (max $cols) " hoch
+read -p "Geben Sie die höhe ein: (max $rows) " breit
+
+# prüfen ob die eingegebenen Zahlen zu gross sind
+if [[ $cols -ge $hoch ]] && [[ $rows -ge $breit ]]; then
+
+    # quadrat malen
+    for ((i = 1; i <= breit; i++)); do
+        if [[ $i -eq 1 || $i -eq $breit ]]; then
+            # Erste und letzte Zeile (komplett mit X)
+            for ((j = 1; j <= hoch; j++)); do
+                echo -n "#"
+            done
+            echo
+        else
+            # Mittlere Zeilen (X am Anfang und Ende)
+            echo -n "#"
+            for ((j = 2; j < hoch; j++)); do
+                echo -n " "
+            done
+            echo "#"
+        fi
+    done
+else
+    # fehlermeldung weil zu grosse Zahlen eingegeben
+    echo " einer der Zahlen war zu gross"
+
+fi

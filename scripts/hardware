@@ -1,0 +1,99 @@
+#!/bin/bash
+
+
+auswahl() {
+    read -p "Auswahl der Funktion:
+  1) Informationen CPU
+  2) Informationen RAM
+  3) Informationen Dateisystem
+  4) Informationen PCI /usb
+  5) Exit
+  Auswahl: " choice
+
+    # Validate user input
+    while [[ ! $choice =~ ^[1-5]$ ]]; do
+        echo "Falsche Eingabe! Bitte wählen sie eine Zahl zwischen 1 und 5!"
+        read -p "Auswahl der Funktion: " choice
+    done
+    #echo "die wahl war $choice"
+
+}
+
+
+cpu() {
+
+cpu_info="$(lscpu)"
+
+
+echo
+echo "Hersteller: $(grep -i 'vendor id' <<< "$cpu_info" | cut -d':' -f2 | tr -d '\t' | xargs )"
+echo "Architektur: $(grep -i 'architecture' <<< "$cpu_info" | cut -d':' -f2 | tr -d '\t' | xargs )"
+echo "Taktrate: $(grep -i 'cpu MHz' <<< "$cpu_info" | cut -d':' -f2 | tr -d '\t' | xargs) MHz"
+echo "Cache: $(grep -i 'l3 cache' <<< "$cpu_info" | cut -d':' -f2 | tr -d '\t' | sed 's/ KB//' | xargs )"
+
+
+}
+
+
+ram() {
+echo ""
+#mem_info=$(free) | tail -2 | head -1 | xargs | cut -d' ' -f2
+
+#echo "$mem_info"
+echo "Gesamtspeicher: $(free -h | tail -2 | head -1 | xargs | cut -d ' ' -f2 )"
+echo "Benutzer Speicher: $(free -h | tail -2 | head -1 | xargs | cut -d ' ' -f3 )"
+echo "Freier Speicher: $(free -h | tail -2 | head -1 | xargs | cut -d ' ' -f4 )"
+
+
+#echo "RAM:"
+#echo "Gesamtspeicher: $total_mem MB"
+#echo "Belegter Speicher: $used_mem MB"
+#echo "Freier Speicher: $free_mem MB"
+echo
+
+}
+
+
+hdd() {
+echo " "
+echo "Festplatten Speicher: "
+echo "$(df -h 2> /dev/null | head -1 )"
+echo "$(df -h 2> /dev/null | grep '^/dev/*')"
+echo " "
+}
+
+
+pci() {
+echo
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+while true; do
+    auswahl
+
+    case $choice in
+    1) cpu ;;
+    2) ram ;;
+    3) hdd ;;
+    4) pci ;;
+    5) exit ;;
+    esac
+
+done

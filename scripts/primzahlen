@@ -1,0 +1,89 @@
+#!/bin/bash
+
+# Funktion, um zu überprüfen, ob eine Zahl eine Primzahl ist
+
+ist_primzahl() {
+
+    # Zahl in eine Integer-Variable konvertieren
+    zahl=$1
+
+    # ist kleiner als 2?
+    if [ $zahl -lt 2 ]; then
+        # keine Primzahl
+        exit
+    fi
+
+    # Quadrahtwurzel der Zahl
+    wurzel=$(echo "sqrt($zahl)" | bc)
+
+    # prüfen der Teiler der Zahl bis zur Wurzel der Zahl
+    for i in $(seq 2 $wurzel); do
+        if [ $((zahl % i)) -eq 0 ]; then
+            #ist keine Primzahl."
+            exit
+        fi
+    done
+    # was übrig bleibt ist eine Primzahl
+    echo $zahl | tr '\n' ' '
+
+}
+
+ausgabe() {
+    #wurde ein Parameter eingegeben?
+    if [[ $# -ne 0 ]]; then
+
+        limit=$1
+        # prüfen ob eine Zahl eigegeben wurde
+        if [[ $limit =~ ^-?[0-9]+$ ]]; then
+
+            # Prüfen alle Zahlen bis Parameter
+            for ((num = 2; num <= limit; num++)); do
+
+                prim=$(ist_primzahl $num)
+
+                #wurde eine Zahl zurückgegeben?
+                if [[ $prim -gt 0 ]]; then
+
+                    echo $prim | tr '\n' ' '
+
+                fi
+
+            done
+        else
+            echo "es wurde keine ZAHL eingegeben!!"
+
+        fi
+
+    else
+
+        #wenn nix eingegeben wurd Paramter erfragen
+        read -p "bitte maximum eingeben: " max
+
+        limit=$max
+        # Prüfen ob eine Zahl eingegeben wurde
+        if [[ $limit =~ ^-?[0-9]+$ ]]; then
+            # Prüfen der Zahl bis Paramter
+            for ((num = 2; num <= limit; num++)); do
+
+                prim=$(ist_primzahl $num)
+
+                #
+
+                #echo "das ist das Limit: $Limit"
+                # wurde eine Zahl eingegeben?
+
+                echo $prim | tr '\n' ' '
+
+            done
+        else
+            echo es wurde keine ZAHL eingegeben!
+
+        fi
+
+    fi
+
+}
+
+# los gehts.
+erg=$(ausgabe $1)
+echo $erg | tr '\t' ' '

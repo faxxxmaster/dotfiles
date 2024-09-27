@@ -1,0 +1,53 @@
+#!/bin/bash
+
+
+
+# erstellen Zufallszahlen 1-49
+random_numbers() {
+    for ((i=0; i<6; i++)); do
+        random_numbers[i]=$((RANDOM % 49 + 1))
+    done
+}
+
+# eingabe durch user
+user_numbers() {
+    echo "Bitte geben Sie 6 Zahlen im Bereich 1-49 ein:"
+    for ((i=0; i<6; i++)); do
+        while true; do
+            read -p "Zahl $((i+1)): " num
+            if [[ "$num" =~ ^[1-9]$|^[1-3][0-9]$|^[4][0-9]$ ]] && [[ ! " ${user_numbers[@]} " =~ " $num "  ]]; then
+                user_numbers[i]=$num
+                break
+            else
+                echo " "
+                echo "Ungültige Eingabe oder Zahl bereits eingegeben. Bitte geben Sie eine gültige Zahl ein."
+                echo " "
+            fi
+        done
+    done
+}
+
+# Funktion zum Vergleichen der Zufallszahlen mit den Benutzereingaben
+teste_numbers() {
+    treffer=0
+    for user_num in "${user_numbers[@]}"; do
+        for random_num in "${random_numbers[@]}"; do
+            if [ "$user_num" -eq "$random_num" ]; then
+                ((treffer++))
+            fi
+        done
+    done
+}
+
+# Hauptprogramm
+
+random_numbers
+user_numbers
+teste_numbers
+
+# ausgabe
+echo " "
+echo "Zufallszahlen: ${random_numbers[@]}"
+echo "Ihre Zahlen: ${user_numbers[@]}"
+echo "Anzahl der Treffer: $treffer"
+echo " "
