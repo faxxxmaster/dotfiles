@@ -1,9 +1,0 @@
-
-chrome://flags/#enable-color-correct-rendering
-
-
-Override software rendering list
-Overrides the built-in software rendering list and enables GPU-acceleration on unsupported system configurations. – Mac, Windows, Linux, ChromeOS, Android, Lacros
-
-#ignore-gpu-blocklist
-
