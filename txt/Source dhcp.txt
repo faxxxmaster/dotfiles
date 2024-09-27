@@ -1,0 +1,67 @@
+apt-get install build-essential
+
+./configute
+make
+make install
+
+cp /usr/local/etc/dhcpd.conf.example /etc/dhcp/dhcpd.conf
+
+sed -ri 's/^[^#]/#&/' /etc/dhcp/dhcpd.conf
+
+mkdir /var/db
+touch /var/db/dhcpd.leases
+
+/usr/local/sbin/dhcpd -4 -cf /etc/dhcp/dhcpd.conf
+
+
+/etc/init.d/dhcpd
+
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:          isc-dhcp-server
+# Required-Start:    $remote_fs $network $syslog
+# Required-Stop:     $remote_fs $network $syslog
+# Should-Start:      $local_fs slapd $named
+# Should-Stop:       $local_fs slapd
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: DHCP server
+# Description:       Dynamic Host Configuration Protocol Server
+### END INIT INFO
+
+PATH=/usr/local/sbin:/sbin:/usr/local/bin:/bin:/usr/sbin:/usr/bin
+
+test -f /usr/local/sbin/dhcpd || exit 0
+
+
+case "$1" in
+        start)
+                /usr/local/sbin/dhcpd -4 -cf /etc/dhcp//dhcpd.conf
+
+                ;;
+        stop)
+                kill -s 15 $(cat /run/dhcpd.pid)
+
+                ;;
+        reload)
+                kill -s 15 $(cat /run/dhcpd.pid)
+
+                sleep 1
+
+                /usr/local/sbin/dhcpd -4 -cf /etc/dhcp/dhcpd.conf
+
+                ;;
+        *)
+                echo "Usage: $0 {start|stop|reload}"
+                exit 1
+esac
+
+exit 0
+
+
+systemctl daemon-reload
+
+systemctl start dhcpd
+
+systemctl enable dhcpd

@@ -1,0 +1,12 @@
+
+# als.desktopdatei unter  ~/.config/autostart/
+
+[Desktop Entry]
+Type=Application
+Exec=/home/gc/.local/bin/ch-wall
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name=Change Theme on Wallpaper Change
+Comment=Dieses Skript wechselt das Theme, wenn das Hintergrundbild geändert wird
+

@@ -1,0 +1,489 @@
+
+###############  03.05  #################
+
+
+
+
+|-------------------Installation aus Quelldaten (Source Code)--------------------|
+
+Paketsuche: apt search, apt-cache search
+Abhängigkeiten prüfen: apt show, apt-cache depends, dpkg -s
+Pakete installieren: apt install, apt-get install
+Grafische Tools: synaptic, aptitude
+
+
+
+
+
+        → liegen meist als tar-Archiv (auch tarball) in der Form .tar.gz bzw. .tar.bz2 vor.
+        → das Suffix nach tar beschreibt den Kompressionsmodus
+        → tar schleift das komprimierte Paket nur an bzip2 (tar.bz2) oder gzip (tar.gz) durch.
+
+Beispiele:
+
+            scummvm-0.13.1.tar.bz2 → scumm virtual machine (Emulator)
+            vsftpd-2.0.7.tar.gz → very secure ftp daemon (Dienst)
+            alien-8.72.tar.gz → alien befehl (Paketverwaltung)
+            dia-0.96.1.tar.bz2 → dia Zeichenprogramm (Diagrammeditor)
+
+
+1. Entpacken des Tarballs
+
+        Um Pakete zu erstellen oder zu entpacken wird tar verwendet.
+        Der Aufruf von tar mit den wichtigsten Optionen sieht aus wie folgt:
+
+        tar [Optionen] Argument(e)
+­    c              // create | erstellen
+­    x              // extract | entpacken
+­    t              // list | auflisten
+    ­z              // tar gibt weiter an gzip
+    ­j              // tar gibt weiter an bzip
+    ­v              // verbose | Geschwätzigkeit
+    ­C directory    // Zielangabe
+    ­f file         // Angabe des Archives
+
+
+    Beispiele:
+            $ tar ­C /tmp/ ­x ­j ­f scummvm­0.13.1.tar.bz2
+            $ tar xzf vsftpd­2.0.7.tar.gz
+            $ tar ­c ­z ­f backup.tar.gz /etc
+            $ tar tvzf backup.tar.gz
+            $ tar ­x ­j ­f /usr/backup/backup.tar.bz2 etc/krb5.conf
+
+    2. Das Konfigurationsskript (configure) muss ausgeführt werden.
+    Dazu wird in das entpackte Verzeichnis gewechselt und configure ausgeführt.
+
+
+    $ ./configure           // relativer Pfad
+    $ $(pwd)/configure      // absoluter Pfad
+                            configure prüft das System und erstellt einen Bauplan (Makefile) :
+
+            → Sind alle nötigen Kompilierungswerkzeuge da ? (C-Compiler gcc, make, etc.)
+            → Für welche Architektur wird gebaut ? (amd64, i386, ppc etc.)
+            → Aufruf ist relativ oder absolut möglich (siehe Beispiele)
+            → Das configure-skript kann auch interessante Optionen verarbeiten ( --help)
+
+
+
+    3. Abarbeiten des Bauplans (Makefile)
+
+            $ make
+                → erstellt die Software
+                → make-Befehle sollten in dem Verzeichnis ausgeführt werden, in dem auch das
+                    Makefile liegt.
+
+    4. Zum Schluss wird die Software installiert (Standardziel: /usr/local)
+
+            $ make install
+            → benötigt root-Rechte
+            → ohne weitere Angabe ist das Ziel /usr/local/*
+            Beispiele: /usr/local/samba, /usr/local/apache2, /usr/local/bin
+
+
+
+
+
+
+#########################     DEBIAN   #################################
+
+
+Aufbau von Debian Paketen
+
+Ein Debian Paket ist ein mit “ar“ archiviertes Paket.
+Der Archivierer ar ist Teil des Pakets binutils.
+
+        aegis:/tmp/test# ar xf coreutils_5.97­5.3_i386.deb
+        aegis:/tmp/test# ls
+        control.tar.gz  coreutils_5.97­5.3_i386.deb  data.tar.gz  debian­binary
+
+
+Jedes Debian-Paket enthält die drei Dateien:
+
+        control.tar.gz # enthält Informationen und Installationsanweisungen
+        data.tar.gz # enthält die zu installierenden Daten
+        debian­binary # Version des Debian-File-Formats
+
+
+Grundlegende Paket-Management Werkzeuge sind
+                dpkg                    - Zum installieren von Debian Paket Dateien
+                dselect                 - Menügesteuerter Paketmanager
+                apt-get                 - Kommandozeilen-Front-End für APT
+                aptitude                - Erweitertes Kommandozeilen-Front-End für APT
+                                        - ähnlich dem von dselect
+                synaptic                - Gtk GUI Front End für APT
+                tasksel                 - Task Installer
+                                        # Tasks sind Zusammenstellungen von Paketen (z.B. Desktop)
+
+weitere Komfortable Werkzeuge
+
+                dpkg-reconfigure        - Zum neu konfigurieren eines installierten Paketes
+                dpkg-source             - Verwalten von Quellcode-Paketen
+                dpkg-buildpackage       - Automatisches Erstellen einer Paketdatei
+                apt-cache               - Durchsuchen des lokalen Paket-Archives
+
+
+
+
+dpkg
+                ➢ arbeitet direkt mit den Debian-Paketen (.deb)
+                ➢ Konfiguration /etc/dpkg/dpkg.cfg
+                ➢ kann keine Abhängigkeiten auflösen
+apt
+                ➢ arbeitet mit den Paketnamen nicht mit den .deb Paketen
+                ➢ steuert die Installation aus deb-Archiven die in der
+                /etc/apt/sources.list definiert sind
+                ➢ Aufruf von dpkg zur Installation
+                ➢ löst Abhängigkeiten mit auf
+                ➢ Möglichkeit zur Aktualisierung von kompletten Distributionen
+dpkg
+        wichtige Dateien
+
+                        /etc/dpkg/dpkg.cfg # Konfiguration von dpkg
+                        /etc/dpkg/dselect.cfg # Konfiguration von deselect
+                        /var/lib/dpkg/available # verfügbare Pakete
+                        /var/lib/dpkg/status # Attribute (wie Vormerkung zur Installation)
+
+Syntax:
+        dpkg [Optionen] Argument(e)
+
+        einige Optionen:
+
+        -­i
+        --­­install             installiert Paket.deb
+
+        -­r
+        --­­remove              entfernt Paket
+
+        ­P
+        ­­-purge                entfernt Konfigurationsdateien
+
+        -­E                     gleiche Versionen werden nicht überschrieben
+        ­­--skip-­same­ve-rsion
+        ­
+        -G                      neuere Versionen werden nicht überschrieben
+        ­­--refuse-­downgrade
+
+        ­-l                     <Muster> nach Muster in der Liste der installierten Pakete suchen
+
+        -­S                     <Muster> sucht nach Paket das zu Muster passt
+
+        ­-L                     auflisten des Paketinhalts das auf Muster/Paket passt
+
+        ­­--unpack               entpacken des Pakets ohne es zu konfigurieren
+
+        ­-s                     zeigt den status des Pakets an 
+        ­­--status               (Konflikte, Status, Priorität)
+
+        ­-I zeigt Statusinformationen des Pakets (.deb) an.
+        ­--­info
+
+
+
+        Beispiele:
+
+        aegis:/# dpkg ­S /etc/ldap/ldap.conf
+        libldap2: /etc/ldap/ldap.conf
+        aegis:/# dpkg ­L libldap2
+        /etc/ldap/ldap.conf
+        /usr/share/man/man5/ldap.conf.5.gz
+        /usr/share/doc/libldap2/README.Debian
+        /usr/share/doc/libldap2/copyright
+
+
+
+        aegis:/tmp/test# dpkg ­­status coreutils
+        Package: coreutils
+        Essential: yes
+        Status: install ok installed
+        Priority: required
+        Section: utils
+        Installed­Size: 10616
+        Maintainer: Michael Stone <mstone@debian.org>
+        Architecture: i386
+        Version: 5.97­5.3
+        Replaces: textutils, shellutils, fileutils, stat, debianutils (<= 2.3.1), 
+        dpkg (<< 1.13.2)
+        Provides: textutils, shellutils, fileutils
+        Pre­Depends: libacl1 (>= 2.2.11­1), libc6 (>= 2.3.6­6), 
+        libselinux1 (>= 1.32)
+        Conflicts: stat
+        Description: The GNU core utilities
+        This package contains the essential basic system utilities.
+.
+Specifically, this package includes:
+basename cat chgrp chmod chown chroot cksum comm cp csplit cut date dd df 
+dir dircolors dirname du echo env expand expr factor false fmt fold groups
+head hostid id install join link ln logname ls md5sum mkdir mkfifo mknod 
+mv nice nl nohup od paste pathchk pinky pr printenv printf ptx pwd 
+readlink rm rmdir sha1sum seq shred sleep sort split stat stty sum sync 
+tac tail tee test touch tr true tsort tty uname unexpand uniq unlink users
+vdir wc who whoami yes
+
+
+
+Welche Prioritäten hat das Paket für das Betriebssystem:
+
+        required                # Es ist grundlegend erforderlich
+        important               # Es ist wichtig
+        standard                # Es ist dabei
+        optional                # Es kann dabei sein
+        extra                   # Alles andere
+
+
+APT (Advanced Package Tool)
+wichtige Dateien
+
+        /etc/apt/sources.list # Konfiguration der Paketquellen
+        /etc/apt/apt­conf.d/* # Konfiguration des apt-Paketmanagers
+        /var/cache/apt/archives/ # installierte Pakete
+        /var/lib/apt(itude)/* # Paketquellen / Listen
+
+Syntax
+
+        apt-­get  [optionen] Befehl  Argument(e)
+Optionen:
+        -h      # Hilfe
+        -y      # alles mit ja beantworten
+        -q      # protokollierbare Ausgabe
+        -d      # nur herunterladen nicht installieren
+
+Weitere Gnu-Optionen:
+
+        --reinstall     # Paket wird erneut installiert
+        --purge         # löschen der Konfigurationsdateien
+
+Befehle:
+        update          # Paketliste aktualisieren
+        upgrade         # allgemeine Paketaktualisierung
+        install         # neue Pakete installieren
+        remove          # Pakete entfernen
+        source          # Quellarchive herunterladen
+        dist-upgrade    # Upgrade der Distribution
+        clean           # heruntergeladene Archive löschen
+        autoclean       # veraltete heruntergeladene Archive löschen
+        check           # überprüfen von Abhängigkeiten
+
+Syntax
+
+        apt­cache [optionen] Befehl Argument(e)
+
+Befehle:
+        add             # Paket-Datei dem Quellcache hinzufügen
+        showpkg         # grundsätzliche Informationen eines einzelnen Pakets
+        showsrc         # Aufzeichnungen zu Quellen zeigen
+        stats           # einige grundlegenden Statistiken zeigen
+        dump            # gesamte Datei in Kurzform zeigen
+        dumpavail       # gesamte Datei verfügbarer Pakete ausgeben
+        unmet           # unerfüllte Abhängigkeiten zeigen
+        search          # in der Paketliste mittels regulären Ausdrucks suchen
+        show            # einen lesbaren Datensatz für das Paket zeigen
+        pkgnames        # alle Paketnamen auflisten
+        depends         # Anzeigen von Paketabhängigkeiten / Kollisionen
+
+
+
+
+#######################     RED HAT      #################################
+
+cpio
+----
+
+cpio (copy in, copy out)
+	cpio verfügt über 3 Modi
+
+	copy-in Modus # Entpacken oder Auflisten eines Archivs
+	copy-out Modus # Erstellen eines Archives
+	copy-pass Modus # Benutzen von stdin als Archiversatz
+
+cpio [optionen] [<,>] Archiv
+
+	-o, --create # Erstellen eines Archives
+	-i, --extract # Entpacken eines Archives
+	-t # Auflisten des Archivinhalts
+	-A # An Archiv anhängen
+	-v # Geschwätzigkeit
+	-d # Verzeichnisse erstellen wenn nötig
+
+Beispiele
+
+	ls | cpio -o > Archiv.cpio
+	cpio -idv < Archiv.cpio
+
+Informationen über cpio
+man cpio
+info cpio
+http://www.gnu.org/software/cpio/manual
+
+
+
+wichtige Dateien und Befehle
+
+        /var/lib/rpm/* # Datenbank(en) (siehe manpage section files)
+
+        rpmbuild # Erstellt rpm-Pakete
+        rpm2cpio # wandelt das rpm-Paket zum cpio Archiv.
+        rpm # direktes Paketmanagementtool
+
+
+Im Internet
+
+        RPM-build-MINI-HOWTO-german
+        http://www.tc-world.de/RPM-build-HOWTO-german.htm
+
+Namenskonvention:
+
+                Paketname-Versionsnummer-Release.Architektur.rpm
+
+        Beispiel: zsh­4.3.4­4.fc8.i386.rpm
+        Name : zsh
+        Version : 4.3.4
+        Release : 4.fc8
+        Architektur : i386
+
+Syntax:
+
+        rpm [Optionen] Argument(e)
+
+wobei Argumente unter anderem sein können:
+
+        int_Pkg interner Paketname
+        ext_Pkg externes nicht installiertes Paket
+        func Funktionalität (zb. libc6.so)
+
+Optionen können sein Installationsoptionen, Anfrage (Query) Optionen u.a.
+
+Installationsoptionen
+
+-­i                 ext_Pkg      # ein Paket installieren
+--­­install
+­
+-e                 int_Pkg      # ein vorhandenes Paket entfernen
+­­--erase
+
+­-U                 ext_Pkg      # Paketupdate
+­--­update                        # ist das Paket nicht installiert,
+                                # wird es installiert.
+­
+-F                 ext_Pkg      # Paketupdate. Ist das Paket nicht
+--­­freshen                       # installiert, wird es auch nicht
+                                # installiert.
+
+Anfrage oder Query Optionen
+
+
+        rpm ­­query [Queryoption(en)] [Argument(e)]
+        rpm ­q[Queryoption(en)][p] [Argument(e)]
+
+
+
+dazu entweder ein -p (package) für nicht installierte, systemexterne Pakete
+oder kein -p für systeminterne oder installierte Pakete
+
+Beispiel Paket zsh­4.3.4­4.fc8.i386.rpm
+
+        int_Pkg = zsh
+        ext_Pkg = zsh­4.3.4­4.fc8.i386.rpm
+
+also:
+
+        rpm ­qi   zsh
+        rpm ­qip  zsh­4.3.4­4.fc8.i386.rpm
+
+
+Queryoptionen:
+
+        rpm -­qc        int_Pkg         # Auflisten der Konfigurationsdateien
+        rpm ­-qd        int_Pkg         # Auflisten der Dokumentationsdateien
+        rpm ­-ql        int_Pkg         # Alle Dateien des Pakets auflisten
+        rpm ­-qf        /pfad/datei     # Zu welchem Paket gehört Datei ?
+        rpm ­-qa                        # Auflisten aller installierten Pakete
+        rpm ­-qR        int_Pkg         # Was benötigt das Paket ? (--requires)
+        rpm ­--­provides int_Pkg         # Was bringt es für func (CAPABILITIES) mit ?
+        rpm ­-q ­­whatrequires func       # Welche Pakete benötigen func ?
+        rpm ­-q ­­whatprovides func       # Welches Paket stellt func bereit ?
+
+Verifyoptionen:
+
+
+        rpm ­V int_Pkg # Änderungen an installiertem Paket zeigen
+        rpm ­Va # Alle Pakete auf Änderungen prüfen
+
+
+Änderungen in der Form
+
+        SM5DLUGT TYP /pfad/datei
+
+Size    (Größe)
+Mode    (Typ und Berechtigungen)
+md5sum  (Änderung an der checksumme)
+Device  (Gerätekennungsnummern)
+Link    (Verknüpfungspfad)
+User    (Eigentümer)
+Group   (besitzende Gruppe)
+Time    (mTime stimmt nicht überein)
+.       (stimmt überein)
+?       (Test wurde nicht durchgeführt / unbestimmt)
+
+TYPen
+
+        c       configuration file / Konfigurationsdatei
+        d       documentation file / Dokumentationsdatei
+        g       ghost file / Datei ohne Inhalt im Paket
+        l       license file / Lizensdatei
+        r       readme file / Informationsdatei
+
+|--------Paketverwaltung mit yum (Yellowdog Updater Modified)----------|
+
+
+wichtige Dateien und Befehle
+
+                /etc/yum/yum.conf # yum-Konfiguration
+                /etc/yum/yum-updatesd.conf # Konfiguration des yum-update-daemons
+                /etc/yum/repos.d/
+                /etc/yum.repos.d/ # Verzeichnis für die repo-Dateien
+                /etc/yum/pluginconf.d/
+                /var/cache/yum
+
+Im Internet
+YUM Hauptseite
+http://yum.baseurl.org/
+YUM: Yellowdog Updater, Modified (Howto)
+http://www.phy.duke.edu/~rgb/General/yum_article/yum_article/
+Yellowdog Linux (am weitesten verbreitetes Linux für PPC)
+http://www.terrasoftsolutions.com/products/ydl/
+
+
+Syntax:
+
+        yum [Option(en)] [Befehl] [Argument]
+
+Optionen
+
+        -y      # Annahme ja (assume yes)
+        -h
+        --help   # Hilfe zu yum
+
+        --enablerepo=“repo id“  # repo aktivieren¹
+        --disablerepo=“repo id“ # repo deaktivieren²
+        ¹² : für die Dauer des folgenden Befehls.
+
+z.B:
+        yum ­­disablerepo=updates repolist enabled
+
+
+Befehle
+
+        install         # installieren eines Pakets
+        remove          # Paket entfernen
+        update          # Paket(e) aktualisieren / ohne Angabe, alle.
+        list            # Auflisten aller installierten Pakete
+                        # list bietet spezielle Unteroptionen
+        search          # Paket suchen
+        repolist [ART]  # Auflisten der Repositorien
+                        # ART => all | enabled | disabled
+
+Einfaches herunterladen von Paketen (ohne Installation) mit
+
+        yumdownloader Paketname
+
+

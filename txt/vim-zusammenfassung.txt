@@ -1,0 +1,51 @@
+Befehlszusammenfassung
+
+
+
+dd                  # Ganze Zeile Löschen /2dd löscht 2 Zeilen
+dw                  # Wort löschen - Cursor auf das erste Zeichen
+d<zahl>w            # Anzahl der Wörter nach dem cursor Löschen
+d$                  # ab cursor bis ende löschen
+
+i                   # insert Modus vor dem Cursor
+a                   # text nach dem Cursor einfügen
+
+A                   # Text am ende der Zeile eingeben
+v y                 # text markieren und kopieren
+yy                  # ganze Zeile kopieren
+yw                  # kopiert ein Wort
+o                   # Zeile unterhalt einfügen
+O                   # Zeile oberhalb einfügen
+x                   # Zeichen löschen
+r                   # Zeichen unter dem Cursor ersetzen
+R                   # mehrere Zeichen ersetzen
+
+u                   # undo letztes Kommando
+U   	            # ganze Zeile wiederherstellen
+CTLR-R              # Rückgängigmachung rückgängig machen
+p                   # gelöschte oder kopierte Zeile einfügen
+
+0                   # an den Anfang der Zeile springen
+w                   # zum beginn des nächsten Wortes springen
+e                   # zum ende des nächsten Wortes springen
+$                   # ans Ende der Zeile springen
+G                   # ans ende der Datei springen
+gg                  # an den Anfang des Dokuments springen
+Zahl+G  	        # Cursor springt in die eingegebene Zeile
+
+d++                 # löschoperator kann mit jedem bewegungsbefehl angewendet werden
+c++                 # Correktur operator / funktioniert mit jedem Bewegungsbefehl
+
+CTRL+G              # Dateiposition und Status ausgeben
+/text               # vorwärtssuche suchen nach text mit n oder N gefundene stellen scrollen
+?text               # Rückwärssuche
+
+%                   # findet die passende 2te Klammer
+
+:s/text/text1/      # ersetzt text druch text1.!
+:s/text/text1/g     # ersetzt ALLE text druch text1 in dieser Zeile
+:$s/text/text1/g    # versetzt ALLE test durch test1 in der ganzen Datei!
+:$s/text/text1/gc   # versetzt ALLE test durch test1 in der ganzen Datei mit NACHFRAGE
+
+:!                  # ausführen eines externen Kommandos
+

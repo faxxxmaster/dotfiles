@@ -1,0 +1,44 @@
+<=======  18.06 ===============>
+
+
+===wichtige Dateien===
+
+/etc/ssh                                Konfigurationsverzeichnis
+/etc/ssh/sshd_config                    Konfiguration des sshd
+/etc/ssh/ssh_config                     kann durch ~/.ssh/config überlaufen werden
+/etc/init.d/ssh(d)                      Startskript
+~/.ssh                                  lokales ssh-Verzeichnis
+~/.ssh/config                           lokale client-Konfiguration
+~/.ssh/authorized_keys                  bekannte Schlüssel
+~/.ssh/known_hosts                      Fingerprints in ~/.ssh/known_hosts
+
+
+===wichtige Befehle===
+
+sshd                                    der SSH-Dienst
+ssh-­keygen
+
+
+# ssh­-keygen [Options] [Argumente]
+Options:
+-­b bits                                  Number of bits in the key to create.
+-­C comment                               Provide new comment.
+-F hostname                              Find hostname in known hosts file.
+­-g                                       Use generic DNS resource record format.
+-­H                                       Hash names in known_hosts file.
+-­l                                       Show fingerprint of key file.
+-­N phrase                                Provide new passphrase.
+-­P phrase                                Provide old passphrase.
+-­p                                       Change passphrase of private key file.
+-­q                                       Quiet.
+­-R hostname                              Remove host from known_hosts file.
+-­r hostname                              Print DNS resource record.
+-­T file                                  Screen candidates for DH­GEX moduli.
+-­t type                                  Specify type of key to create.
+-­v                                       Verbose.
+-­y                                       Read private key file and print public key.
+                             Verwaltung / Erzeugung von Schlüsseln
+ssh­-agent                               Schlüsselverwaltung
+                                        (hält den priv. Schlüssel bereit.)
+ssh­-add                                 fügt dem ssh-agent Schlüssel hinzu.
+ssh­keyscan                              prüft öffentliche Schlüssel (SSH v.1)

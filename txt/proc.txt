@@ -1,0 +1,55 @@
+25.04
+
+Das /proc Verzeichnis
+        → /proc bezeichnet die Speicherstelle für Prozessdaten /proc/<PID>
+        → Ein Prozess ist die Bezeichnung für die Instanz eines Programms
+        → Im Gegensatz zu Unix-Systemen enthält das /proc Verzeichnis in LinuxSystemen noch Speicherdaten
+            des Betriebsystemskerns.
+
+                     wie z.B. Informationen zu angeschlossener Hardware
+
+
+Überblick der wichtigsten Dateien und Verzeichnisse
+
+            /proc/<PID> Prozessdaten
+
+
+u.a.
+/proc/4082/cwd          Verknüpfung des Arbeitsverzeichnisses
+/proc/4082/exe          Verknüpfung zum ausgeführten Programm
+/proc/
+            cmdline                 Startoptionen des Betriebssystemkerns (Kernel)
+            interrupts              Interrupttabelle des Systems
+            iomem                   Speicheradressen der Hardware
+            ioports                 registrierte Port-Regionen der Hardware
+            devices                 derzeit verfügbare Hardwaregeräte
+            mounts                  derzeit eingehängte Dateisysteme
+            filesystems             derzeit unterstützte Dateisysteme
+            cpuinfo                 Informationen über die derzeitige CPU
+            meminfo                 Informationen über vorhanden Arbeitsspeicher
+            net/                    Netzwerkspezifische Informationen
+                                    z.B. Routingtabelle / ARP-Tabelle ..
+            sys/                    allgemeine Systeminformationen
+                                    meist einstellbar über den Befehl sysctl
+                                    und oder den Standardeinstellungen in
+                                    der /etc/sysctl.conf
+                                    auch direkt manipulierbar.
+            bus/                    Bussysteme der angeschlossenen Hardware
+
+                        u.a.
+
+                                    Informationen der Geräte am
+            usb/                    devices USB-Bus
+            pci/                    devices PCI-Bus
+            scsi/scsi               Geräte am SCSI-Bus
+            asound/                 Informationsverzeichnis zur angeschlossenen
+                                    Soundkarte
+Weitere Informationen gibt es in der Manualpage des proc-Verzeichnisses.
+
+$ man proc
+
+
+Beispiel : Einstellen der Routing-Funktionalität des Betriebssystemkerns
+
+# sysctl net.ipv4.ip_forward = 1
+# echo 1 > /proc/sys/net/ipv4/ip_forward

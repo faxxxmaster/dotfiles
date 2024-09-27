@@ -1,0 +1,73 @@
+#!/bin/bash
+# name paywal
+
+# Timeout-Wert in Sekunden
+TIMEOUT=3
+
+# Funktion zum Ausführen eines Befehls mit Timeout
+run_with_timeout() {
+    timeout $TIMEOUT "$@"
+    local status=$?
+    if [ $status -eq 124 ]; then
+      #  echo "Fehler: Befehl hat das Timeout von $TIMEOUT Sekunden überschritten: $*"
+        return 1
+    fi
+    return $status
+}
+
+# Funktion zum Ändern des Themas
+change_theme() {
+    # Aktuelles Hintergrundbild ermitteln
+    WALLPAPER=$(run_with_timeout gsettings get org.cinnamon.desktop.background picture-uri)
+    if [ $? -ne 0 ]; then
+        echo "Fehler beim Abrufen des Hintergrundbildes."
+        return 1
+    fi
+    WALLPAPER=$(echo $WALLPAPER | sed "s/^'file:\/\///" | sed "s/'$//")
+
+    # Überprüfen, ob das Hintergrundbild existiert
+    if [ ! -f "$WALLPAPER" ]; then
+        echo "Fehler: Hintergrundbild nicht gefunden: $WALLPAPER"
+        return 1
+    fi
+
+    # Pywal ausführen, um ein Farbschema zu generieren
+    run_with_timeout wal -i "$WALLPAPER"
+    if [ $? -ne 0 ]; then
+        echo "Fehler: Pywal konnte das Farbschema nicht generieren."
+        return 1
+    fi
+
+    # Überprüfen, ob die sequences-Datei existiert
+    if [ ! -f ~/.cache/wal/sequences ]; then
+        echo "Fehler: sequences-Datei nicht gefunden."
+        return 1
+    fi
+
+    # sequences-Datei in die aktuelle Shell laden
+    (run_with_timeout cat ~/.cache/wal/sequences &)
+
+    # Benachrichtigung anzeigen
+    run_with_timeout notify-send "Thema geändert" "Neues Farbschema basierend auf dem aktuellen Hintergrundbild angewendet"
+
+    return 0
+}
+
+# Hauptprogramm
+main() {
+    change_theme
+    exit_code=$?
+
+    if [ $exit_code -eq 0 ]; then
+        echo "Thema erfolgreich geändert."
+        source ~/.bashrc
+    else
+        echo "Fehler beim Ändern des Themas."
+    fi
+
+    exit $exit_code
+}
+
+# Skript ausführen
+
+main

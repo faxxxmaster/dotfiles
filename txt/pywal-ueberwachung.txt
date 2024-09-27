@@ -1,0 +1,8 @@
+#!/bin/bash
+#name : ch-wall
+
+# Überwache Änderungen an der Desktop-Hintergrundeinstellung in Cinnamon
+gsettings monitor org.cinnamon.desktop.background picture-uri | while read -r line; do
+    # Wenn eine Änderung erkannt wird, führe das Skript zum Theme-Wechsel aus
+   pywal
+done

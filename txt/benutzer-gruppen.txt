@@ -1,0 +1,160 @@
+
+30.04
+
+
+
+
+Gruppen- und Benutzerverwaltung
+
+wichtige Dateien
+        /etc/passwd             # Informationen zu Benutzerkonten
+        /etc/shadow             # Geschützte Informationen zu Benutzerkonten
+        /etc/group              # Informationen zu Gruppenkonten
+        /etc/gshadow            # Geschützte Informationen zu Gruppenkonten
+        /etc/login.defs         # Konfiguration der shadow-password Suite
+        /etc/default/useradd    # Standardwerte zur Erstellung von Benutzerkonten
+        /etc/skel               # Verzeichnis mit Standarddateien, die bei der
+                                # Erstellung eines Benutzerkontos kopiert werden.
+
+Wichtige Befehle
+
+    pwconv
+        Erstellt eine shadow-Datei von einer passwd Datei
+
+    pwunconv
+        Erstellt eine passwd Datei aus shadow und passwd
+        und löscht anschließend die shadow Datei
+
+    grpconv
+        Erstellt eine gshadow Datei von einer group Datei
+
+    grpunconv
+        Erstellt eine group Datei aus group und gshadow
+        und löscht anschließend die gshadow Datei
+
+
+Hinzufügen, Enfernen oder Bearbeiten von Benutzer- oder Gruppenkonten
+
+    useradd [Option(en)] Benutzername
+        -m # Heimatverzeichnis mit erstellen
+        -c Kommentar # Kommentar mitgeben
+                # (z.B. Voller Name)
+        -s Loginshell           # Angabe der Loginshell
+        -g gid                  # Gruppen ID (GID) zuweisen
+        -u uid                  # User ID (UID) zuweisen
+        -G gruppe1[,gruppe2]    # Untergruppen zuweisen
+
+    usermod [Option(en)] Benutzername
+        -L                      # Konto sperren
+        -U                      # Konto entsperren
+
+    userdel [Option(en)] Benutzername
+        -r                      # Heimatverzeichnis mitlöschen
+
+    groupadd [Option(en)] Gruppenname
+        -g gid # Zuweisen einer Gruuppen ID
+
+    groupmod [Option(en)] Gruppenname
+
+    groupdel [Option(en)] Gruppenname
+
+    passwd [Option(en)] [Benutzername]
+        -x max                  # Maximale Gültigkeitsdauer d. Passworts
+        -n min                  # Minimale Gültigkeitsdauer bis Änderung
+        -w warn                 # Warnzeitraum vor Ablauf d. Passworts
+        -i inakt                # Anzahl der abgelaufenen Tage bis Sperrung
+        -l # Konto sperren
+        -u # Konto entsperren (meist mit “force“ -uf)
+
+Ändern von Passwort-Eigenschaften, Loginshell und gecos
+
+    chage [Option(en)] Benutzername
+        -l                      # Auflisten der Passworteigenschaften
+        -E                      # Ablaufdatum des Kontos einstellen
+        -h
+        --help                  # Hilfe zu den Optionen
+
+    chsh [Option(en)] Benutzername
+            -s shell            # Angabe der neuen Loginshell
+
+
+    chfn [Option(en)] Benutzername
+        -f                      # Voller Name
+        -r                      # Zimmernummer
+        -w                      # Telefon Büro
+        -h                      # Telefon Prival
+
+
+Zuweisen von Gruppenmitgliedschaften
+
+
+    gpasswd [Option(en)] Argument(e)
+
+    gpasswd -a Benutzername Gruppenname
+        # Benutzer der Gruppe hinzufügen
+
+    gpasswd -d Benutzername Gruppenname
+        # Benutzer aus der Gruppe entfernen.
+
+    gpasswd -M <Benutzer1>,<Benutzer2>, .. Gruppenname
+        # mehrere Benutzer einer Gruppe hinzufügen.
+        Oder unter Zuhilfenahme von usermod
+
+
+        Erlangen einer Gruppenmitgliedschaft durch den Benutzer
+
+
+Voraussetzung: Die Gruppe besitzt ein vergebenes Kennwort (gpasswd)
+dann kann ein Benutzer mit dem Befehl newgrp, die Gruppenmitgliedschaft erlangen.
+
+# newgrp unix
+Kennwort:
+
+Selbstfindung
+    whoami
+        # Wer bin ich ? - Befehl.
+        # Zeigt den aktuell angemeldeten Benutzer an.
+
+groups [Benutzer]
+        # Zeigt alle Gruppenmitgliedschaften des aktuell angemeldeten
+        # Benutzers an.
+
+id [Benutzer]
+        # Zeigt alle UID/GID-Werte des aktuell angemeldeten Benutzers
+        # und der Gruppen in der er Mitglied ist.
+
+Aufbau wichtiger Dateien
+    /etc/passwd
+            Benutzername:x:UID:GID:Kommentar:Heimatverzeichnis:Loginshell
+            Beispiel: tux:x:500:500:tux:/home/tux:/bin/bash
+
+    /etc/shadow
+
+    Benutzername:Passwort:1:2:3:4:5:6:7
+            1: letzte Änderung des Passworts
+            2: minimale Gültigkeitsdauer in Tagen
+            3: maximale Gültigkeitsdauer in Tagen
+            4: Warndauer in Tagen
+            5: Inaktive Tage bis Sperrung
+            6: Tage wann das Konto ausläuft (expiration date)
+            7: reserviert
+
+                        Beispiel: tux:$1$9.P83FmK$6G55huGKtuEERMY6k42vM.:14161:0:99999:7:::
+
+
+Sperrung des Kennworts durch usermod und passwd (ältere Versionen) :
+
+Sperrung durch usermod
+
+        Beispiel: tux:!$1$9.P83FmK$6G55huGKtuEERMY6k42vM.:14161:0:99999:7:::
+
+Sperrung durch passwd
+
+        Beispiel: tux:!!$1$9.P83FmK$6G55huGKtuEERMY6k42vM.:14161:0:99999:7:::
+
+Inzwischen können beide Befehle äquivalent eingesetzt werden.
+
+    /etc/group
+
+        Benutzername:(ausgelagertes Passwort):GID:Gruppenmitglieder
+        Beispiel: adm:x:4:root,adm,daemon,tux

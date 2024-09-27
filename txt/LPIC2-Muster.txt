@@ -1,0 +1,60 @@
+﻿
+
+17.07 - 1
+
+Einstellung:
+------------
+
+	System:
+	-------
+
+		Speicher:	512 MB (mit Grafik 2048 MB)
+		Chipsatz:	ICH9
+		Erweitert:	IO-ACPI aktivieren
+
+	Massenspeicher:
+	---------------
+
+		Festplatte:	10GB
+
+	Netzwerk:
+	---------
+
+		Erster Adapter:	Netzwerkbrücke
+
+	USB:
+	----
+
+		USB-1.1-Controller
+
+Umbenennung der Netzwerkkarten abschalten
+-----------------------------------------
+
+/etc/default/grub
+
+	GRUB_CMDLINE_LINUX_DEFAULT="net.ifnames=0 biosdevname=0 apparmor=0 quiet"
+
+
+# update-grub
+
+# grub-install /dev/sda
+
+(/etc/network/interfaces anpassen eth0)
+
+	auto lo
+	iface lo inet loopback
+
+	auto eth0
+	iface eth0 inet dhcp
+
+
+Installation der Netzwerktools (ab deb 9)
+------------------------------
+
+apt install net-tools
+
+
+Zusätzliche Pakete:
+-------------------
+
+	# apt install vim openssh-server dnsutils

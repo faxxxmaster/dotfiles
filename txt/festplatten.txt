@@ -1,0 +1,70 @@
+26.04
+
+
+fdisk -l                Partitionen  ansehen
+
+cfdisk
+
+parted
+
+gparted
+
+
+mk2fs  /dev/sd??               #partition in ext2 anlegen
+
+mkfs.ext4 /dev/sdb2            #partition in ext4
+
+mkfs -t ext4                   #andere schreibweise
+
+mkfs.+ TAB                     #zeigt alle möglichen dateisysteme an
+
+ntfsfix
+
+mount                          #zeigt alle mounts
+
+mount -a                       #mountet die /etc/fstab  - zeigt ob Fehler in fstab
+
+
+
+#man kann auch eine Datei erstellen. Sie mit "dd" auf eine Grösse bringen
+
+            dd if=/dev/zero of=hd.img bs=1024 count=100000
+
+#dateisystem drauf erstellen
+
+            mkfs.ext4 hd.img
+
+#und auch mounten
+
+            mount -t ext4 -o loop hd.img /mnt/data/
+
+
+
+
+#Mounten einer partition
+mount -t dateisystem  /dev/sd? nach zb /mnt/??
+
+
+
+tune2fs -a /dev/sdb1            # genauere informationen zur /dev/sdb1
+
+tune2fs -j /dev/sdb1            # fügt dem ext2 ein Journal hinzu und macht ein ext3
+
+tune2fs -L Name /dev/sdb1       # fügt einen Label hinzu
+
+tune2fs -O extents,uninit_bg,dir_index /dev/sda1/               # ext3-> ext4
+
+
+
+
+
+
+lsof  /dev/?? oder /mnt/??      # zeigt wer gerade auf die freigabe/dateien zugreift
+
+#~lsblk                         # zeigt mit aufbau der partitionen
+
+#~blkid                         # zeigt mir alle Partitionen und Infos an
+
+
+
+

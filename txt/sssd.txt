@@ -1,0 +1,41 @@
+LDAP starttls Server aufsetzen
+
+CLIENT
+------
+
+CA Zertifikat nach /etc/ssl/certs kopieren
+
+apt-get install sssd libnss-sss libpam-sss ca-certificates
+
+touch /etc/sssd/sssd.conf
+
+chmod 600 /etc/sssd/sssd.conf
+
+[sssd]
+config_file_version = 2
+services = nss, pam
+domains = LDAP
+
+[nss]
+
+[pam]
+
+[domain/LDAP]
+id_provider = ldap
+auth_provider = ldap
+chpass_provider = ldap
+ldap_schema = rfc2307
+ldap_uri = ldap://ldap5.xyz.lc
+#ldap_default_bind_dn = cn=admin,dc=xyz,dc=lc
+#ldap_default_authok = 123456789
+#ldap_default_authok_type = password
+ldap_search_base = dc=xyz,dc=lc
+ldap_user_search_base= ou=users,dc=xyz,dc=lc
+ldap_group_search_base = ou=groups,dc=xyz,dc=lc
+ldap_user_gecos = cn
+ldap_tls_cacert = /etc/ssl/certs/cacert.pem
+cache_credentials = true
+enumerate = true
+
+
+invoke-rc.d sssd start

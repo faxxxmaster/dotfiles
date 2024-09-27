@@ -1,0 +1,8 @@
+29.04
+
+#sinnfoll separat anzulegen
+/home
+/var
+/temp
+
+

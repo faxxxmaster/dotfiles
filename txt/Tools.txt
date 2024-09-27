@@ -1,0 +1,55 @@
+==> ripgrep, fast text greper. gut!
+
+==> gdu, disk analyzer. - sehr gut
+
+bandwidth, network monitor.
+
+==>fzf, fast and fuzzy filter.
+
+git-filter-repo, git repo reshape tool.
+
+==>dufs, simple file server.
+==fkill  - super kill programm
+
+==>bat - cat alternetive
+
+==> trash-cli - papierkorb
+
+exa
+eza - exa lsd
+
+strace - strace ls -l > was macht ls -l um die ausgabe zu erzeugen? fehlersuche beim aufruf. Monitoring des systemcalls
+
+ltrace -> Monitoring shared librarys beim aufruf eines befehls / geht auch mit ldd!
+
+
+==> zoxide https://github.com/ajeetdsouza/zoxide
+
+==>curl cheat.sh/$1
+    cheat() { curl cheat.sh/$1 }  # in die bashrc
+
+curl wttr.in
+
+https://github.com/chubin/awesome-console-services?tab=readme-ov-file#IP-Address
+
+curl mypie.reeds-big-ol-pies.com
+
+curl ip.me
+
+curl parrot.live
+
+https://transfer.sh/
+
+https://bash-prompt-generator.org/
+
+
+https://github.com/nwg-piotr/nwg-displays
+
+https://github.com/ChrisTitusTech/linutil
+
+curl -fsSL https://christitus.com/linux | sh
+
+bash <(curl -L christitus.com/archtitus)
+
+
+irm "https://christitus.com/win" | iex

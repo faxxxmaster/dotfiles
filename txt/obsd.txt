@@ -1,0 +1,64 @@
+
+17.07 und 18.07
+
+
+===installation===
+
+- am besten netzwerkkarte vorher definieren
+- sonst einzeln unter /etc/hostname.* anlegen und einrichten
+- für routing aus /etc/exampels/ die  sysctl.con in /etc kopieren und editieren (zeile 1 kommentar entfernen)
+
+
+
+
+
+
+=== system paketverwaltung===
+
+pkg-add -u                      ==> software update
+pkg_add -r package_name         ==> software deinstallation
+pkg_delete -a                   ==> verweiste pakete überprüfen
+sysmerge                        ==> überprüfen auf zusammenzuführende konfigurationsdateien
+
+
+===zeitserver einrichten===
+installieren ntpd
+pkg_add ntpd
+
+Starten und aktivieren Sie den ntpd-Dienst:
+
+rcctl enable ntpd
+rcctl start ntpd
+
+===setzen der Zeitzone===
+
+ln -sf /usr/share/zoneinfo/Etc/GMT-0 /etc/localtime
+
+
+===netzwerkkarten unter /etc/hostname.<pcn0> ===
+
+ === Beispiele ===
+
+
+alias : doppelte Adresse
+
+inet 192.168.1.100 255.255.255.0 192.168.1.1
+inet alias 192.168.1.101 255.255.255.0
+
+
+fest:
+inet 192.168.1.100 255.255.255.0 192.168.1.1
+
+dhcp:
+dhcp
+
+
+nach konfigueration neustarten der configuration
+
+
+
+===netzwerkkonf neu starten===
+==> sh /etc/netstart <netzwerkkarte>
+
+
+./<syslog> restart        => startet den logger neu

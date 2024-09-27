@@ -1,0 +1,38 @@
+SAN-Erweiterung für Zertifikate (Subject Alternative Name)
+
+#openssl genrsa -aes256 -out cert.key 4096
+#openssl req -new  -nodes -out cert.csr -key cert.key -config csr.cnf
+
+
+openssl req -new -nodes -out cert.csr -keyout cert.key -config csr.cnf
+
+
+openssl x509 -req -in cert.csr -CA demoCA/cacert.pem -CAkey demoCA/private/cakey.pem -CAcreateserial -out cert.pem -days 3650 -sha512 -extfile san.ext
+
+
+root@admin:~# cat csr.cnf
+
+[req]
+default_bits = 4096
+prompt = no
+default_md = sha512
+distinguished_name = dn
+
+[dn]
+C=DE
+ST=NRW
+L=MeinOrt
+O=MeinName
+emailAddress=webmaster@example.private
+CN=apache.int.abc.loc
+
+root@admin:~# cat san.ext
+
+authorityKeyIdentifier=keyid,issuer
+basicConstraints=CA:FALSE
+keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
+subjectAltName = @alt_names
+
+[alt_names]
+DNS.1 = apache.int.abc.loc
+DNS.2 = apache

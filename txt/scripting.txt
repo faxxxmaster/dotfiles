@@ -1,0 +1,253 @@
+
+
+<<========================================  14-15.05 ===================================>>
+
+
+
+Für Variablennamen zulässig         0­9 A­Z a­z _ 0
+
+zu beachten:                        keine Zahl an erster Stelle
+
+Wertzuweisung über den Zuweisungsoperator =
+(declare [Option(en)]) Variablenname=Wert V
+Einige Optionen:
+
+declare -i              // Integer
+declare -­r              // readonly (wie # readonly var=wert)
+declare -­a              // Array /
+
+Wertaufruf über $Variablenname
+oder ${Variablenname} (exakte Eingrenzung des Namens)
+
+    echo $USERs # Variable USERs unbekannt
+    echo ${USER}s # Variable USER #
+
+
+Interpretation
+    echo "$a" => Der Wert von a wird ausgegeben
+    echo '$a' => $a wird als Text ausgegeben =
+
+
+    Befehlssubstitution
+    $(Befehl) Brace-expansion
+    `Befehl` Backtick-expansion B
+
+vordefinierte Variablen
+$!          PID des letzten Hintergrundprozesses
+$?          Fehlercode des vorherigen Befehls
+$$          PID der aktuellen Shell
+$0          der Skriptaufruf selbst
+$1­$9        Argumente 1 bis 9
+${10}       Argument 10
+$#          Anzahl der Argumente
+$*          Argumentenliste (einzelner String)
+$@          Argumentenliste (Array)
+$_          Das letzte Argument des vorherigen Befehls D
+
+
+Operatoren: O
+
+Arithmetik
+a+b         Addition
+a­b          Substraktion
+a*b         Multiplikation
+a/b         Division
+a%b         Modulodivision (Restedivision) M
+&           Bitweises UND
+|           Bitweises ODER
+^           Bitweises XOR
+
+Bedingungen / Ausdrücke :
+
+Vergleiche
+a == b          a gleich b a
+a != b          a ungleich b
+a ^= b          a ungleich b (Äquivalent)
+a >  b          a größer als b
+a <  b          a kleiner als b
+a >= b          a größer gleich b
+a <= b          a kleiner gleich b a
+­n "string"     string ist größer als 0
+­z "string"     string ist NULL (Länge 0) s
+
+
+Arithmetische Vergleiche (Zahlenvergleiche)
+
+a ­eq b         a ist gleich b (equal)
+a ­ne b         a ist ungleich b (not equal)
+a ­gt b         a größer als b (greater than)
+a ­lt b         a kleiner als b (less than)
+a ­ge b         a größer oder gleich b (greater equal)
+a ­le b         a kleiner oder gleich b (less equal) (
+
+
+weitere Abfragen
+
+­-e datei        # existiert datei ?
+­-f datei        # existiert datei und ist regulär ?
+­-r datei        # existiert datei und ist lesbar ?
+­-w datei        # existiert datei und ist beschreibbar ?
+­-x datei        # existiert datei und ist ausführbar ?
+­-s datei        # existiert datei und ist nicht leer ?
+­-d verzeichnis  # existiert das Verzeichnis #
+­
+
+-z $op          # wahr wenn op == 0
+-­n $op          # wahr wenn op != 0 #
+
+Bedingungen verknüpfen
+Disjunktion     [ Bed.1 ] || [ Bed.2 ]
+Konjunktion     [ Bed.1 ] && [ Bed.2 ] [
+
+  Beispiel
+
+    [ a == b ] && [ c <= d ]
+    ((a==b)||(b<=a)) (
+
+
+Definieren von Funktionen:
+
+[function] Funktionsname() { Anweisungsblock } [
+
+    aegis:~# list() {
+    > for i in $(ls)
+    > do 
+    > echo ­e "\033[0;34m $i \033[0m"
+    > # stellt den inhalt blau dar
+    > done
+    > }             => Aufruf über Funktionsname
+
+
+Variablen:
+
+Wie schon gezeigt erstellt die Anweisung declare ­a feld eine Feldvariable.
+Feldvariablen enthalten mehrere Werte die über einen Zahlenindex angesprochen
+werden können. Dazu hilft hier die Erklärung des absoluten Variablennamens:
+
+Wertaufruf über $Variablenname
+oder ${Variablenname} (exakte Eingrenzung des Namens)
+
+    echo $USERs # Variable USERs unbekannt
+    echo ${USER}s # Variable USER bekannt
+            # (unzweideutige Angabe des Variablennamens)
+
+
+Wertzuweisungen bei Feldvariablen
+    feld[0]=“maus“
+    feld[1]=“katze“
+    feld[2]=“hund“
+
+alternativ (Der Index wird automatisch gesetzt) :
+
+    feld=(maus katze hund)
+
+
+Zugriff auf Werte der Feldvariablen mit absolutem Variablennamen:
+
+    echo ${feld[0]} => Ausgabe maus
+    echo ${feld[1]} => Ausgabe katze
+    echo ${feld[2]} => Ausgabe hund
+    echo ${feld[@]} => Ausgabe maus katze hund
+
+Falsch:
+    echo $feld[1] => Ausgabe maus[1]
+
+
+
+Mit dieser absoluten Syntax des Variablennamens kann man auch weiterhin die
+Ausgabe manipulieren.
+
+Soll z.B. die Länge des Variablenwerts angegeben werden anstelle des Wertes selbst
+hilft die #. (Hier wird der Variablenwert „hund“ auf die Zeichenanzahl reduziert)
+
+    echo ${#feld[2]} => Ausgabe 4
+
+Eine andere Ausgabe, wenn der Index überschritten ist wird z.B. so ausgedrückt:
+
+    echo ${feld[2]:­“Indexierung überschritten“}
+    Ausgabe hund
+
+    echo ${feld[3]:­“Indexierung überschritten“}
+    Ausgabe Indexierung überschritten
+
+
+Abfragetypen (Verzweigung)
+
+if-Abfrage
+
+    if  Bedingung
+    then
+    AW(L)
+
+        elif  Bedingung
+        then
+        AW(L)
+
+        [elif Bedingung
+        then 
+        AW(L)
+     ]
+
+    else
+        AW(L)
+    fi
+
+
+case – Fallabfrage
+
+    case $value in 
+        # $value ist der Wert einer Variablen der mit bestimmten
+        # Fallwerten verglichen wird.
+
+            fall1)
+                AW(L)
+            ;;
+            fall2)
+                    AW(L)
+            ;;
+        [   fall3)
+              AW(L)
+            ;;
+        ]
+            *)
+                # Standardfall wenn kein anderer greift.
+            AW(L) 
+            ;;
+    esac
+
+
+
+Schleifen
+für jedes einzelne Element in einer Liste
+
+    for element in Liste
+    do
+            # Zugriff im do/done Block auf Wert von element mit $element
+            AW(L)
+    done
+
+für eine bestimmte Ausgangslage prüfe den Ausdruck und führe anschließend eine Aktion aus.
+
+    for ((Initialisierung;Ausdruck;Aktion))
+    do
+        AW(L)
+    done
+
+für ein ausgewähltes Element in einer Liste
+
+    select element in Liste
+    do
+        # Zugriff im do/done Block auf Wert von element mit $element
+        AW(L)
+    done
+
+solange Bedingung wahr / bis Bedingung wahr
+
+    while Bedingung
+    do
+        AW(L)
+    done
+        until Bedingung
+    do
+        AW(L)
+    done

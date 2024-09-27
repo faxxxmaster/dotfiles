@@ -1,0 +1,149 @@
+
+19.07 -2 -3
+22.07
+
+Konfiguration
+/etc/bind/                          -konfigurationsordner
+
+        named.conf                  - konfig datei
+
+
+
+
+
+
+
+        named.conf.local            - debian spezifisch
+
+
+
+
+
+        named.conf.options          - debian spezifisch
+
+=======================================
+
+#       dnssec-validation auto;
+
+
+forwarders { 9.9.9.9; };
+
+forward only;
+
+listen-on port 53 {127.0.0.1; 10.0.1.1; };
+
+allow-query { 127.0.0.1; 10.0.0.0/16; };
+
+
+#       listen-on-v6 { any; };
+
+=======================================
+
+
+
+
+
+
+/var/vache/bind             - Zonendateien
+
+
+
+/etc/default/named                       - nur ipv4
+
+=============================================
+
+# run resolvconf?
+RESOLVCONF=no
+
+# startup options for the server
+OPTIONS="-u bind -4"
+
+==================================================
+
+
+
+/etc/resolv.conf
+
+==================================================
+
+nameserver auf 127.0.0.1 ändern
+
+==================================================
+
+
+
+mknod : devices erstellen mit  MAJOR und MINOR numbers
+
+==> mknod urandom c 1 9
+
+chroot vom DNS
+
+erstellen ordnerstruktur unter /srv
+
+.
+└── bind
+    ├── dev
+    │   └── urandom
+    ├── etc
+    │   └── bind
+    │       ├── bind.keys
+    │       ├── db.0
+    │       ├── db.127
+    │       ├── db.255
+    │       ├── db.empty
+    │       ├── db.local
+    │       ├── named.conf
+    │       ├── named.conf.default-zones
+    │       ├── named.conf.local
+    │       ├── named.conf.options
+    │       ├── rndc.key
+    │       └── zones.rfc1918
+    ├── run
+    │   └── named
+    │       ├── named.pid
+    │       └── session.key
+    ├── usr
+    │   └── share
+    │       └── dns
+    │           └── root.hints
+    └── var
+        └── cache
+            └── bind
+                ├── managed-keys.bind
+                └── managed-keys.bind.jnl
+
+
+
+
+===== einstellungen configuration =========
+/etc/default/named
+
+
+#
+# run resolvconf?
+RESOLVCONF=no
+
+# startup options for the server mit ipv4 und Verzeichnis im chroot!
+OPTIONS="-u bind -t /srv/bind -4"
+named (END)
+
+
+!!! der rest wird dann unter /srv/bind Konfiguriert! !!!
+
+
+key "transkey" {
+        algorithm hmac-sha512;
+        secret "a8OHDDZKy55CV+12tzrCs/4kohDp5BtkWjv6YpAngwp+W+UzjOQaWHsPGfBFdqnrx5ibN6FKLfMg1C9otG83sQ==";
+};
+
+
+
+
+key "transkey" {
+        algorithm hmac-sha512;
+        secret "TgfqTwRo1Yq1BhAKXYJB0aS4YoBQ9az/a7Xv/bCDIM36bOBaVeA6/jxZj7W262cvWWuOtqW9Syy6mX850ehorg==";
+};
+
+server 10.0.1.1 { keys { transkey; };  };
+
+

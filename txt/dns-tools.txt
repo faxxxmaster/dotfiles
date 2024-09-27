@@ -1,0 +1,7 @@
+named-checkconf
+named-checkzone
+
+rndc
+
+rndc freeze
+rndc thaw

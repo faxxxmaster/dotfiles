@@ -1,0 +1,6 @@
+auto <eth0>
+iface <eth0> inet static/DHCP
+    address <ip>
+    netmask <netmask>
+
+

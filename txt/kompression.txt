@@ -1,0 +1,56 @@
+
+
+02.05-2
+
+
+            Komprimierung mit gzip oder bzip2
+
+    Syntax:
+
+         # gzip [Option(en)] Argument
+
+    -d              # entpacken (decompress)
+                    # auch mit gunzip
+    -c          # Ausgabe wird direkt auf der
+                    # Standardausgabe ausgegeben
+
+    -Nummer         # Kompressionslevel mit Werten von 1-9
+                    # 1 schlechteste Komprimierung
+                    # 9 beste Komprimierung
+
+Beispiel: behalten der Ausgangsdatei mit Umleitung
+
+                    # gzip -c datei > datei.gz
+
+
+
+      # bzip2 [Option(en)] Argument
+
+    -d              # entpacken / auch mit bunzip2
+    -c              # Ausgabe auf der Konsole
+    -Nummer         # siehe gzip
+    -k              # Ausgangsdatei behalten (nicht löschen)
+
+
+
+
+
+
+
+
+tar [Optionen] Argument(e)
+     ­-c // create | erstellen
+     ­-x // extract | entpacken
+     ­-t // list | auflisten
+     ­-z // tar gibt weiter an gzip
+     ­-j // tar gibt weiter an bzip
+     ­-v // verbose | Geschwätzigkeit
+     ­-C directory // Zielangabe
+     ­-f file // Angabe des Archives
+
+  Beispiele:
+                $ tar ­-C /tmp/ -­x -­j ­-f scummvm­0.13.1.tar.bz2
+                $ tar -xzf vsftpd­2.0.7.tar.gz
+                $ tar -­c ­-z ­f backup.tar.gz /etc
+                $ tar -tvzf backup.tar.gz
+                $ tar ­-x -­j ­-f /usr/backup/backup.tar.bz2 etc/krb5.conf

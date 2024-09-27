@@ -1,0 +1,284 @@
+# userid grösser als 500
+egrep ':[5-9][0-9]{2}|:[1-9][0-9]{3,}'
+
+
+egrep '[0-9]+x[0-9]+bold' /usr/share/fonts/X11/misc/fonts.alias
+
+nur dateien aus der /etc die ein Zeichen im Namen haben
+ls -F /etc/ | egrep "[0-9]+.*[^/@*]$"
+ls -l /etc/ | egrep "^-.*[0-9][a-z.]*$"
+
+
+
+################            22.04       ######################################
+
+1. Wo befinden sich folgende Dateien und Verzeichnisse ?
+
+grub.cfg   find / -name "grub-cfg" 2>/dev/null
+
+shadow      find / -name "shadow" 2>/dev/null
+
+X11        find / -name "X11" 2>/dev/null
+
+rgb.txt     find / -name "rgb.txt" 2>/dev/null
+
+log         find / -name "log" 2>/dev/null
+
+
+2. Jetzt suchen Sie alle Dateien die Ihrem Benutzer gehören und geben diese in einem
+langen Ausgabeformat ( ls -l ) aus.
+
+   find / -user "gina" -exec ls -ll {} \; 2>/dev/null
+
+
+3. Bestimmen Sie die Inode der Datei /etc/passwd und suchen Sie mit find nach weiteren
+Hardlinks (harte Verknüpfungen).
+
+   find / -name "passwd"  -exec ls -iL {} \; 2>/dev/null
+
+4. Wenn eine Datei auf /home und eine Datei auf /tmp die selbe Inodennummer haben,
+sich aber /home und /tmp auf eigenen Partitionen befinden, handelt es sich dann um
+einen Hardlink ?
+
+    nein. nur bei den gleichen Partitionen
+
+5. Suchen Sie alle Dateien die .conf im Namen tragen und kopieren Sie diese in das
+Verzeichnis /tmp/allconfs/. Fehlermeldungen sollen unterdrückt werden.
+
+   find / -name "*.conf" -exec cp {} /tmp/allconfs/. \; 2>/dev/null
+
+6. Wie lautet der Befehl um mit Hilfe der Umleitungszeichen den Inhalt einer Datei
+(z.b.) /etc/ldap/ldap.conf in die Datei /etc/ldap/ldapold.conf zu schreiben
+
+    cat /etc/ldap/ldap.conf > /etc/ldap/ldapold.conf
+
+###############################################################################
+
+
+                           30.04
+
+
+anlegen Ordnestruktur mit rechten
+
+
+######################   03.05 - 06.05 ###############################
+
+
+################### Übung Paketverwaltung – Teil 1 (Red Hat)
+
+1. Laden Sie sich das Paket “dosbox“ herunter ohne es zu installieren.
+Die Installation erfolgt danach ausschließlich mit dem Befehl rpm.
+
+      # yumdownloader dosbox
+
+
+2. Wandeln Sie das Paket „dosbox“ in ein cpio-Archiv um und entpacken Sie dieses.
+
+   # rpm2cpio  dosbox.rpm > dosbox.cpio
+   # cpio --extract -d < dosbox.cpio
+
+
+3. Filtern Sie folgende Informationen aus dem Paket 'dosbox' und schreiben
+Sie diese in eine Datei dosbox.info
+URL, License, Build Date, Group
+
+   # rpm -qpi dosbox.rpm   ## und mit grep filtern
+
+
+4. Zeigen Sie sich die Abhängigkeiten des Pakets “dosbox“ an.
+Müssen Abhängigkeiten aufgelöst werden ? Wenn ja welche ?
+
+   # yum deplist dosbox
+   # ldd dosbox | grep not
+
+5. Können Sie sich die Pakete anzeigen lassen, die eine bestimmte Fähigkeit
+(auch CAPABILITY / z.B. libdl.so.2) mitbringt ?
+
+   # rpm -q --whateprovides /usr/lib64/libdl.so.2
+
+
+6. Welches Paket bietet die Fähigkeit libX11.so.6 oder /bin/sh ?
+
+   # rpm -qf /ust/lib64/libX11.so.6
+   # rpm -qf /bin/sh
+
+
+7. Wie viele Bibliothekspakete haben Sie installiert die mit 'lib' beginnen ?
+
+   # rpm -qa | grep -c "^lib"
+
+
+8. Verwenden Sie yum um sich verfügbare Gruppen anzeigen zu lassen und danach
+um sich Informationen zur Gruppe 'GNOME-Softwareentwicklung' anzeigen zu
+lassen.
+
+   # yum grouplist hidden
+   # yum groupinfo hidden
+
+9. Zeigen Sie sich Informationen zum Paket 'anjuta' an und installieren Sie es.
+
+   # yum info anjuta
+
+######## Übung Paketverwaltung – Teil 2 (Debian)
+
+1. Laden Sie sich das Paket “dosbox“ herunter ohne es zu installieren.
+
+   # apt-get download dosbox
+   # apt-get install -d dosbox
+
+2. Wohin wird das Paket dosbox gespeichert ?
+
+   /var/cache/apt/archives
+
+3. Listen Sie sich Informationen über mitgeführte Dateien auf, Zeigen Sie sich Infos an
+und entpacken Sie die Steuerinformationen von 'dosbox'
+
+   # dpkg --contens dosbox
+      --info
+
+
+4. Filtern Sie folgende Informationen aus dem Paket 'dosbox' und schreiben
+Sie diese in eine Datei dosbox-debian.info
+Homepage, Maintainer, Description (der ganze Text)
+
+   # dpkg -I dosbox | grep "Home"
+
+
+5. Zeigen Sie sich die Abhängigkeiten des Pakets “dosbox“ an.
+Müssen Abhängigkeiten aufgelöst werden ? Wenn ja welche ?
+
+
+   # apt-cache depends dosbox
+
+6. Installieren Sie das Paket 'dosbox' mit dpkg und führen Sie
+(ohne Korrektur der Abhängigkeiten) ein Audit durch.
+
+dpkg -i dosbox  #Fehlermeldungen
+dpkg -C
+
+dpkg -i libsdl... # alle Abhängigkeiten nachinstallieren
+
+
+
+7. Laden Sie sich den Quellcode vom Paket 'dosbox' herunter.
+
+   ---> apt-get source dosbox
+
+
+
+
+
+
+
+###################### 10.05 ########################
+
+
+
+
+1. Wie würden Sie gezielt nur die 13. Zeile der Eingabe oder einer Datei ausgeben?
+
+--> nl passwd |tail -n +13 | head -n 1
+-->
+
+2. Legen Sie eine Datei an und rufen Sie tail -f für diese Datei auf. Hängen Sie dann auf einer
+anderen virtuellen Konsole z. B. mit »echo >>...« etwas an die Datei an und beobachten Sie
+die tail-Ausgabe. Wie sieht das ganze aus, wenn tail mehrere Dateien gleichzeitig
+beobachtet?
+
+
+
+3. Wie können Sie mittels tr alle Vokale in einem Text durch ein * ersetzen?
+
+--> cat passwd | tr "aeiouAEIOU" "*"
+
+4. Wie können Sie eine Textdatei (z.B. /etc/motd) so umformen, dass alle Satzzeichen entfernt
+und jedes Wort auf eine einzelne Zeile gestellt wird?
+
+--> cat motd | tr ".,;:/" " " | tr " " "\n"| grep -v ^$
+-->
+
+5. Geben Sie die dritt- und viertletzte Zeile der Datei /etc/passwd aus, und ersetzen Sie alle
+Kleinbuchstaben durch Großbuchstaben
+
+--> tac passwd |head -n4 | nl |tail -n 2 | tr "a-z" "A-Z"
+
+6. Geben Sie ein tr Kommando an, mit dem die Zeichen a, z, und - aus der Standardeingabe
+entfernt werden können. Die Eingabe können Sie mittels STRG+D beenden.
+
+--> tr -d 'az-'
+-->
+
+7. Nummerieren Sie die Zeilen z.B. der Datei /etc/passwd in Zweierschritten beginnend bei
+100
+
+--> cat passwd | nl -v 100 -i 2
+
+8. Wie können Sie die Zeilen einer Datei in umgekehrter Reihenfolge Nummerieren ?
+
+--> tac passwd | nl
+
+9. Sortieren Sie die Ausgabe von ls nach Datum. Ändern Sie die Reihenfolge der Ausgabe, d.h.
+die ältesten Datei zu erst.
+
+--> ls -ltr
+
+10. Ersetzen Sie jeden Doppelpunkt der /etc/passwd (mit einer Kopie der Datei, nicht als
+root-Benutzer) durch einen Tab. Geben Sie die Datei wieder aus und verwenden Sie
+folgende Tabulatorabstände: 15,17,23,29,60,80
+
+--> cat passwd | tr ':' '\t' | expand -t 15,17,23,29,60,80
+
+11. Suchen Sie alle Dateien im /etc Verzeichnis welche Ihren Maschinennamen enthalten
+
+
+--> egrep -l $(hostname)
+
+
+
+|--------------  10.05---------------------------------------|
+
+1)
+Lesen Sie den Heise-Newsletter ( http://www.heise.de ) aus und geben Sie die ersten 10
+News-Meldungen ( Überschriften ) ( bevorzugt mit dem sed ) in der Form
+* Widerstand gegen elektronischen Einkommensnachweis ELENA
+* Mausklick-Workarounds für IE-Sicherheitslücke
+aus. Präsentieren Sie diese als /etc/motd ( Message of the Day ) beim Login.
+Geben Sie die Schritte an
+
+
+
+
+lynx www.heise.de --dump --width=120 | sed -n '/^[^[:blank:]]/p' | sed 's/^.*/\t* &/'| sed -n '1,10p'
+lynx www.heise.de --dump --width=120 | sed -n '/^[^[:blank:]]/p' | sed 's/^/\t*/g'| sed -n '1,10p'
+
+--> sed -n '/^[^[:blank:]]/p'
+
+Dieser Befehl verwendet den regulären Ausdruck ^[^[:blank:]], um nach Zeilen zu suchen, die nicht mit Leerzeichen oder Tabulatoren beginnen, und gibt diese aus.
+
+^ bezeichnet den Anfang der Zeile.
+[^[:blank:]] entspricht einem Zeichen, das kein Leerzeichen oder Tabulator ist.
+
+
+--> sed 's/^.*/\t* &/' heise_newsticker.txt
+
+In diesem Befehl:
+
+^.* entspricht dem gesamten Text in jeder Zeile.
+\t* & fügt am Anfang ein Tabulator und ein Stern hinzu und lässt dann den ursprünglichen Text unverändert.
+
+
+--> sed -n '1,10p'
+
+-n unterdrückt die automatische Ausgabe jeder Zeile.
+1,10p sagt sed, dass nur die Zeilen von 1 bis 10 (inklusive) gedruckt werden sollen.
+
+
+
+
+
+
+
+
+
+
+

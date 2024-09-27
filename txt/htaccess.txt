@@ -1,0 +1,36 @@
+touch .htaccesshttpd.conf
+----------
+
+AllowOverride All
+
+----------------------
+
+htpasswd (-c) /etc/apache2/.htpasswd <user>
+
+----------------------
+
+.htaccess
+---------
+
+AuthName "<sitename>"
+AuthType Basic
+AuthUserFile /<path>/<datei>
+require valid-user
+
+--------------------------------------------------------------
+
+.htaccess
+---------
+
+AuthName "<sitename>"
+AuthType Basic
+AuthUserFile /<path>/<datei>
+AuthGroupFile /<path>/<datei>
+require group VIP
+
+.htgroup
+--------
+
+VIP:ich willy
+
+a2enmod authz_groupfile
