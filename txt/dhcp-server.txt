@@ -1,9 +1,0 @@
-23.07
-
-
-key "updatekey" {
-        algorithm hmac-sha512;
-        secret "+2ZtW/0AKqD/GjKDjlb2FtOQQLWc/usY70zFeNEq3NDHfHo0hywugpjPhrn5GeK0GuU+XJM775sgMJrdM7Ssiw==";
-};
-
-
