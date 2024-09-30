@@ -628,6 +628,36 @@ function hb {
     fi
 }
 
+################################################
+# fzf History-Suche Konfiguration
+################################################
+if [ -f ~/.fzf.bash ]; then
+    source ~/.fzf.bash
+fi
+
+# CTRL-R - Paste the selected command from history into the command line
+__fzf_history__() {
+  local output
+  output=$(
+    builtin fc -lnr -2147483648 |
+      last_hist=$(HISTTIMEFORMAT='' builtin history 1) perl -n -l0 -e 'BEGIN { getc; $/ = "\n\t"; $HISTCMD = $ENV{last_hist} + 1 } s/^[ *]//; print $HISTCMD - $. . "\t$_" if !$seen{$_}++' |
+      FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} $FZF_DEFAULT_OPTS -n2..,.. --tiebreak=index --bind=ctrl-r:toggle-sort,ctrl-z:ignore $FZF_CTRL_R_OPTS --query=${READLINE_LINE:-}" fzf --read0
+  ) || return
+  READLINE_LINE=${output#*$'\t'}
+  if [ -z "$READLINE_POINT" ]; then
+    echo "$READLINE_LINE"
+  else
+    READLINE_POINT=0x7fffffff
+  fi
+}
+###################################
+# Bind CTRL-R to fzf history search
+###################################
+if [[ $- =~ i ]]; then
+    bind -x '"\C-r": __fzf_history__'
+fi
+
+
 #######################################################
 # Set the ultimate amazing command prompt
 #######################################################
