@@ -635,6 +635,12 @@ if [ -f ~/.fzf.bash ]; then
     source ~/.fzf.bash
 fi
 
+###########
+#bei kill ** -> tab
+source <(fzf --bash)
+###################
+
+
 # CTRL-R - Paste the selected command from history into the command line
 __fzf_history__() {
   local output
