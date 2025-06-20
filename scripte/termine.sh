@@ -1,5 +1,6 @@
 #!/bin/bash
-# Terminplaner mit optischen Verbesserungen
+# ganz einfache Terminausgabe fuer den Terminal.
+# wird mit Parametern gestartet. Bsp: ./termine add del all edit 
 
 # Farbvariablen definieren
 RED="\e[31m"
