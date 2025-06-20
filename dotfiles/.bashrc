@@ -1,8 +1,11 @@
-iatest=$(expr index "$-" i)
+
 ###################################################
 # angepasst von Faxxxmaster
+# Debian oder Archlinux Server Optimiert
+# 20.06.2025
 ###################################################
 
+iatest=$(expr index "$-" i)
 
 if [ -f /usr/bin/fastfetch ]; then
     fastfetch --config /usr/share/fastfetch/presets/examples/21
