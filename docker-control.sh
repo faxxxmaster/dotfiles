@@ -2,7 +2,9 @@
 
 # Script to start/stop/update multiple docker-compose setups
 # Place this script in /root/docker/ directory
-
+############
+# DOCKER_DIRS bitte anpassen!
+############
 ACTION=$1
 DOCKER_DIRS=("/root/docker/immich-app" "/root/docker/otterwiki")
 
