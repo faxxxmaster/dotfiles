@@ -1,8 +1,6 @@
 #!/bin/bash
 # erleichtert den Umgang mit Brew :-)
 
-
-
 echo "🔄 Homebrew Update & Upgrade starten..."
 brew update && brew upgrade
 
