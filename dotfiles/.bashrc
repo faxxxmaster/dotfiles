@@ -1,7 +1,7 @@
 
 ###################################################
 # angepasst von Faxxxmaster
-# Debian oder Archlinux Server Optimiert
+# Debian oder Archlinux Server optimiert
 # 20.06.2025
 ###################################################
 
