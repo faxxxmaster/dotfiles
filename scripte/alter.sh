@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#gibt dein Alter in Jahrem/monaten und Tagen aus
+
 # Hier kannst du dein Geburtsdatum direkt festlegen
 geburtsdatum="1973-07-15" # Ändere dieses Datum zu deinem tatsächlichen Geburtsdatum
 
