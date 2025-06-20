@@ -1,5 +1,5 @@
 Hallo,
 
-das ist für das erste nur ein Test zum Umgang mit Repositorys!
+das ist für das erste nur ein Test zum Umgang mit Rapositorys!
 
 wir haben Spass!
