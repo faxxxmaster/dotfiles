@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+
+#Test ener BTRFS Partiion/Raid / Anzeige der wichtigsten Daten
+
 set -euo pipefail
 
 MNT="${1:-}"
