@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#Zeigt den Status von Scrub oder Balance auf einer BTRFS Partition an
+
 # Verzeichnis des Btrfs-Dateisystems
 MOUNTPOINT="/home/gc/nas"
 
