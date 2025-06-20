@@ -1,6 +1,8 @@
 #!/bin/bash
+
+
 # ich benutze es fuer meine Proxmox installation. 
-# Einfach eine Regel erstellen/anzeigen/löschen/ um einem  port an eine bestimmte ip/port weiterzuleiten
+# Einfach eine Regel erstellen/anzeigen/löschen/bearbeiten um einem  port an eine bestimmte ip/port weiterzuleiten
 # Beispiel: Port:80 an ein Dashboard
 
 NFT_CONFIG="/etc/nftables.conf"
