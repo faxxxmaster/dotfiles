@@ -5,8 +5,13 @@ REPOS=(
   "LazyVim/LazyVim"
   "redimp/otterwiki"
   "RARgames/4gaBoards"
-  
-
+  "ChrisTitusTech/linutil"
+  "immich-app/immich"
+  "community-scripts/ProxmoxVE"
+  "zellij-org/zellij"  
+  "mylinuxforwork/dotfiles"
+  "kovidgoyal/kitty"
+  "sxyazi/yazi"
 )
 
 
