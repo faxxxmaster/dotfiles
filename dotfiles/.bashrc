@@ -102,9 +102,11 @@ alias dasdingdev='curl -fsSL https://christitus.com/linuxdev | sh'
 alias dasding='curl -fsSL https://christitus.com/linux | sh'
 alias yes='for i in $(seq $(nproc)); do yes > /dev/null & done'
 
-alias fzfprev="fzf --preview 'bat --color=always {}'"
-alias fzfdir='cd $(find . -type d | fzf --preview "ls -l {}")'
-alias fzf-fd='fd . / | fzf --preview "bat --color=always {}" | xargs -I {} micro {}'
+alias fzf-rg="ftext"
+alias fzf-dir='cd $(fd . -type d | fzf --preview "eza -la {}")'
+alias fzf-micro='fd . / | fzf --preview "bat --color=always {}" | xargs -I {} micro {}'
+alias fzf-nvim='fd . / | fzf --preview "bat --color=always {}" | xargs -I {} nvim {}'
+
 
 alias diskwatch='watch -d -n 1 "grep -e sd[a-z] /proc/diskstats | awk '\''{print \$3,\$6,\$10}'\''"'
 alias diskio='watch -d -n1 "iostat -d"'
