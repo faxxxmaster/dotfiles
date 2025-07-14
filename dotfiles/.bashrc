@@ -410,7 +410,7 @@ distribution () {
             gentoo)
                 dtype="gentoo"
                 ;;
-            arch|manjaro)
+            arch|cachyos)
                 dtype="arch"
                 ;;
             slackware)
