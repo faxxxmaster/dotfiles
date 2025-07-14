@@ -526,7 +526,7 @@ install_tools() {
     		sudo zypper install multitail tree zoxide trash-cli fzf bash-completion fastfetch
     		;;
     	"debian")
-    		sudo apt-get install multitail tree zoxide trash-cli fzf bash-completion curl git ripgrep micro btop duf gdu exa net-tools rsync nala 
+    		sudo apt-get install multitail tree zoxide trash-cli fzf bash-completion curl git ripgrep micro btop duf gdu exa net-tools rsync nala
     		# Fetch the latest fastfetch release URL for linux-amd64 deb file
     		FASTFETCH_URL=$(curl -s https://api.github.com/repos/fastfetch-cli/fastfetch/releases/latest | grep "browser_download_url.*linux-amd64.deb" | cut -d '"' -f 4)
 
@@ -542,7 +542,7 @@ install_tools() {
 
     		;;
     	"arch")
-    		yay -S multitail tree zoxide trash-cli fzf bash-completion fastfetch ripgrep curl git micro btop duf gdu exa
+    		yay -S multitail tree zoxide trash-cli fzf bash-completion fastfetch ripgrep curl git micro btop duf gdu exa bat unp
     		update_micro_settings
     		;;
     	"slackware")
