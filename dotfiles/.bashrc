@@ -542,7 +542,7 @@ install_tools() {
 
     		;;
     	"arch")
-    		yay -S multitail tree zoxide trash-cli fzf bash-completion fastfetch ripgrep curl git micro btop duf gdu exa bat unp
+    		yay -S multitail tree zoxide trash-cli fzf bash-completion fastfetch ripgrep curl git micro btop duf gdu eza bat unp
     		update_micro_settings
     		;;
     	"slackware")
