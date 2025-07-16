@@ -3,18 +3,21 @@
 # Script to start/stop/update multiple docker-compose setups
 # Place this script in /root/docker/ directory
 ############
-# DOCKER_DIRS bitte anpassen!
+# Faxxxmaster 03/2025
 ############
 ACTION=$1
+##########################
+# Hier Pfade zu den containern eintragen!
+##########################
 DOCKER_DIRS=("/root/docker/immich-app" "/root/docker/otterwiki")
 
-# Check if an action was provided
+# Prüfen ob Parameter existiert
 if [ -z "$ACTION" ]; then
   echo "Usage: $0 [start|stop|restart|status|update|cleanup]"
   exit 1
 fi
 
-# Function to execute docker-compose commands
+# Funktion zum ausführen der entsprechenden docker compose Befehle
 run_docker_compose() {
   local action=$1
   local dir=$2
@@ -66,7 +69,7 @@ cleanup_docker() {
   echo "Docker cleanup completed."
 }
 
-# Execute the specified action
+# Ausführen der ausgewaehlten action
 case "$ACTION" in
   start|stop|restart|status|update)
     for dir in "${DOCKER_DIRS[@]}"; do
