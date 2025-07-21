@@ -114,9 +114,17 @@ alias diskio='watch -d -n1 "iostat -d"'
 alias wetter="curl wttr.in/Geilenkirchen?lang=de"
 
 alias drycleanup='yay -Qqdt'
+alias paru-drycleanup='paru -Qqdt'
+
+
 alias cleanup='yay -Rns $(yay -Qqdt)'
+alias paru-cleanup='paru  -Rns $(yay -Qqdt)'
+
 alias remove='yay -Rns'
+alias paru-remove='paru -Rns'
+
 alias yay='yay --noconfirm'
+alias paru='paru --noconfirm'
 alias ip='ip --color=auto'
 alias sysinfo='inxi -Fxz'
 
@@ -638,9 +646,6 @@ if [[ $- =~ i ]]; then
     bind -x '"\C-r": __fzf_history__'
 fi
 
-#######################################################
-# Set the ultimate amazing command prompt
-#######################################################
 
 # Check if the shell is interactive
 if [[ $- == *i* ]]; then
@@ -652,4 +657,4 @@ export PATH=$PATH:"$HOME/.local/bin:$HOME/.cargo/bin:/var/lib/flatpak/exports/bi
 
 eval "$(zoxide init bash)"
 #falls Homebrew installiert ist
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+#eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
