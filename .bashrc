@@ -97,67 +97,56 @@ export VISUAL=micro
 
 # Zellij
 alias zell='bash <(curl -L https://zellij.dev/launch)'
+
+#pastebin echo xyz | tb
+alias tb='nc termbin.com 9999'
+
 alias vim='nvim'
+
+#chri titus linuxtool
 alias dasdingdev='curl -fsSL https://christitus.com/linuxdev | sh'
 alias dasding='curl -fsSL https://christitus.com/linux | sh'
+
 alias yes='for i in $(seq $(nproc)); do yes > /dev/null & done'
 
+#fzf suchen
 alias fzf-rg="ftext"
 alias fzf-dir='cd $(fd . -type d | fzf --preview "eza -la {}")'
 alias fzf-micro='fd . / | fzf --preview "bat --color=always {}" | xargs -I {} micro {}'
 alias fzf-nvim='fd . / | fzf --preview "bat --color=always {}" | xargs -I {} nvim {}'
 
-
+#Festpklatten
 alias diskwatch='watch -d -n 1 "grep -e sd[a-z] /proc/diskstats | awk '\''{print \$3,\$6,\$10}'\''"'
 alias diskio='watch -d -n1 "iostat -d"'
 
+#wetterausgabe
 alias wetter="curl wttr.in/Geilenkirchen?lang=de"
 
+#yay paru clean
 alias drycleanup='yay -Qqdt'
 alias paru-drycleanup='paru -Qqdt'
-
-
 alias cleanup='yay -Rns $(yay -Qqdt)'
 alias paru-cleanup='paru  -Rns $(yay -Qqdt)'
 
+#yay paru remove
 alias remove='yay -Rns'
 alias paru-remove='paru -Rns'
 
+#yay paru install ohne abfrage
 alias yay='yay --noconfirm'
 alias paru='paru --noconfirm'
 alias ip='ip --color=auto'
+
+#hw abfrage
 alias sysinfo='inxi -Fxz'
 
+#systemd dienste starten/stoppen/status
 alias start='sudo systemctl start'
 alias stop='sudo systemctl stop'
 alias restart='sudo systemctl restart'
 alias status='systemctl status'
 alias enable='sudo systemctl enable'
 alias disable='sudo systemctl disable'
-
-# To have colors for ls and all grep commands such as grep, egrep and zgrep
-export CLICOLOR=1
-export LS_COLORS='no=00:fi=00:di=00;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.gz=01;31:*.bz2=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.avi=01;35:*.fli=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.ogg=01;35:*.mp3=01;35:*.wav=01;35:*.xml=00;31:'
-#export GREP_OPTIONS='--color=auto' #deprecated
-
-# Check if ripgrep is installed
-if command -v rg &> /dev/null; then
-    # Alias grep to rg if ripgrep is installed
-    alias grep='rg'
-else
-    # Alias grep to /usr/bin/grep with GREP_OPTIONS if ripgrep is not installed
-    alias grep="/usr/bin/grep $GREP_OPTIONS"
-fi
-unset GREP_OPTIONS
-
-# Color for manpages in less makes manpages a little easier to read
-export LESS_TERMCAP_mb=$'\E[01;31m'
-export LESS_TERMCAP_md=$'\E[01;31m'
-export LESS_TERMCAP_me=$'\E[0m'
-export LESS_TERMCAP_se=$'\E[0m'
-export LESS_TERMCAP_so=$'\E[01;44;33m'
-export LESS_TERMCAP_ue=$'\E[0m'
-export LESS_TERMCAP_us=$'\E[01;32m'
 
 #######################################################
 # MACHINE SPECIFIC ALIAS'S
@@ -185,7 +174,6 @@ alias apt-get='sudo apt-get'
 alias multitail='multitail --no-repeat -c'
 alias freshclam='sudo freshclam'
 alias vi='nvim'
-alias svi='sudo vi'
 alias vis='nvim "+set si"'
 
 
@@ -283,6 +271,33 @@ alias docker-clean=' \
   docker network prune -f ; \
   docker volume prune -f '
 
+
+# To have colors for ls and all grep commands such as grep, egrep and zgrep
+export CLICOLOR=1
+export LS_COLORS='no=00:fi=00:di=00;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.gz=01;31:*.bz2=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.avi=01;35:*.fli=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.ogg=01;35:*.mp3=01;35:*.wav=01;35:*.xml=00;31:'
+#export GREP_OPTIONS='--color=auto' #deprecated
+
+# Check if ripgrep is installed
+if command -v rg &> /dev/null; then
+    # Alias grep to rg if ripgrep is installed
+    alias grep='rg'
+else
+    # Alias grep to /usr/bin/grep with GREP_OPTIONS if ripgrep is not installed
+    alias grep="/usr/bin/grep $GREP_OPTIONS"
+fi
+unset GREP_OPTIONS
+
+# Color for manpages in less makes manpages a little easier to read
+export LESS_TERMCAP_mb=$'\E[01;31m'
+export LESS_TERMCAP_md=$'\E[01;31m'
+export LESS_TERMCAP_me=$'\E[0m'
+export LESS_TERMCAP_se=$'\E[0m'
+export LESS_TERMCAP_so=$'\E[01;44;33m'
+export LESS_TERMCAP_ue=$'\E[0m'
+export LESS_TERMCAP_us=$'\E[01;32m'
+
+
+
 #######################################################
 # SPECIAL FUNCTIONS
 #######################################################
@@ -365,7 +380,7 @@ mkdirg() {
     mkdir -p "$1"
     cd "$1"
 }
-alias mvg="mvg"
+alias mvg="mkdg"
 
 # Goes up a specified number of directories  (i.e. up 4)
 up() {
