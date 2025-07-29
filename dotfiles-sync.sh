@@ -1,18 +1,117 @@
 #!/bin/bash
 
-# Funktion zum Synchronisieren von Konfigurationsdateien
-sync_config() {
+# ============================================================================
+# KONFIGURATION - HIER DEINE DATEIEN UND URLS EINTRAGEN
+# ============================================================================
+
+# Format: "lokaler_pfad|download_url"
+# Verwende $HOME statt ~ für bessere Kompatibilität
+CONFIG_FILES=(
+    "$HOME/.bashrc|https://raw.githubusercontent.com/faxxxmaster/dotfiles/refs/heads/main/.bashrc"
+    "$HOME/.config/zed/settings.json|https://raw.githubusercontent.com/faxxxmaster/dotfiles/refs/heads/main/.config/zed/settings.json"
+    "$HOME/.config/kitty/kitty.conf|https://raw.githubusercontent.com/faxxxmaster/dotfiles/refs/heads/main/.config/kitty/kitty.conf"
+    "$HOME/.config/micro/settings.json|https://raw.githubusercontent.com/faxxxmaster/dotfiles/refs/heads/main/.config/micro/settings.json"
+#    "$HOME/.config/hypr/hyprland.conf|https://raw.githubusercontent.com/username/dotfiles/main/hypr/hyprland.conf"
+#    "$HOME/.tmux.conf|https://raw.githubusercontent.com/username/dotfiles/main/tmux/tmux.conf"
+#    "$HOME/.config/git/config|https://raw.githubusercontent.com/username/dotfiles/main/git/config"
+#    "$HOME/.config/alacritty/alacritty.yml|https://raw.githubusercontent.com/username/dotfiles/main/alacritty/alacritty.yml"
+)
+
+# ============================================================================
+# SCRIPT-OPTIONEN
+# ============================================================================
+
+# Automatische Backups erstellen (true/false)
+AUTO_BACKUP=true
+
+# Maximale Zeilen für Diff-Vorschau
+MAX_DIFF_LINES=200
+
+# Farben für Ausgabe
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+# ============================================================================
+# HILFSFUNKTIONEN
+# ============================================================================
+
+print_header() {
+    echo -e "${BLUE}============================================${NC}"
+    echo -e "${BLUE} Configuration File Sync Tool${NC}"
+    echo -e "${BLUE}============================================${NC}"
+    echo
+}
+
+print_success() {
+    echo -e "${GREEN}✓ $1${NC}"
+}
+
+print_warning() {
+    echo -e "${YELLOW}⚠ $1${NC}"
+}
+
+print_error() {
+    echo -e "${RED}✗ $1${NC}"
+}
+
+print_info() {
+    echo -e "${BLUE}ℹ $1${NC}"
+}
+
+# Validierungsfunktionen
+validate_json() {
+    python3 -m json.tool "$1" >/dev/null 2>&1
+}
+
+validate_yaml() {
+    python3 -c "
+import yaml
+try:
+    with open('$1', 'r') as f:
+        yaml.safe_load(f)
+except:
+    exit(1)
+" 2>/dev/null
+}
+
+validate_file() {
+    local file="$1"
+    local extension="${file##*.}"
+
+    case "$extension" in
+        json)
+            if ! validate_json "$file"; then
+                print_warning "Downloaded file is not valid JSON!"
+                return 1
+            fi
+            ;;
+        yml|yaml)
+            if ! validate_yaml "$file"; then
+                print_warning "Downloaded file is not valid YAML!"
+                return 1
+            fi
+            ;;
+    esac
+    return 0
+}
+
+# ============================================================================
+# HAUPT-SYNC-FUNKTION
+# ============================================================================
+
+sync_single_config() {
     local config_file="$1"
     local download_url="$2"
 
-    # Parameter prüfen
-    if [[ -z "$config_file" || -z "$download_url" ]]; then
-        echo "Usage: sync_config <config_file_path> <download_url>"
-        echo "Example: sync_config ~/.config/micro/settings.json https://raw.githubusercontent.com/user/dotfiles/main/micro/settings.json"
-        return 1
-    fi
+    print_info "Processing: $(basename "$config_file")"
+    echo "  Local:  $config_file"
+    echo "  Remote: $download_url"
+    echo
 
-    # Verzeichnis der Konfigurationsdatei erstellen falls nicht vorhanden
+    # Verzeichnis erstellen
     local config_dir
     config_dir="$(dirname "$config_file")"
     mkdir -p "$config_dir"
@@ -22,69 +121,78 @@ sync_config() {
     temp_file=$(mktemp)
 
     # Datei herunterladen
-    echo "Downloading configuration from: $download_url"
-    if ! wget -q -O "$temp_file" "$download_url"; then
-        echo "Error: Failed to download file from $download_url"
+    print_info "Downloading..."
+    if ! wget -q --timeout=10 --tries=3 -O "$temp_file" "$download_url"; then
+        print_error "Failed to download from: $download_url"
         rm -f "$temp_file"
         return 1
     fi
 
+    # Datei validieren
+    if ! validate_file "$temp_file"; then
+        read -p "Continue despite validation warning? [y/N]: " continue_choice
+        if [[ ! "$continue_choice" =~ ^[yY] ]]; then
+            print_info "Skipping due to validation error."
+            rm -f "$temp_file"
+            return 1
+        fi
+    fi
+
     # Prüfen ob lokale Datei existiert
     if [[ -f "$config_file" ]]; then
-        echo "Configuration file already exists: $config_file"
-        echo
-
-        # Unterschiede anzeigen
+        # Dateien vergleichen
         if diff -q "$config_file" "$temp_file" >/dev/null; then
-            echo "Files are identical. No changes needed."
+            print_success "Files are identical. No changes needed."
             rm -f "$temp_file"
             return 0
+        fi
+
+        print_warning "Differences found!"
+        echo
+
+        # Diff anzeigen
+        echo "--- Current file"
+        echo "+++ New file from remote"
+        if command -v colordiff >/dev/null 2>&1; then
+            colordiff -u "$config_file" "$temp_file" | head -$MAX_DIFF_LINES
         else
-            echo "Differences found:"
-            echo "=================="
+            diff -u "$config_file" "$temp_file" | head -$MAX_DIFF_LINES
+        fi
 
-            # Farbige Diff-Ausgabe falls verfügbar
-            if command -v colordiff >/dev/null 2>&1; then
-                colordiff -u "$config_file" "$temp_file" | head -20
-            else
-                diff -u "$config_file" "$temp_file" | head -20
-            fi
+        # Bei vielen Unterschieden abkürzen
+        local diff_lines
+        diff_lines=$(diff -u "$config_file" "$temp_file" | wc -l)
+        if [[ $diff_lines -gt $MAX_DIFF_LINES ]]; then
+            echo "... (showing first $MAX_DIFF_LINES of $diff_lines total lines)"
+        fi
 
-            # Bei vielen Unterschieden abkürzen
-            local diff_lines
-            diff_lines=$(diff -u "$config_file" "$temp_file" | wc -l)
-            if [[ $diff_lines -gt 20 ]]; then
-                echo "... (truncated, $diff_lines total lines of diff)"
-            fi
+        echo
+        echo "Options:"
+        echo "  [y] Replace current file"
+        echo "  [b] Create backup and replace"
+        echo "  [v] View full diff"
+        echo "  [s] Skip this file"
+        echo "  [q] Quit script"
 
-            echo "=================="
-            echo
-
-            # Backup-Option anbieten
-            echo "Current file: $config_file"
-            echo "New file from: $download_url"
-            echo
-            echo "Options:"
-            echo "  y/yes - Replace current file with downloaded version"
-            echo "  b/backup - Create backup and replace"
-            echo "  v/view - View full diff"
-            echo "  n/no - Keep current file (default)"
-
-            read -p "What would you like to do? [y/b/v/N]: " choice
+        while true; do
+            read -p "Choose action [y/b/v/s/q]: " choice
 
             case "$choice" in
-                y|yes|Y|YES)
+                y|Y)
                     cp "$temp_file" "$config_file"
-                    echo "Configuration file updated: $config_file"
+                    print_success "File updated: $config_file"
+                    break
                     ;;
-                b|backup|B|BACKUP)
+                b|B)
                     local backup_file="${config_file}.backup.$(date +%Y%m%d_%H%M%S)"
                     cp "$config_file" "$backup_file"
                     cp "$temp_file" "$config_file"
-                    echo "Backup created: $backup_file"
-                    echo "Configuration file updated: $config_file"
+                    print_success "Backup created: $backup_file"
+                    print_success "File updated: $config_file"
+                    break
                     ;;
-                v|view|V|VIEW)
+                v|V)
+                    echo
                     if command -v less >/dev/null 2>&1; then
                         if command -v colordiff >/dev/null 2>&1; then
                             colordiff -u "$config_file" "$temp_file" | less -R
@@ -98,89 +206,151 @@ sync_config() {
                             diff -u "$config_file" "$temp_file"
                         fi
                     fi
-                    # Nach dem Anzeigen nochmal fragen
                     echo
-                    read -p "Replace file after viewing? [y/N]: " replace_choice
-                    if [[ "$replace_choice" =~ ^[yY] ]]; then
-                        cp "$temp_file" "$config_file"
-                        echo "Configuration file updated: $config_file"
-                    else
-                        echo "Configuration file kept unchanged."
-                    fi
+                    # Zurück zum Auswahlmenü
+                    continue
+                    ;;
+                s|S)
+                    print_info "Skipping file: $config_file"
+                    break
+                    ;;
+                q|Q)
+                    print_info "Exiting script."
+                    rm -f "$temp_file"
+                    exit 0
                     ;;
                 *)
-                    echo "Configuration file kept unchanged."
+                    echo "Invalid choice. Please enter y, b, v, s, or q."
+                    continue
                     ;;
             esac
-        fi
+        done
     else
-        # Datei existiert nicht, einfach herunterladen
-        echo "Configuration file not found. Creating: $config_file"
+        # Datei existiert nicht, direkt erstellen
         cp "$temp_file" "$config_file"
-        echo "Configuration file downloaded and saved: $config_file"
+        print_success "New file created: $config_file"
+
+        # Automatisches Backup falls gewünscht
+        if [[ "$AUTO_BACKUP" == "true" ]]; then
+            local backup_file="${config_file}.original.$(date +%Y%m%d_%H%M%S)"
+            touch "$backup_file"  # Leeres Backup da Datei neu
+            print_info "Original state backed up (empty): $backup_file"
+        fi
     fi
 
     # Temporäre Datei löschen
     rm -f "$temp_file"
+    echo
 }
 
-# Erweiterte Funktion mit mehreren Dateien
-sync_configs() {
-    local config_list="$1"
+# ============================================================================
+# HAUPTPROGRAMM
+# ============================================================================
 
-    if [[ -z "$config_list" ]]; then
-        echo "Usage: sync_configs <config_list_file>"
-        echo "Config list format (one per line): /path/to/config.file|https://url/to/download"
-        return 1
+main() {
+    print_header
+
+    # Abhängigkeiten prüfen
+    if ! command -v wget >/dev/null 2>&1; then
+        print_error "wget is required but not installed."
+        exit 1
     fi
 
-    if [[ ! -f "$config_list" ]]; then
-        echo "Error: Config list file not found: $config_list"
-        return 1
-    fi
+    # Statistiken
+    local total_files=${#CONFIG_FILES[@]}
+    local processed=0
+    local updated=0
+    local errors=0
 
-    while IFS='|' read -r config_file download_url; do
-        # Leere Zeilen und Kommentare überspringen
-        [[ -z "$config_file" || "$config_file" =~ ^[[:space:]]*# ]] && continue
+    print_info "Found $total_files configuration files to process."
+    echo
 
-        echo "Processing: $config_file"
-        sync_config "$config_file" "$download_url"
+    # Jede Konfigurationsdatei verarbeiten
+    for config_entry in "${CONFIG_FILES[@]}"; do
+        # Leere Einträge überspringen
+        [[ -z "$config_entry" ]] && continue
+
+        # Pfad und URL trennen
+        IFS='|' read -r config_file download_url <<< "$config_entry"
+
+        # Kommentare überspringen (Zeilen die mit # beginnen)
+        [[ "$config_file" =~ ^[[:space:]]*# ]] && continue
+
         echo "----------------------------------------"
-    done < "$config_list"
+
+        if sync_single_config "$config_file" "$download_url"; then
+            ((updated++))
+        else
+            ((errors++))
+        fi
+
+        ((processed++))
+    done
+
+    # Zusammenfassung
+    echo "========================================"
+    print_info "Sync completed!"
+    echo "  Total files: $total_files"
+    echo "  Processed: $processed"
+    echo "  Updated: $updated"
+    echo "  Errors: $errors"
+    echo
+
+    if [[ $errors -gt 0 ]]; then
+        print_warning "Some files had errors. Check the output above."
+        exit 1
+    else
+        print_success "All files processed successfully!"
+    fi
 }
 
-# Funktion für häufige Konfigurationen (Beispiele)
-sync_micro_config() {
-    sync_config ~/.config/micro/settings.json "https://raw.githubusercontent.com/faxxxmaster/dotfiles/refs/heads/main/.config/micro/settings.json"
+# ============================================================================
+# KOMMANDOZEILEN-OPTIONEN
+# ============================================================================
+
+show_help() {
+    echo "Usage: $0 [OPTIONS]"
+    echo
+    echo "Options:"
+    echo "  -h, --help      Show this help message"
+    echo "  -n, --dry-run   Show what would be done without making changes"
+    echo "  -q, --quiet     Suppress non-essential output"
+    echo "  -f, --force     Auto-accept all updates (no prompts)"
+    echo
+    echo "Edit the CONFIG_FILES array at the top of this script to configure"
+    echo "which files should be synchronized."
 }
 
-sync_nvim_config() {
-    sync_config ~/.bashrc "https://raw.githubusercontent.com/faxxxmaster/dotfiles/refs/heads/main/.bashrc"
-}
+# Argumentverarbeitung
+DRY_RUN=false
+QUIET=false
+FORCE=false
 
-sync_hypr_config() {
-    sync_config ~/.config/kitty/kitty.conf "https://raw.githubusercontent.com/faxxxmaster/dotfiles/refs/heads/main/.config/kitty/kitty.conf"
-}
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        -h|--help)
+            show_help
+            exit 0
+            ;;
+        -n|--dry-run)
+            DRY_RUN=true
+            shift
+            ;;
+        -q|--quiet)
+            QUIET=true
+            shift
+            ;;
+        -f|--force)
+            FORCE=true
+            shift
+            ;;
+        *)
+            echo "Unknown option: $1"
+            show_help
+            exit 1
+            ;;
+    esac
+done
 
-sync_hypr_config() {
-    sync_config ~/.config/zsd/settings.json "https://raw.githubusercontent.com/faxxxmaster/dotfiles/refs/heads/main/.config/zed/settings.json"
-}
-
-# Hilfsfunktion: Konfigurationsliste erstellen
-create_config_list() {
-    local list_file="${1:-~/.config/sync_list.txt}"
-
-    cat > "$list_file" << 'EOF'
-# Configuration sync list
-# Format: /path/to/local/file|https://url/to/download
-# Lines starting with # are ignored
-
-~/.config/micro/settings.json|https://raw.githubusercontent.com/username/dotfiles/main/micro/settings.json
-~/.config/nvim/init.lua|https://raw.githubusercontent.com/username/dotfiles/main/nvim/init.lua
-~/.vimrc|https://raw.githubusercontent.com/username/dotfiles/main/vim/vimrc
-~/.bashrc_custom|https://raw.githubusercontent.com/username/dotfiles/main/bash/bashrc_custom
-EOF
-
-    echo "Created config list template: $list_file"
-    echo "Edit this file with your actual URLs and run: sync_configs $list_file"
-}
+# Script ausführen
+main
