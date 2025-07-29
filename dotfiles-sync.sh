@@ -11,7 +11,7 @@ CONFIG_FILES=(
     "$HOME/.config/zed/settings.json|https://raw.githubusercontent.com/faxxxmaster/dotfiles/refs/heads/main/.config/zed/settings.json"
     "$HOME/.config/kitty/kitty.conf|https://raw.githubusercontent.com/faxxxmaster/dotfiles/refs/heads/main/.config/kitty/kitty.conf"
     "$HOME/.config/micro/settings.json|https://raw.githubusercontent.com/faxxxmaster/dotfiles/refs/heads/main/.config/micro/settings.json"
-#    "$HOME/.config/hypr/hyprland.conf|https://raw.githubusercontent.com/username/dotfiles/main/hypr/hyprland.conf"
+    "$HOME/.zshrc|https://raw.githubusercontent.com/faxxxmaster/dotfiles/refs/heads/main/.szhrc"
 #    "$HOME/.tmux.conf|https://raw.githubusercontent.com/username/dotfiles/main/tmux/tmux.conf"
 #    "$HOME/.config/git/config|https://raw.githubusercontent.com/username/dotfiles/main/git/config"
 #    "$HOME/.config/alacritty/alacritty.yml|https://raw.githubusercontent.com/username/dotfiles/main/alacritty/alacritty.yml"
