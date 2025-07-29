@@ -530,20 +530,6 @@ ver() {
 #micro settings
 #########################
 
-update_micro_settings() {
-  local settings_file="${HOME}/.config/micro/settings.json"
-  mkdir -p "$(dirname "$settings_file")"
-
-  cat >"$settings_file" <<'EOF'
-{
-  "clipboard": "terminal",
-  "colorscheme": "monokai-dark"
-}
-EOF
-
-  echo "✅ '$settings_file' wurde aktualisiert."
-}
-
 
 # Automatically install the needed support files for this .bashrc file
 install_tools() {
@@ -558,7 +544,7 @@ install_tools() {
     		sudo zypper install multitail tree zoxide trash-cli fzf bash-completion fastfetch
     		;;
     	"debian")
-    		sudo apt-get install multitail tree zoxide trash-cli fzf bash-completion curl git ripgrep micro btop duf gdu exa net-tools rsync nala
+    		sudo apt-get install multitail tree zoxide trash-cli fzf bash-completion curl git ripgrep micro btop duf gdu exa net-tools rsync nala colordiff
     		# Fetch the latest fastfetch release URL for linux-amd64 deb file
     		FASTFETCH_URL=$(curl -s https://api.github.com/repos/fastfetch-cli/fastfetch/releases/latest | grep "browser_download_url.*linux-amd64.deb" | cut -d '"' -f 4)
 
@@ -568,14 +554,11 @@ install_tools() {
     		# Install the downloaded deb file using apt-get
     		sudo apt-get install /tmp/fastfetch_latest_amd64.deb
 
-    		# Setzen micro settings
-    		update_micro_settings
-
 
     		;;
     	"arch")
-    		yay -S multitail tree zoxide trash-cli fzf bash-completion fastfetch ripgrep curl git micro btop duf gdu eza bat unp
-    		update_micro_settings
+    		yay -S multitail tree zoxide trash-cli fzf bash-completion fastfetch ripgrep curl git micro btop duf gdu eza bat unp colordiff
+
     		;;
     	"slackware")
     		echo "No install support for Slackware"
