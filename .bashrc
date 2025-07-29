@@ -95,13 +95,19 @@ export VISUAL=micro
 #alias nano='edit'
 #alias snano='sedit'
 
+
+#sudo
+alias sudo='sudo '
+
 # Zellij
 alias zell='bash <(curl -L https://zellij.dev/launch)'
 
 #pastebin echo xyz | tb
 alias tb='nc termbin.com 9999'
 
+#editoren
 alias vim='nvim'
+alias edit="micro"
 
 #chri titus linuxtool
 alias dasdingdev='curl -fsSL https://christitus.com/linuxdev | sh'
