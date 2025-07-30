@@ -54,7 +54,7 @@ PROMPT_COLOR="%{$fg_bold[cyan]%}"       # Für die Linien
 RESET="%{$reset_color%}"
 
 PROMPT="${PROMPT_COLOR}┌─[${USER_COLOR}%n${RESET}@${HOST_COLOR}%m${PROMPT_COLOR}] ${TIME_COLOR}%D{%H:%M:%S} ${DIR_COLOR}%~${RESET}
-${PROMPT_COLOR}└─%# ${RESET}"
+${PROMPT_COLOR}└─ > ${RESET}"
 
 #######################################################
 # EXPORTS

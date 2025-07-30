@@ -41,7 +41,7 @@ DIR_COLOR='\[\e[1;33m\]'     # Gelb
 PROMPT_COLOR='\[\e[1;36m\]'  # Für die Linien
 RESET='\[\e[0m\]'
 
-PS1="${PROMPT_COLOR}┌─[${USER_COLOR}\u${RESET}@${HOST_COLOR}\h${PROMPT_COLOR}] ${TIME_COLOR}\t ${DIR_COLOR}\w${RESET}\n${PROMPT_COLOR}└─\$ ${RESET}"
+PS1="${PROMPT_COLOR}┌─[${USER_COLOR}\u${RESET}@${HOST_COLOR}\h${PROMPT_COLOR}] ${TIME_COLOR}\t ${DIR_COLOR}\w${RESET}\n${PROMPT_COLOR}└─ > ${RESET}"
 
 
 #######################################################
