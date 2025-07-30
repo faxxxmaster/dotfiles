@@ -2,7 +2,7 @@
     "colorscheme": "monokai",
 
     "ruler": true,
-    "relativeruler": false,
+    "relativeruler": true,
     "cursorline": true,
     "colorcolumn": 80,
 
