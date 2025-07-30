@@ -25,7 +25,7 @@ CONFIG_FILES=(
 AUTO_BACKUP=true
 
 # Maximale Zeilen für Diff-Vorschau
-MAX_DIFF_LINES=200
+MAX_DIFF_LINES=20
 
 # Farben für Ausgabe
 RED='\033[0;31m'
