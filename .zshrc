@@ -123,7 +123,7 @@ alias diskwatch='watch -d -n 1 "grep -e sd[a-z] /proc/diskstats | awk '\''{print
 alias diskio='watch -d -n1 "iostat -d"'
 
 # Wetter
-alias wetter="curl wttr.in/Geilenkirchen?lang=de"
+alias wetter='curl "wttr.in/Geilenkirchen?lang=de"'
 
 # Package Management (Arch)
 alias drycleanup='yay -Qqdt'
@@ -573,4 +573,4 @@ fi
 # Syntax highlighting (falls installiert)
 # source ~/.oh-my-zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-echo "ZSH configuration loaded successfully!"
+# echo "ZSH configuration loaded successfully!"
