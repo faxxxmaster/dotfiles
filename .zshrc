@@ -573,4 +573,4 @@ fi
 # Syntax highlighting (falls installiert)
 # source ~/.oh-my-zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-echo "ZSH configuration loaded successfully!"
+#echo "ZSH configuration loaded successfully!"
