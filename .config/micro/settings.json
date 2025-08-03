@@ -1,51 +1,20 @@
 {
-    "colorscheme": "monokai",
-
-    "ruler": true,
-    "relativeruler": true,
-    "cursorline": true,
-    "colorcolumn": 80,
-
-    "tabsize": 4,
-    "tabstospaces": true,
-    "autoindent": true,
-    "indentchar": " ",
-
-    "softwrap": false,
-    "wordwrap": false,
-    "scrollmargin": 3,
-    "scrollspeed": 2,
-
-    "mouse": true,
-    "clipboard": "external",
     "autosave": 240,
-    "saveundo": true,
-
-    "syntax": true,
+    "backupdir": "~/.config/micro/backups",
+    "colorcolumn": 100,
+    "colorscheme": "monokai-dark",
+    "diffgutter": true,
+    "divider": true,
     "hlsearch": true,
     "ignorecase": false,
-    "smartcase": true,
-
-    "matchbrace": true,
-    "matchbracestyle": "underline",
-    "showmatching": true,
-
-    "fileformat": "unix",
-    "encoding": "utf-8",
-    "rmtrailingws": true,
-    "eofnewline": true,
-
-    "diffgutter": true,
-    "statusline": true,
-    "divider": true,
-
     "pluginchannels": [
         "https://raw.githubusercontent.com/micro-editor/plugin-channel/master/channel.json"
     ],
-
-    "linter": true,
+    "relativeruler": true,
+    "rmtrailingws": true,
+    "saveundo": true,
+    "showmatching": true,
+    "smartcase": true,
     "spellerrors": true,
-
-    "backup": true,
-    "backupdir": "~/.config/micro/backups"
+    "tabstospaces": true
 }
