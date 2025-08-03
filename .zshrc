@@ -95,7 +95,7 @@ export PATH=$PATH:"$HOME/.local/bin:$HOME/.cargo/bin:/var/lib/flatpak/exports/bi
 
 # Sudo
 alias sudo='sudo '
-
+alias c='clear'
 # Zellij
 alias zell='bash <(curl -L https://zellij.dev/launch)'
 

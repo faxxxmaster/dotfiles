@@ -98,7 +98,7 @@ export VISUAL=micro
 
 #sudo
 alias sudo='sudo '
-
+alias c='clear'
 # Zellij
 alias zell='bash <(curl -L https://zellij.dev/launch)'
 
