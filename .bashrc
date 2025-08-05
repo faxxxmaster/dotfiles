@@ -408,10 +408,14 @@ up() {
 cd ()
 {
     if [ -n "$1" ]; then
+	echo " "
     	builtin cd "$@" && ls
+	echo " "
     else
+	echo " "
     	builtin cd ~ && ls
-    fi
+	echo " "    
+fi
 }
 
 # Returns the last 2 fields of the working directory
