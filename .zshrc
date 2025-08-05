@@ -476,7 +476,7 @@ install_tools() {
             sudo apt-get install /tmp/fastfetch_latest_amd64.deb
             ;;
         "arch")
-            yay -S multitail tree zoxide trash-cli fzf bash-completion fastfetch ripgrep curl git micro btop duf gdu eza bat unp colordiff
+            paru -S multitail tree zoxide trash-cli fzf bash-completion fastfetch ripgrep curl git micro btop duf gdu eza bat unp colordiff
             ;;
         "slackware")
             echo "No install support for Slackware"
