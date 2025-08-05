@@ -343,10 +343,14 @@ up() {
 # Auto ls after cd
 cd() {
     if [ -n "$1" ]; then
+	echo " "
         builtin cd "$@" && ls
+	echo " "
     else
+	echo " "
         builtin cd ~ && ls
-    fi
+	echo " "    
+fi
 }
 
 # Working directory tail
