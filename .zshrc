@@ -349,7 +349,7 @@ cd() {
     else
 	echo " "
         builtin cd ~ && ls
-	echo " "    
+	echo " "
 fi
 }
 
@@ -419,6 +419,7 @@ if [ "$DISTRIBUTION" = "redhat" ] || [ "$DISTRIBUTION" = "arch" ]; then
     alias cat='bat'
 else
     alias cat='batcat'
+    alias fd='fdfind'
 fi
 
 # OS version info
@@ -474,13 +475,13 @@ install_tools() {
             sudo zypper install multitail tree zoxide trash-cli fzf bash-completion fastfetch
             ;;
         "debian")
-            sudo apt-get install multitail tree zoxide trash-cli fzf bash-completion curl git ripgrep micro btop duf gdu eza net-tools rsync nala colordiff
-            FASTFETCH_URL=$(curl -s https://api.github.com/repos/fastfetch-cli/fastfetch/releases/latest | grep "browser_download_url.*linux-amd64.deb" | cut -d '"' -f 4)
-            curl -sL $FASTFETCH_URL -o /tmp/fastfetch_latest_amd64.deb
-            sudo apt-get install /tmp/fastfetch_latest_amd64.deb
+            sudo apt-get install multitail tree zoxide trash-cli fzf bash-completion curl git ripgrep micro btop duf gdu eza net-tools rsync nala colordiff fd-find
+            #FASTFETCH_URL=$(curl -s https://api.github.com/repos/fastfetch-cli/fastfetch/releases/latest | grep "browser_download_url.*linux-amd64.deb" | cut -d '"' -f 4)
+            #curl -sL $FASTFETCH_URL -o /tmp/fastfetch_latest_amd64.deb
+            #sudo apt-get install /tmp/fastfetch_latest_amd64.deb
             ;;
         "arch")
-            paru -S multitail tree zoxide trash-cli fzf bash-completion fastfetch ripgrep curl git micro btop duf gdu eza bat unp colordiff
+            paru -S multitail tree zoxide trash-cli fzf bash-completion fastfetch ripgrep curl git micro btop duf gdu eza bat unp colordiff fd
             ;;
         "slackware")
             echo "No install support for Slackware"
