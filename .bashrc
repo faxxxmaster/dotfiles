@@ -118,8 +118,8 @@ alias yes='for i in $(seq $(nproc)); do yes > /dev/null & done'
 #fzf suchen
 alias fzf-rg="ftext"
 alias fzf-dir='cd $(fd . -type d | fzf --preview "eza -la {}")'
-alias fzf-micro='fd . / | fzf --preview "bat --color=always {}" | xargs -I {} micro {}'
-alias fzf-nvim='fd . / | fzf --preview "bat --color=always {}" | xargs -I {} nvim {}'
+alias fzf-micro='fd --type f -H --exclude .git --exclude node_modules --exclude "*.bak" . | fzf --preview "bat --color=always {}" | xargs -r -I {} micro {}'
+
 
 #Festpklatten
 alias diskwatch='watch -d -n 1 "grep -e sd[a-z] /proc/diskstats | awk '\''{print \$3,\$6,\$10}'\''"'
@@ -672,5 +672,6 @@ function y() {
 export PATH=$PATH:"$HOME/.local/bin:$HOME/.cargo/bin:/var/lib/flatpak/exports/bin:/.local/share/flatpak/exports/bin"
 
 eval "$(zoxide init bash)"
+
 #falls Homebrew installiert ist
 #eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"

@@ -115,8 +115,8 @@ alias yes='for i in $(seq $(nproc)); do yes > /dev/null & done'
 # FZF Aliases
 alias fzf-rg="ftext"
 alias fzf-dir='cd $(fd . -type d | fzf --preview "eza -la {}")'
-alias fzf-micro='fd . / | fzf --preview "bat --color=always {}" | xargs -I {} micro {}'
-alias fzf-nvim='fd . / | fzf --preview "bat --color=always {}" | xargs -I {} nvim {}'
+alias fzf-micro='fd --type f -H --exclude .git --exclude node_modules --exclude "*.bak" . | fzf --preview "bat --color=always {}" | xargs -r -I {} micro {}'
+
 
 # Festplatten-Monitoring
 alias diskwatch='watch -d -n 1 "grep -e sd[a-z] /proc/diskstats | awk '\''{print \$3,\$6,\$10}'\''"'
@@ -565,6 +565,7 @@ if [ -f ~/.fzf.zsh ]; then
     source ~/.fzf.zsh
 fi
 
+### yazi
 function y() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
 	yazi "$@" --cwd-file="$tmp"
