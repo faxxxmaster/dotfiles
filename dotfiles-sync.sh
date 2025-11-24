@@ -13,7 +13,7 @@ CONFIG_FILES=(
     "$HOME/.config/micro/settings.json|https://raw.githubusercontent.com/faxxxmaster/dotfiles/refs/heads/main/.config/micro/settings.json"
     "$HOME/.zshrc|https://raw.githubusercontent.com/faxxxmaster/dotfiles/refs/heads/main/.zshrc"
     "$HOME/.local/bin/locales-de.sh|https://raw.githubusercontent.com/faxxxmaster/scripte/refs/heads/main/locales-de.sh"
-
+    "$HOME/.config/niri/config.kdl|https://raw.githubusercontent.com/faxxxmaster/dotfiles/refs/heads/main/.config/niri/config.kdl"
 #   "$HOME/.tmux.conf|https://raw.githubusercontent.com/username/dotfiles/main/tmux/tmux.conf"
 #    "$HOME/.config/git/config|https://raw.githubusercontent.com/username/dotfiles/main/git/config"
 #    "$HOME/.config/alacritty/alacritty.yml|https://raw.githubusercontent.com/username/dotfiles/main/alacritty/alacritty.yml"
