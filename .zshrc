@@ -1,13 +1,16 @@
-###################################################
+####################################
 # angepasst von Faxxxmaster
 # ZSH Konfiguration - Debian oder Archlinux Server optimiert
 # 29.07.2025
-###################################################
+##################################################
 
 # Fastfetch starten falls verfügbar
+
+echo
 if [ -f /usr/bin/fastfetch ]; then
-    fastfetch --config /usr/share/fastfetch/presets/examples/21
+    fastfetch --config examples/13
 fi
+echo
 
 # ZSH Konfiguration
 setopt AUTO_CD              # cd ohne 'cd' eingeben
@@ -28,6 +31,12 @@ SAVEHIST=10000
 # Autocompletion
 autoload -Uz compinit
 compinit
+
+bindkey "^[[3~" delete-char         # entf
+bindkey "^[[H" beginning-of-line    # Home
+bindkey "^[[F" end-of-line          # End
+bindkey "^[[5~" beginning-of-history # Page Up
+bindkey "^[[6~" end-of-history       # Page Down
 
 # Completion-Stil
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
@@ -65,7 +74,7 @@ export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_STATE_HOME="$HOME/.local/state"
 export XDG_CACHE_HOME="$HOME/.cache"
-
+export XCURSOR_THEME="Bibata-Original-Ice"
 # Seeing as other scripts will use it might as well export it
 export LINUXTOOLBOXDIR="$HOME/linuxtoolbox"
 
@@ -96,6 +105,8 @@ export PATH=$PATH:"$HOME/.local/bin:$HOME/.cargo/bin:/var/lib/flatpak/exports/bi
 # Sudo
 alias sudo='sudo '
 alias c='clear'
+#sshs
+
 # Zellij
 alias zell='bash <(curl -L https://zellij.dev/launch)'
 
@@ -109,6 +120,9 @@ alias edit="micro"
 # Chris Titus Linux Tools
 alias dasdingdev='curl -fsSL https://christitus.com/linuxdev | sh'
 alias dasding='curl -fsSL https://christitus.com/linux | sh'
+alias rofi='rofi -show drun'
+alias Plex='Plex --platform xcb'
+alias glow='glow -l'
 
 alias yes='for i in $(seq $(nproc)); do yes > /dev/null & done'
 
@@ -127,12 +141,11 @@ alias wetter='curl "wttr.in/Geilenkirchen?lang=de"'
 
 # Package Management (Arch)
 alias drycleanup='yay -Qqdt'
-alias paru-drycleanup='paru -Qqdt'
-alias cleanup='yay -Rns $(yay -Qqdt)'
-alias paru-cleanup='paru -Rns $(yay -Qqdt)'
-alias remove='yay -Rns'
-alias paru-remove='paru -Rns'
-alias yay='yay --noconfirm'
+
+alias cleanup='paru -Rns $(yay -Qqdt)'
+alias remove='paru -Rns'
+
+
 alias paru='paru --noconfirm'
 
 # Network
@@ -540,16 +553,16 @@ zle -N fzf_zoxide
 bindkey '^F' fzf_zoxide
 
 # FZF history search
-fzf_history() {
-    local selected
-    selected=$(fc -rl 1 | fzf --height=40% --reverse +s --tac --query="$LBUFFER" | cut -d' ' -f2-)
-    if [[ -n $selected ]]; then
-        LBUFFER=$selected
-    fi
-}
+#fzf_history() {
+#    local selected
+#    selected=$(fc -rl 1 | fzf --height=40% --reverse +s --tac --query="$LBUFFER" | cut -d' ' -f2-)
+#    if [[ -n $selected ]]; then
+#        LBUFFER=$selected
+#    fi
+#}
 
-zle -N fzf_history
-bindkey '^R' fzf_history
+#zle -N fzf_history
+#bindkey '^R' fzf_history
 
 #######################################################
 # LOAD EXTERNAL TOOLS
@@ -574,6 +587,15 @@ function y() {
 	rm -f -- "$tmp"
 }
 
+export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window up:3:hidden:wrap --bind 'ctrl-/:toggle-preview'"
+source <(fzf --zsh)
+
+
+# Fügt den Zsh-Funktionspfad hinzu
+fpath=(/usr/share/zsh/functions $fpath)
+
+#Extern functions
+source /home/gcn/.local/bin/mount-daten
 
 # Homebrew (falls installiert)
 # eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
