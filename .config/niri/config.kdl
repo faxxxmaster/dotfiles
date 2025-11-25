@@ -122,6 +122,7 @@ cursor {
     output "DP-3" {
         mode "3440x1440@144.001007"
         position x=1920 y=-140
+        // variable-refresh-rate 
         focus-at-startup
     }
 
@@ -171,7 +172,10 @@ layout {
     // preset-window-heights { }
 
     // You can change the default width of the new windows.
+
+    
     default-column-width { proportion 0.5; }
+    
     // If you leave the brackets empty, the windows themselves will decide their initial width.
     // default-column-width {}
 
@@ -200,6 +204,7 @@ layout {
         // - CSS-like notation: "rgb(255, 127, 0)", rgba(), hsl() and a few others.
 
         // Color of the ring on the active monitor.
+    
         active-color "#7fc8ff"
 
         // Color of the ring on inactive monitors.
@@ -307,11 +312,11 @@ spawn-at-startup "qs" "-c" "noctalia-shell"
 spawn-at-startup "firefox" "https://youtube.com" "https://mail.google.com" "https://x.com " "https://www.reddit.com/"
 spawn-at-startup "kDrive"
 spawn-at-startup "steam" "-silent" "-minimized"
+spawn-at-startup "/usr/lib/polkit-kde-authentication-agent-1"
 
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
 // spawn-sh-at-startup "qs -c ~/source/qs/MyAwesomeShell"
 
-spawn-at-startup "{{POLKIT_AGENT_PATH}}"
 environment {
   //CURSOR_THEME "Bibata-Original-Ice"
   XDG_CURRENT_DESKTOP "niri"
@@ -319,7 +324,7 @@ environment {
   ELECTRON_OZONE_PLATFORM_HINT "auto"
   QT_QPA_PLATFORMTHEME "gtk3"
   QT_QPA_PLATFORMTHEME_QT6 "qt6ct"
-  TERMINAL "{{kitty}}"
+  TERMINAL "kitty"
 }
 
 hotkey-overlay {
