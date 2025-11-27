@@ -114,8 +114,8 @@ alias ff='fastfetch --logo /home/gcn/Dokumente/GitHub/startpage/skull/skull.png 
 alias sudo='sudo '
 alias c='clear'
 #sshs
-alias sshdocker='kitty +kitten ssh root@202.61.240.84'
-alias sshb='kitty +kitten ssh gc@192.168.23.150'
+alias sshdocker='kitty +kitten ssh xxx@xxxxxxxxx'
+alias sshb='kitty +kitten ssh xxx@xxxxxxx'
 
 # Zellij
 alias zell='bash <(curl -L https://zellij.dev/launch)'
