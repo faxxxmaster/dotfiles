@@ -318,7 +318,6 @@ spawn-at-startup "/usr/lib/polkit-kde-authentication-agent-1"
 // spawn-sh-at-startup "qs -c ~/source/qs/MyAwesomeShell"
 
 environment {
- //  DISPLAY null
   XDG_SESSION_TYPE "wayland"
   XDG_CURRENT_DESKTOP "niri"
   QT_QPA_PLATFORM "wayland"
@@ -398,9 +397,6 @@ workspace-switch {
     overview-open-close {
         spring damping-ratio=0.85 stiffness=800 epsilon=0.0001
     }
-
-
-
 
 }
 
@@ -554,7 +550,7 @@ binds {
     Mod+P hotkey-overlay-title="Run an Application: Plex" { spawn "Plex" "--platform" "xcb"; }
     Mod+E hotkey-overlay-title="Run an Application: VScodium" { spawn "vscodium"; }
     Mod+D hotkey-overlay-title="Run an Application: Nemo" { spawn "nemo"; }
-    Mod+X hotkey-overlay-title="Run an Application: Vesktop" { spawn "vesktop"; }
+    Mod+X hotkey-overlay-title="Run an Application: Vesktop+ZapZap" { spawn "sh" "-c" "vesktop & zapzap"; }
     Mod+Z hotkey-overlay-title="Run an Application: ZapZap" { spawn "zapzap"; }
     Mod+S hotkey-overlay-title="Run an Application: Steam" { spawn "steam"; }
 
