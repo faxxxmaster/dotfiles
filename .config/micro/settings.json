@@ -1,8 +1,8 @@
 {
-    "autosave": 240,
+    "autosave": 0,
     "backupdir": "~/.config/micro/backups",
     "colorcolumn": 100,
-    "colorscheme": "monokai-dark",
+    "colorscheme": "atom-dark",
     "diffgutter": true,
     "divider": true,
     "hlsearch": true,
