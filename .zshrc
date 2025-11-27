@@ -8,7 +8,8 @@
 
 echo
 if [ -f /usr/bin/fastfetch ]; then
-    fastfetch --config examples/13
+#    fastfetch --config examples/13
+fastfetch --config ~/.config/fastfetch/meine/config.jsonc
 fi
 echo
 
@@ -102,10 +103,19 @@ export PATH=$PATH:"$HOME/.local/bin:$HOME/.cargo/bin:/var/lib/flatpak/exports/bi
 # ALIASES
 #######################################################
 
+#rsync
+alias rsync-daten='rsync -avh --progress --delete --inplace --partial --info=stats1 /home/gcn/DATEN/. /home/gcn/3000/DATEN/. '
+
+# apps
+alias davinci='QT_QPA_PLATFORM=xcb davinci-resolve'
+alias ff='fastfetch --logo /home/gcn/Dokumente/GitHub/startpage/skull/skull.png --logo-width 41 --logo-height 24'
+
 # Sudo
 alias sudo='sudo '
 alias c='clear'
 #sshs
+alias sshdocker='kitty +kitten ssh root@202.61.240.84'
+alias sshb='kitty +kitten ssh gc@192.168.23.150'
 
 # Zellij
 alias zell='bash <(curl -L https://zellij.dev/launch)'
@@ -594,7 +604,11 @@ source <(fzf --zsh)
 # Fügt den Zsh-Funktionspfad hinzu
 fpath=(/usr/share/zsh/functions $fpath)
 
-#Extern functions
+
+
+
+
+
 source /home/gcn/.local/bin/mount-daten
 
 # Homebrew (falls installiert)
