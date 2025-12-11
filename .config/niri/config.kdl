@@ -6,6 +6,7 @@
 // Input device configuration.
 // Find the full list of options on the wiki:
 // https://yalter.github.io/niri/Configuration:-Input
+
 input {
     keyboard {
         xkb {
@@ -120,9 +121,10 @@ cursor {
     }
 
     output "DP-3" {
-        mode "3440x1440@144.001007"
+        // mode  "3440x1440"
+        mode "3440x1440@144.001"
         position x=1920 y=-140
-        // variable-refresh-rate
+        variable-refresh-rate on-demand=true
         focus-at-startup
     }
 
@@ -145,7 +147,7 @@ cursor {
 
 layout {
     // Set gaps around windows in logical pixels.
-    gaps 5
+    gaps 6
     background-color "transparent"
     // When to center a column when changing focus, options are:
     // - "never", default behavior, focusing an off-screen column will keep at the left
@@ -196,7 +198,9 @@ layout {
          //off
 
         // How many logical pixels the ring extends out from the windows.
-        width 2
+
+
+     width 2
 
         // Colors can be set in a variety of ways:
         // - CSS named colors: "red"
@@ -205,13 +209,16 @@ layout {
 
         // Color of the ring on the active monitor.
 
-        active-color "#7fc8ff"
+        // active-color "#7fc8ff"
+
+         active-color "#0bf0e1ff"
 
         // Color of the ring on inactive monitors.
         //
         // The focus ring only draws around the active window, so the only place
         // where you can see its inactive-color is on other monitors.
-        inactive-color "#505050"
+
+        inactive-color "#b5b3b3ff"
 
         // You can also use gradients. They take precedence over solid colors.
         // Gradients are rendered the same as CSS linear-gradient(angle, from, to).
@@ -236,7 +243,7 @@ layout {
         off
 
         width 4
-        active-color "#2e07f2ff"
+        active-color "#ffc87f"
         inactive-color "#505050"
 
         // Color of the border around windows that request your attention.
@@ -311,6 +318,7 @@ layout {
 spawn-at-startup "qs" "-c" "noctalia-shell"
 spawn-at-startup "firefox" "https://youtube.com" "https://mail.google.com" "https://x.com " "https://www.reddit.com/"
 spawn-at-startup "kDrive"
+spawn-at-startup "signal-desktop"
 spawn-at-startup "steam" "-silent" "-minimized"
 spawn-at-startup "/usr/lib/polkit-kde-authentication-agent-1"
 
@@ -440,7 +448,7 @@ window-rule {
     match app-id=r#"^galculator$"#
     match app-id=r#"^blueman-manager$"#
     match app-id=r#"^org\.gnome\.Nautilus$"#
-    match app-id=r#"^steam$"#
+    //match app-id=r#"^steam$"#
     match app-id=r#"^xdg-desktop-portal$"#
     open-floating true
 }
@@ -453,6 +461,11 @@ window-rule {
     match app-id="spotify"
     draw-border-with-background false
 }
+window-rule{
+    match app-id="kitty"
+        draw-border-with-background false
+
+}
 window-rule {
         match app-id="spotify"
         open-fullscreen true
@@ -461,12 +474,24 @@ window-rule {
         match app-id="vesktop"
         match app-id="ZapZap"
         match app-id="Plex"
+      // match app-id=r#"^steam$"#
         open-maximized true
 }
 
 window-rule {
+    match app-id=r#"^steam$"#
+    variable-refresh-rate true
+    open-maximized true
+}
+window-rule {
+    match app-id=r#"^Minecraft$"#
+    variable-refresh-rate true
+   //  open-maximized true
+}
+
+window-rule {
     match is-active=false
-    opacity 0.9
+    opacity 0.95
 }
 window-rule {
     match app-id=r#"firefox$"# title="^Picture-in-Picture$"
@@ -812,3 +837,4 @@ binds {
     // moving the mouse or pressing any other key.
     Mod+Shift+P { power-off-monitors; }
 }
+include "./noctalia.kdl"
