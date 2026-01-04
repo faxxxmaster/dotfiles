@@ -7,17 +7,17 @@
 # Format: "lokaler_pfad|download_url"
 # Verwende $HOME statt ~ für bessere Kompatibilität
 CONFIG_FILES=(
-    "$HOME/.bashrc|https://raw.githubusercontent.com/faxxxmaster/dotfiles/refs/heads/main/.bashrc"
-    "$HOME/.config/zed/settings.json|https://raw.githubusercontent.com/faxxxmaster/dotfiles/refs/heads/main/.config/zed/settings.json"
+    #   "$HOME/.bashrc|https://raw.githubusercontent.com/faxxxmaster/dotfiles/refs/heads/main/.bashrc"
+    #   "$HOME/.config/zed/settings.json|https://raw.githubusercontent.com/faxxxmaster/dotfiles/refs/heads/main/.config/zed/settings.json"
     "$HOME/.config/kitty/kitty.conf|https://raw.githubusercontent.com/faxxxmaster/dotfiles/refs/heads/main/.config/kitty/kitty.conf"
     "$HOME/.config/micro/settings.json|https://raw.githubusercontent.com/faxxxmaster/dotfiles/refs/heads/main/.config/micro/settings.json"
     "$HOME/.zshrc|https://raw.githubusercontent.com/faxxxmaster/dotfiles/refs/heads/main/.zshrc"
-    "$HOME/.local/bin/locales-de.sh|https://raw.githubusercontent.com/faxxxmaster/scripte/refs/heads/main/locales-de.sh"
+    #   "$HOME/.local/bin/locales-de.sh|https://raw.githubusercontent.com/faxxxmaster/scripte/refs/heads/main/locales-de.sh"
     "$HOME/.config/niri/config.kdl|https://raw.githubusercontent.com/faxxxmaster/dotfiles/refs/heads/main/.config/niri/config.kdl"
-#    "$HOME/.config/kitty/meins/kiztty.conf|https://raw.githubusercontent.com/faxxxmaster/dotfiles/refs/heads/main/.config/niri/config.kdl"
-#   "$HOME/.tmux.conf|https://raw.githubusercontent.com/username/dotfiles/main/tmux/tmux.conf"
-#    "$HOME/.config/git/config|https://raw.githubusercontent.com/username/dotfiles/main/git/config"
-#    "$HOME/.config/alacritty/alacritty.yml|https://raw.githubusercontent.com/username/dotfiles/main/alacritty/alacritty.yml"
+    #?  "$HOME/.config/kitty/meins/kitty.conf|https://raw.githubusercontent.com/faxxxmaster/dotfiles/refs/heads/main/.config/niri/config.kdl"
+    #   "$HOME/.tmux.conf|https://raw.githubusercontent.com/username/dotfiles/main/tmux/tmux.conf"
+    #   "$HOME/.config/git/config|https://raw.githubusercontent.com/username/dotfiles/main/git/config"
+    #   "$HOME/.config/alacritty/alacritty.yml|https://raw.githubusercontent.com/username/dotfiles/main/alacritty/alacritty.yml"
 )
 
 # ============================================================================
@@ -85,18 +85,18 @@ validate_file() {
     local extension="${file##*.}"
 
     case "$extension" in
-        json)
-            if ! validate_json "$file"; then
-                print_warning "Downloaded file is not valid JSON!"
-                return 1
-            fi
-            ;;
-        yml|yaml)
-            if ! validate_yaml "$file"; then
-                print_warning "Downloaded file is not valid YAML!"
-                return 1
-            fi
-            ;;
+    json)
+        if ! validate_json "$file"; then
+            print_warning "Downloaded file is not valid JSON!"
+            return 1
+        fi
+        ;;
+    yml | yaml)
+        if ! validate_yaml "$file"; then
+            print_warning "Downloaded file is not valid YAML!"
+            return 1
+        fi
+        ;;
     esac
     return 0
 }
@@ -181,51 +181,51 @@ sync_single_config() {
             read -p "Choose action [y/b/v/s/q]: " choice
 
             case "$choice" in
-                y|Y)
-                    cp "$temp_file" "$config_file"
-                    print_success "File updated: $config_file"
-                    break
-                    ;;
-                b|B)
-                    local backup_file="${config_file}.backup.$(date +%Y%m%d_%H%M%S)"
-                    cp "$config_file" "$backup_file"
-                    cp "$temp_file" "$config_file"
-                    print_success "Backup created: $backup_file"
-                    print_success "File updated: $config_file"
-                    break
-                    ;;
-                v|V)
-                    echo
-                    if command -v less >/dev/null 2>&1; then
-                        if command -v colordiff >/dev/null 2>&1; then
-                            colordiff -u "$config_file" "$temp_file" | less -R
-                        else
-                            diff -u "$config_file" "$temp_file" | less
-                        fi
+            y | Y)
+                cp "$temp_file" "$config_file"
+                print_success "File updated: $config_file"
+                break
+                ;;
+            b | B)
+                local backup_file="${config_file}.backup.$(date +%Y%m%d_%H%M%S)"
+                cp "$config_file" "$backup_file"
+                cp "$temp_file" "$config_file"
+                print_success "Backup created: $backup_file"
+                print_success "File updated: $config_file"
+                break
+                ;;
+            v | V)
+                echo
+                if command -v less >/dev/null 2>&1; then
+                    if command -v colordiff >/dev/null 2>&1; then
+                        colordiff -u "$config_file" "$temp_file" | less -R
                     else
-                        if command -v colordiff >/dev/null 2>&1; then
-                            colordiff -u "$config_file" "$temp_file"
-                        else
-                            diff -u "$config_file" "$temp_file"
-                        fi
+                        diff -u "$config_file" "$temp_file" | less
                     fi
-                    echo
-                    # Zurück zum Auswahlmenü
-                    continue
-                    ;;
-                s|S)
-                    print_info "Skipping file: $config_file"
-                    break
-                    ;;
-                q|Q)
-                    print_info "Exiting script."
-                    rm -f "$temp_file"
-                    exit 0
-                    ;;
-                *)
-                    echo "Invalid choice. Please enter y, b, v, s, or q."
-                    continue
-                    ;;
+                else
+                    if command -v colordiff >/dev/null 2>&1; then
+                        colordiff -u "$config_file" "$temp_file"
+                    else
+                        diff -u "$config_file" "$temp_file"
+                    fi
+                fi
+                echo
+                # Zurück zum Auswahlmenü
+                continue
+                ;;
+            s | S)
+                print_info "Skipping file: $config_file"
+                break
+                ;;
+            q | Q)
+                print_info "Exiting script."
+                rm -f "$temp_file"
+                exit 0
+                ;;
+            *)
+                echo "Invalid choice. Please enter y, b, v, s, or q."
+                continue
+                ;;
             esac
         done
     else
@@ -236,7 +236,7 @@ sync_single_config() {
         # Automatisches Backup falls gewünscht
         if [[ "$AUTO_BACKUP" == "true" ]]; then
             local backup_file="${config_file}.original.$(date +%Y%m%d_%H%M%S)"
-            touch "$backup_file"  # Leeres Backup da Datei neu
+            touch "$backup_file" # Leeres Backup da Datei neu
             print_info "Original state backed up (empty): $backup_file"
         fi
     fi
@@ -274,7 +274,7 @@ main() {
         [[ -z "$config_entry" ]] && continue
 
         # Pfad und URL trennen
-        IFS='|' read -r config_file download_url <<< "$config_entry"
+        IFS='|' read -r config_file download_url <<<"$config_entry"
 
         # Kommentare überspringen (Zeilen die mit # beginnen)
         [[ "$config_file" =~ ^[[:space:]]*# ]] && continue
@@ -331,27 +331,27 @@ FORCE=false
 
 while [[ $# -gt 0 ]]; do
     case $1 in
-        -h|--help)
-            show_help
-            exit 0
-            ;;
-        -n|--dry-run)
-            DRY_RUN=true
-            shift
-            ;;
-        -q|--quiet)
-            QUIET=true
-            shift
-            ;;
-        -f|--force)
-            FORCE=true
-            shift
-            ;;
-        *)
-            echo "Unknown option: $1"
-            show_help
-            exit 1
-            ;;
+    -h | --help)
+        show_help
+        exit 0
+        ;;
+    -n | --dry-run)
+        DRY_RUN=true
+        shift
+        ;;
+    -q | --quiet)
+        QUIET=true
+        shift
+        ;;
+    -f | --force)
+        FORCE=true
+        shift
+        ;;
+    *)
+        echo "Unknown option: $1"
+        show_help
+        exit 1
+        ;;
     esac
 done
 
