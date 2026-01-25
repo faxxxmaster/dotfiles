@@ -1,0 +1,19 @@
+[services.docker]
+type = "sftp"
+host = ""
+user = ""
+port = 22
+
+[services.piflix]
+type = "sftp"
+host = ""
+user = ""
+password = ""
+port = 22
+
+[services.backup]
+type = "sftp"
+host = ""
+user = ""
+password = ""
+port = 22

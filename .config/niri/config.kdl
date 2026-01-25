@@ -124,7 +124,7 @@ cursor {
         // mode  "3440x1440"
         mode "3440x1440@144.001"
         position x=1920 y=-140
-        variable-refresh-rate on-demand=true
+       //  variable-refresh-rate on-demand=true
         focus-at-startup
     }
 
@@ -317,10 +317,12 @@ layout {
 
 spawn-at-startup "qs" "-c" "noctalia-shell"
 spawn-at-startup "firefox" "https://youtube.com" "https://mail.google.com" "https://x.com " "https://www.reddit.com/"
-spawn-at-startup "kDrive"
+//spawn-at-startup "kDrive"
 spawn-at-startup "signal-desktop"
 spawn-at-startup "steam" "-silent" "-minimized"
 spawn-at-startup "/usr/lib/polkit-kde-authentication-agent-1"
+spawn-at-startup "sh" "-c" "sleep 2 && netbird down"
+
 
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
 // spawn-sh-at-startup "qs -c ~/source/qs/MyAwesomeShell"
@@ -424,13 +426,6 @@ window-rule {
 }
 
 window-rule {
-    // This regular expression is intentionally made as specific as possible,
-    // since this is the default config, and we want no false positives.
-    // You can get away with just app-id="wezterm" if you want.
-    match app-id=r#"^org\.wezfurlong\.wezterm$"#
-    default-column-width {}
-}
-window-rule {
     match app-id=r#"^org\.gnome\."#
     draw-border-with-background false
     geometry-corner-radius 12
@@ -472,21 +467,23 @@ window-rule {
 }
 window-rule {
         match app-id="vesktop"
-        match app-id="ZapZap"
+        match app-id="zapzap"
         match app-id="Plex"
-      // match app-id=r#"^steam$"#
+        match app-id=r#"^steam$"#
         open-maximized true
 }
 
+
+// Games //
+
 window-rule {
-    match app-id=r#"^steam$"#
-    variable-refresh-rate true
-    open-maximized true
-}
-window-rule {
-    match app-id=r#"^Minecraft$"#
-    variable-refresh-rate true
-   //  open-maximized true
+    match app-id=r#"^steam_app_350080$"# // Old Blood
+    match app-id=r#"^steam_app_1203620$"# // Enschrouded
+    match app-id=r#"^steam_app_632470$"# // Disco Elysium
+    match app-id=r#"^Minecraft$"# // Minecraft
+
+   //  variable-refresh-rate true
+   // open-maximized true
 }
 
 window-rule {
