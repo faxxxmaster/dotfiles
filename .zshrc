@@ -280,8 +280,11 @@ fi
 #######################################################
 
 # TLDR online
+# "pacmman -S tealdeer" oder "apt install tealdeer" notwending!!!
+
 wasist() {
-    curl "http://cheat.sh/${1}" 2>/dev/null || printf '%s\n' "[ERROR] Something broke"
+    [[ -z "$1" ]] && { printf '%s\n' "[ERROR] Kein Argument angegeben"; return 1; }
+    tldr "$@" 2>/dev/null || curl --silent --location --max-time 10 "https://cheat.sh/${*// //}" || printf '%s\n' "[ERROR] Something broke"
 }
 
 # Archive extraction

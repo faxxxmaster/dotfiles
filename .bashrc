@@ -309,8 +309,12 @@ export LESS_TERMCAP_us=$'\E[01;32m'
 #######################################################
 
 #tldr online
-wasist () {
- curl  "http://cheat.sh/${1}" 2>/dev/null || printf '%s\n' "[ERROR] Something broke"
+# TLDR online
+# "pacmman -S tealdeer" oder "apt install tealdeer" notwending!!!
+
+wasist() {
+    [[ -z "$1" ]] && { printf '%s\n' "[ERROR] Kein Argument angegeben"; return 1; }
+    tldr "$@" 2>/dev/null || curl --silent --location --max-time 10 "https://cheat.sh/${*// //}" || printf '%s\n' "[ERROR] Something broke"
 }
 
 
