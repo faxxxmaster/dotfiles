@@ -62,9 +62,22 @@ TIME_COLOR="%{$fg_bold[magenta]%}"      # Magenta
 DIR_COLOR="%{$fg_bold[yellow]%}"        # Gelb
 PROMPT_COLOR="%{$fg_bold[cyan]%}"       # Für die Linien
 RESET="%{$reset_color%}"
+ERROR_COLOR=$'\e[1;31m'     # Rot
 
-PROMPT="${PROMPT_COLOR}┌─[${USER_COLOR}%n${RESET}@${HOST_COLOR}%m${PROMPT_COLOR}] ${TIME_COLOR}%D{%H:%M:%S} ${DIR_COLOR}%~${RESET}
-${PROMPT_COLOR}└─ > ${RESET}"
+# Exit-Code Funktion
+prompt_status() {
+    local code=$?
+    if [ $code -ne 0 ]; then
+        echo "${ERROR_COLOR}✘ ${code} ${RESET}"
+    fi
+}
+
+# Prompt
+PROMPT='${PROMPT_COLOR}┌─[${USER_COLOR}%n${RESET}@${HOST_COLOR}%m${PROMPT_COLOR}] ${TIME_COLOR}%D{%H:%M:%S} ${DIR_COLOR}%~${RESET}
+${PROMPT_COLOR}└─ $(prompt_status)> ${RESET}'
+
+
+
 
 #######################################################
 # EXPORTS
