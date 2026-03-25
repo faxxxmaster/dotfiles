@@ -150,7 +150,7 @@ layout {
 }
 
 spawn-at-startup "qs" "-c" "noctalia-shell"
-spawn-at-startup "firefox" "https://www.faxxxmaster.cc" "https://mail.google.com" "https://youtube.com" "https://x.com " "https://www.reddit.com/"
+spawn-at-startup "firefox"
 spawn-at-startup "sh" "-c" "sleep 2 && firefox --new-window https://www.faxxxmaster.cc"
 spawn-at-startup "signal-desktop"
 spawn-at-startup "steam" "-silent" "-minimized"
@@ -363,7 +363,7 @@ binds {
     // Suggested binds for running programs: terminal, app launcher, screen locker.
     Mod+Return hotkey-overlay-title="Open a Terminal: Kitty" { spawn "kitty"; }
     Mod+Space hotkey-overlay-title="Run an Application: Rofi" { spawn "rofi" "-show" "drun"; }
-    Mod+B hotkey-overlay-title="Run an Application: Firefox" { spawn "firefox"; }
+    Mod+B hotkey-overlay-title="Run an Application: Firefox" { spawn "firefox" "--new-window" "https://www.faxxxmaster.cc"; }
     Mod+P hotkey-overlay-title="Run an Application: Plex" { spawn "Plex" "--platform" "xcb"; }
     Mod+E hotkey-overlay-title="Run an Application: VScodium" { spawn "vscodium"; }
     Mod+D hotkey-overlay-title="Run an Application: Nemo" { spawn "nemo"; }
