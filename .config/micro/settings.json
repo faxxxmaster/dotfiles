@@ -1,4 +1,5 @@
 {
+    "clipboard": "terminal",
     "autosave": 0,
     "backupdir": "~/.config/micro/backups",
     "colorcolumn": 100,
