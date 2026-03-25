@@ -1,9 +1,9 @@
 {
+    "backupdir": "~/.config/micro/backups",
     "clipboard": "terminal",
     "autosave": 0,
-    "backupdir": "~/.config/micro/backups",
     "colorcolumn": 100,
-    "colorscheme": "atom-dark",
+    "colorscheme": "one-dark",
     "diffgutter": true,
     "divider": true,
     "hlsearch": true,
@@ -17,5 +17,7 @@
     "showmatching": true,
     "smartcase": true,
     "spellerrors": true,
-    "tabstospaces": true
+    "tabstospaces": true,
+    "matchbrace": true,
+    "matchbracestyle": "highlight"
 }
