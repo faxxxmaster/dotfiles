@@ -246,8 +246,12 @@ window-rule {
     clip-to-geometry true
 }
 
-
-
+window-rule {
+    match app-id="^wvkbd-deskintl*"
+    open-floating true
+    // Optional: Positioniere sie immer unten
+    default-column-width { proportion 1.0; }
+}
 
 window-rule {
     // This regular expression is intentionally made as specific as possible,
