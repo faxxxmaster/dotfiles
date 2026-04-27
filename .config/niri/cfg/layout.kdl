@@ -1,0 +1,63 @@
+layout {
+    gaps 6
+    background-color "transparent"
+    center-focused-column "never"
+
+    preset-column-widths {
+        proportion 0.33333
+        proportion 0.5
+        proportion 0.66667
+
+        // Fixed sets the width in logical pixels exactly.
+        // fixed 1920
+    }
+
+    default-column-width { proportion 0.5; }
+
+
+    focus-ring {
+
+         //off
+
+     width 3
+
+
+         active-color "#0bf0e1ff"
+
+        inactive-color "#b5b3b3ff"
+
+    }
+
+    border {
+        off
+
+        width 4
+        active-color "#ffc87f"
+        inactive-color "#505050"
+
+        // Color of the border around windows that request your attention.
+        urgent-color "#9b0000"
+
+    }
+
+    // You can enable drop shadows for windows.
+    shadow {
+        softness 30
+
+        // Spread expands the shadow.
+        spread 5
+
+        // Offset moves the shadow relative to the window.
+        offset x=0 y=5
+
+        // You can also change the shadow color and opacity.
+        color "#0007"
+    }
+
+    struts {
+        // left 64
+        // right 64
+        // top 64
+        // bottom 64
+    }
+}

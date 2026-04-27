@@ -1,0 +1,34 @@
+cursor {
+    //xcursor-theme "Bibata-Modern-Amber"
+    xcursor-theme "catppuccin-mocha-blue-cursors"
+
+
+    xcursor-size 24
+}
+
+
+environment {
+  XDG_SESSION_TYPE "wayland"
+  XDG_CURRENT_DESKTOP "niri"
+  QT_QPA_PLATFORM "wayland"
+  ELECTRON_OZONE_PLATFORM_HINT "auto"
+  QT_QPA_PLATFORMTHEME "gtk3"
+  QT_QPA_PLATFORMTHEME_QT6 "gtk3"
+  TERMINAL "kitty"
+  QT_WAYLAND_DISABLE_WINDOWDECORATION "1"
+  QT_AUTO_SCREEN_SCALE_FACTOR "1"
+  GDK_BACKEND "wayland,x11"
+  CLUTTER_BACKEND "wayland"
+  MOZ_ENABLE_WAYLAND "1"
+  MOZ_DBUS_REMOTE "1"
+
+}
+
+hotkey-overlay {
+    // Uncomment this line to disable the "Important Hotkeys" pop-up at startup.
+     skip-at-startup
+}
+
+prefer-no-csd
+
+screenshot-path "~/Bilder/screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"

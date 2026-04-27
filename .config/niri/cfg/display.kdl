@@ -1,0 +1,32 @@
+// Remember to uncomment the node by removing "/-"!
+/-output "eDP-1" {
+     mode "1920x1080@120.030"
+
+    scale 2
+
+     transform "normal"
+
+   position x=1280 y=0
+
+}
+
+
+    output "HDMI-A-1" {
+        mode "1920x1080@60.00"
+        position x=0 y=0
+    }
+
+    output "DP-3" {
+        // mode  "3440x1440"
+        mode "3440x1440@144.001"
+        position x=1920 y=-140
+       //  variable-refresh-rate on-demand=true
+        focus-at-startup
+
+    }
+
+    output "DP-2" {
+        mode "1920x1080@74.973"
+        transform "90"   // 90° nach rechts
+        position x=5360 y=-550      // 1920 + 3440 = 5360
+    }

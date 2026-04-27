@@ -1,0 +1,191 @@
+// ─── Layer Rules ──────────────────────────────────────────────────────────────
+
+layer-rule {
+  match namespace="^noctalia-(background|launcher-overlay|dock)-.*$"
+  background-effect {
+    xray false
+  }
+}
+
+layer-rule {
+  match namespace="^noctalia-overview.*$"
+  place-within-backdrop true
+}
+
+// ─── Global Blur ───────────────────────────────────────────────────────────────
+
+
+/* No xray on noctalia layer-shell bg  */
+layer-rule {
+  match namespace="^noctalia-background-.*$"
+  background-effect {
+    xray false
+  }
+}
+
+blur {
+  passes 1
+  offset 1.5
+  noise 0.04
+  saturation 1.5
+}
+
+// ─── Global Window Defaults ────────────────────────────────────────────────────
+// Einheitlich radius 12; die zweite globale Rule mit radius 10 wurde entfernt.
+
+window-rule {
+  geometry-corner-radius 10
+  clip-to-geometry true
+}
+
+// ─── GNOME Apps ────────────────────────────────────────────────────────────────
+// geometry-corner-radius hier redundant (global gesetzt), aber explizit für
+// draw-border-with-background gebraucht – radius-Zeile entfernt.
+
+window-rule {
+  match app-id=r#"^org\.gnome\."#
+  draw-border-with-background false
+}
+
+
+// ─── Apps mit draw-border-with-background false ────────────────────────────────
+
+window-rule {
+  match app-id=r#"^org\.wezfurlong\.wezterm$"#
+  match app-id="zen"
+  match app-id="com.mitchellh.ghostty"
+  match app-id="kitty"
+  match app-id="spotify"
+  draw-border-with-background false
+}
+
+// ─── WezTerm: keine default-column-width ───────────────────────────────────────
+
+window-rule {
+  match app-id=r#"^org\.wezfurlong\.wezterm$"#
+  default-column-width {}
+}
+
+// ─── Floating: kleine Utilities ────────────────────────────────────────────────
+
+window-rule {
+  match app-id=r#"^gnome-calculator$"#
+  match app-id=r#"^galculator$"#
+  match app-id=r#"^blueman-manager$"#
+  match app-id=r#"^org\.gnome\.Nautilus$"#
+  match app-id=r#"^xdg-desktop-portal$"#
+  open-floating true
+}
+
+window-rule {
+  match app-id=r#"firefox$"# title="^Picture-in-Picture$"
+  match app-id="zoom"
+  open-floating true
+}
+
+// Fixiert: war "^wvkbd-deskintl*" (ungültiger Regex) → "^wvkbd-deskintl.*"
+window-rule {
+  match app-id="^wvkbd-deskintl.*"
+  open-floating true
+  default-column-width { proportion 1.0; }
+}
+
+// ─── Half-width: System-Dialoge ────────────────────────────────────────────────
+// open-floating false entfernt (ist der Default)
+
+window-rule {
+  match app-id=r#"^gnome-control-center$"#
+  match app-id=r#"^pavucontrol$"#
+  match app-id=r#"^nm-connection-editor$"#
+  default-column-width { proportion 0.5; }
+}
+
+// ─── Maximized Apps ────────────────────────────────────────────────────────────
+
+window-rule {
+  match app-id="spotify"
+  match app-id="vesktop"
+  match app-id="zapzap"
+  match app-id="Plex"
+  match app-id=r#"^steam$"#
+  open-maximized true
+  background-effect {
+    blur true
+    xray false
+  }
+}
+
+
+
+
+// ─── Zed: focus-ring ──────────────────────────────────────────────────────────
+
+window-rule {
+    match app-id="dev.zed.Zed"
+    focus-ring { off; }
+}
+
+
+// ─── Debug ─────────────────────────────────────────────────────────────────────
+
+debug {
+  honor-xdg-activation-with-invalid-serial
+}
+
+// ─── screen-capture ───────────────────────────────────────────────────
+
+window-rule {
+    match app-id=r#"Bitwarden$"#
+    block-out-from "screen-capture"
+}
+
+// ─── Opacity ───────────────────────────────────────────────────────────────────
+
+
+/-window-rule {
+  match is-active=true
+  background-effect {
+    blur true
+    xray false
+  }
+}
+
+window-rule {
+  match is-active=false
+  opacity 0.8
+  background-effect {
+    blur false
+    xray false
+  }
+}
+
+window-rule {
+  match app-id="Plex"
+  opacity 0.95
+  background-effect {
+     blur false
+   }
+}
+
+window-rule {
+  match app-id="firefox"
+  match app-id="helium"
+
+  opacity 1.0
+ }
+
+window-rule {
+  match app-id="kitty"
+  background-effect {
+     blur true
+   }
+ }
+
+window-rule {
+    match app-id="dev.zed.Zed"
+    background-effect {
+    blur true
+    xray false
+  }
+
+}
