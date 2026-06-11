@@ -1,6 +1,6 @@
 cursor {
-    //xcursor-theme "Bibata-Modern-Amber"
-    xcursor-theme "catppuccin-mocha-blue-cursors"
+    xcursor-theme "Bibata-Modern-Ice"
+    //xcursor-theme "catppuccin-mocha-blue-cursors"
 
 
     xcursor-size 24

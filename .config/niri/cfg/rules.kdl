@@ -177,14 +177,14 @@ window-rule {
 window-rule {
   match app-id="kitty"
   background-effect {
-     blur true
+     blur false
    }
  }
 
 window-rule {
     match app-id="dev.zed.Zed"
     background-effect {
-    blur true
+    blur false
     xray false
   }
 
