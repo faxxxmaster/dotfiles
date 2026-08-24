@@ -6,7 +6,7 @@ binds {
     Mod+Return hotkey-overlay-title="Open a Terminal: Kitty" { spawn "kitty"; }
 
     Mod+Space hotkey-overlay-title="Run an Application: Rofi" { spawn "rofi" "-show" "drun"; }
-	Alt+Space repeat=false { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "launcher" "toggle"; }
+	Alt+Space repeat=false { spawn-sh "noctalia msg panel-toggle launcher"; }
 
     Mod+Ctrl+B hotkey-overlay-title="Run an Application: Firefox" { spawn "firefox" "--new-window" "https://www.faxxxmaster.cc"; }
     Mod+B repeat=false {spawn "helium-browser" "--new-window" "https://www.faxxxmaster.cc"; }
@@ -28,6 +28,8 @@ binds {
     Ctrl+WheelScrollUp allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.02+"; }
     Ctrl+WheelScrollDown  allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.02-"; }
     Ctrl+M      allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"; }
+
+    Ctrl+Tab { spawn-sh "noctalia msg window-switcher"; }
 
     XF86AudioMicMute     allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"; }
 
@@ -243,6 +245,7 @@ binds {
     Print { screenshot; }
     Ctrl+Print { screenshot-screen; }
     Alt+Print { screenshot-window; }
+
 
     // Applications such as remote-desktop clients and software KVM switches may
     // request that niri stops processing the keyboard shortcuts defined here
