@@ -139,7 +139,7 @@ alias yazi-gc-on-piflix='yazi sftp://gc-on-piflix'
 alias sudo='sudo '
 alias c='clear'
 
-#sshs
+#ssh Aliases
 #alias sshl='kitty +kitten ssh niri@192.168.23.145'
 
 # Zellij
