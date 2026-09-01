@@ -1,7 +1,7 @@
 ####################################
 # angepasst von Faxxxmaster
-# ZSH Konfiguration - Debian oder Archlinux Server optimiert
-# 29.07.2025
+# ZSH Konfiguration
+# 01.09.2026
 ##################################################
 
 # Fastfetch starten falls verfügbar
@@ -16,13 +16,15 @@ echo
 # ZSH Konfiguration
 setopt AUTO_CD              # cd ohne 'cd' eingeben
 setopt CORRECT              # Korrekturvorschläge für Befehle
-setopt HIST_IGNORE_DUPS     # Keine doppelten Einträge in History
+setopt HIST_IGNORE_ALL_DUPS # Keine doppelten Einträge in History
 setopt HIST_IGNORE_SPACE    # Befehle mit führendem Leerzeichen ignorieren
 setopt HIST_VERIFY          # History-Expansion vor Ausführung anzeigen
 setopt INC_APPEND_HISTORY   # History sofort speichern
 setopt SHARE_HISTORY        # History zwischen Sessions teilen
 setopt EXTENDED_GLOB        # Erweiterte Glob-Patterns
 setopt PROMPT_SUBST         # Variable Expansion in Prompts
+setopt HIST_REDUCE_BLANKS   # Enfertn ueberflüssige leereichen
+
 
 # History-Konfiguration
 HISTFILE=~/.zsh_history
@@ -77,7 +79,8 @@ PROMPT='${PROMPT_COLOR}┌─[${USER_COLOR}%n${RESET}@${HOST_COLOR}%m${PROMPT_CO
 ${PROMPT_COLOR}└─ $(prompt_status)> ${RESET}'
 
 
-
+# PROMPT="${PROMPT_COLOR}┌─[${USER_COLOR}%n${RESET}@${HOST_COLOR}%m${PROMPT_COLOR}] ${TIME_COLOR}%D{%H:%M:%S} ${DIR_COLOR}%~${RESET}
+# ${PROMPT_COLOR}└─ > ${RESET}"
 
 #######################################################
 # EXPORTS
@@ -120,15 +123,24 @@ export PATH=$PATH:"$HOME/.local/bin:$HOME/.cargo/bin:/var/lib/flatpak/exports/bi
 alias rsync-daten='rsync -avh --progress --delete --inplace --partial --info=stats1 /home/gcn/DATEN/. /home/gcn/3000/DATEN/. '
 
 # apps
-alias davinci='QT_QPA_PLATFORM=xcb davinci-resolve'
+alias davinci='QT_QPA_PLATFORM=xcb GDK_BACKEND=x11 SDL_VIDEODRIVER=x11 davinci-resolve'
 alias ff='fastfetch --logo /home/gcn/Dokumente/GitHub/startpage/skull/skull.png --logo-width 41 --logo-height 24'
+
+# webserver
+alias http-server='python3 -m http.server'
+
+# yazi fernwartung
+alias yazi-docker='yazi sftp://docker'
+alias yazi-piflix='yazi sftp://piflix'
+alias yazi-backup='yazi sftp://backup'
+alias yazi-gc-on-piflix='yazi sftp://gc-on-piflix'
 
 # Sudo
 alias sudo='sudo '
 alias c='clear'
+
 #sshs
-alias sshdocker='kitty +kitten ssh xxx@xxxxxxxxx'
-alias sshb='kitty +kitten ssh xxx@xxxxxxx'
+#alias sshl='kitty +kitten ssh niri@192.168.23.145'
 
 # Zellij
 alias zell='bash <(curl -L https://zellij.dev/launch)'
@@ -139,10 +151,13 @@ alias tb='nc termbin.com 9999'
 # Editoren
 alias vim='nvim'
 alias edit="micro"
+alias microtv='micro $(tv files)'
 
 # Chris Titus Linux Tools
 alias dasdingdev='curl -fsSL https://christitus.com/linuxdev | sh'
 alias dasding='curl -fsSL https://christitus.com/linux | sh'
+
+# Tools
 alias rofi='rofi -show drun'
 alias Plex='Plex --platform xcb'
 alias glow='glow -l'
@@ -163,7 +178,7 @@ alias diskio='watch -d -n1 "iostat -d"'
 alias wetter='curl "wttr.in/Geilenkirchen?lang=de"'
 
 # Package Management (Arch)
-alias drycleanup='yay -Qqdt'
+alias drycleanup='paru -Qqdt'
 
 alias cleanup='paru -Rns $(yay -Qqdt)'
 alias remove='paru -Rns'
@@ -281,6 +296,9 @@ alias docker-clean='docker container prune -f ; docker image prune -f ; docker n
 # IP lookup
 alias whatismyip="whatsmyip"
 
+# Iostat
+alias iostat="watch -d -n 1 iostat -m -x 1 1"
+
 # Grep mit ripgrep falls verfügbar
 if command -v rg &> /dev/null; then
     alias grep='rg'
@@ -292,13 +310,13 @@ fi
 # SPECIAL FUNCTIONS
 #######################################################
 
-# TLDR online
-# "pacmman -S tealdeer" oder "apt install tealdeer" notwending!!!
 
+# TLDR online
 wasist() {
     [[ -z "$1" ]] && { printf '%s\n' "[ERROR] Kein Argument angegeben"; return 1; }
     tldr "$@" 2>/dev/null || curl --silent --location --max-time 10 "https://cheat.sh/${*// //}" || printf '%s\n' "[ERROR] Something broke"
 }
+
 
 # Archive extraction
 extract() {
@@ -397,140 +415,6 @@ pwdtail() {
     pwd | awk -F/ '{nlast = NF -1;print $nlast"/"$NF}'
 }
 
-# Distribution detection
-distribution() {
-    local dtype="unknown"
-
-    if [ -r /etc/os-release ]; then
-        source /etc/os-release
-        case $ID in
-            fedora|rhel|centos)
-                dtype="redhat"
-                ;;
-            sles|opensuse*)
-                dtype="suse"
-                ;;
-            ubuntu|debian|kali)
-                dtype="debian"
-                ;;
-            gentoo)
-                dtype="gentoo"
-                ;;
-            arch|cachyos)
-                dtype="arch"
-                ;;
-            slackware)
-                dtype="slackware"
-                ;;
-            *)
-                if [ -n "$ID_LIKE" ]; then
-                    case $ID_LIKE in
-                        *fedora*|*rhel*|*centos*)
-                            dtype="redhat"
-                            ;;
-                        *sles*|*opensuse*)
-                            dtype="suse"
-                            ;;
-                        *ubuntu*|*debian*)
-                            dtype="debian"
-                            ;;
-                        *gentoo*)
-                            dtype="gentoo"
-                            ;;
-                        *arch*)
-                            dtype="arch"
-                            ;;
-                        *slackware*)
-                            dtype="slackware"
-                            ;;
-                    esac
-                fi
-                ;;
-        esac
-    fi
-
-    echo $dtype
-}
-
-# Distribution-specific cat alias
-DISTRIBUTION=$(distribution)
-if [ "$DISTRIBUTION" = "redhat" ] || [ "$DISTRIBUTION" = "arch" ]; then
-    alias cat='bat'
-else
-    alias cat='batcat'
-    alias fd='fdfind'
-fi
-
-# OS version info
-ver() {
-    local dtype
-    dtype=$(distribution)
-
-    case $dtype in
-        "redhat")
-            if [ -s /etc/redhat-release ]; then
-                cat /etc/redhat-release
-            else
-                cat /etc/issue
-            fi
-            uname -a
-            ;;
-        "suse")
-            cat /etc/SuSE-release
-            ;;
-        "debian")
-            lsb_release -a
-            ;;
-        "gentoo")
-            cat /etc/gentoo-release
-            ;;
-        "arch")
-            cat /etc/os-release
-            ;;
-        "slackware")
-            cat /etc/slackware-version
-            ;;
-        *)
-            if [ -s /etc/issue ]; then
-                cat /etc/issue
-            else
-                echo "Error: Unknown distribution"
-                exit 1
-            fi
-            ;;
-    esac
-}
-
-# Tool installation function
-install_tools() {
-    local dtype
-    dtype=$(distribution)
-
-    case $dtype in
-        "redhat")
-            sudo yum install multitail tree zoxide trash-cli fzf bash-completion fastfetch
-            ;;
-        "suse")
-            sudo zypper install multitail tree zoxide trash-cli fzf bash-completion fastfetch
-            ;;
-        "debian")
-            sudo apt-get install multitail tree zoxide trash-cli fzf bash-completion curl git ripgrep micro btop duf gdu eza net-tools rsync nala colordiff fd-find
-            #FASTFETCH_URL=$(curl -s https://api.github.com/repos/fastfetch-cli/fastfetch/releases/latest | grep "browser_download_url.*linux-amd64.deb" | cut -d '"' -f 4)
-            #curl -sL $FASTFETCH_URL -o /tmp/fastfetch_latest_amd64.deb
-            #sudo apt-get install /tmp/fastfetch_latest_amd64.deb
-            ;;
-        "arch")
-            paru -S multitail tree zoxide trash-cli fzf bash-completion fastfetch ripgrep curl git micro btop duf gdu eza bat unp colordiff fd
-            ;;
-        "slackware")
-            echo "No install support for Slackware"
-            ;;
-        *)
-            echo "Unknown distribution"
-            ;;
-    esac
-}
-
 # IP address lookup
 whatsmyip() {
     if command -v ip &> /dev/null; then
@@ -578,66 +462,43 @@ fzf_zoxide() {
 zle -N fzf_zoxide
 bindkey '^F' fzf_zoxide
 
-# FZF history search
-#fzf_history() {
-#    local selected
-#    selected=$(fc -rl 1 | fzf --height=40% --reverse +s --tac --query="$LBUFFER" | cut -d' ' -f2-)
-#    if [[ -n $selected ]]; then
-#        LBUFFER=$selected
-#    fi
-#}
-
-#zle -N fzf_history
-#bindkey '^R' fzf_history
-
 #######################################################
 # LOAD EXTERNAL TOOLS
 #######################################################
 
-# Zoxide (smart cd)
-if command -v zoxide &> /dev/null; then
+# Zoxide (smart cd) - interaktiv via: zi
+if command -v zoxide &>/dev/null; then
     eval "$(zoxide init zsh)"
 fi
 
-# FZF (fuzzy finder)
-if [ -f ~/.fzf.zsh ]; then
-    source ~/.fzf.zsh
+# FZF shell integration (Ctrl+T: Dateien, Alt+C: Verzeichnisse)
+if command -v fzf &>/dev/null; then
+    source <(fzf --zsh)
 fi
 
-### yazi
+# Yazi (file manager mit cd-on-exit)
 function y() {
-	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
-	yazi "$@" --cwd-file="$tmp"
-	IFS= read -r -d '' cwd < "$tmp"
-	[ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
-	rm -f -- "$tmp"
+    local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+    yazi "$@" --cwd-file="$tmp"
+    IFS= read -r -d '' cwd < "$tmp"
+    [ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
+    rm -f -- "$tmp"
 }
 
-export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window up:3:hidden:wrap --bind 'ctrl-/:toggle-preview'"
-source <(fzf --zsh)
+# Öffnet yazi am Ort, den zoxide für das Suchwort findet
+zz() {
+  if [ -z "$1" ]; then
+    yazi
+  else
+    local dir
+    dir=$(zoxide query -- "$1") && cd "$dir" && yazi
+  fi
+}
 
-
-# Fügt den Zsh-Funktionspfad hinzu
-fpath=(/usr/share/zsh/functions $fpath)
-
-
-
-
-
-
-source /home/gcn/.local/bin/mount-daten
-
-# Homebrew (falls installiert)
-# eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+# Television (Ctrl+R history search)
+eval "$(tv init zsh)"
 
 #######################################################
 # FINAL SETUP
 #######################################################
-
-# Auto-suggestions (falls oh-my-zsh installiert)
-# source ~/.oh-my-zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-
-# Syntax highlighting (falls installiert)
-# source ~/.oh-my-zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-# echo "ZSH configuration loaded successfully!"
+source /home/gcn/.local/bin/mount-daten
