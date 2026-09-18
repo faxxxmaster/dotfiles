@@ -41,7 +41,7 @@ autostart = [
             "steam -silent -minimized",
             "netbird-ui",
             "kDrive",
-            "firefox --new-window https://www.faxxxmaster.cc/uhr.html"
+            "firefox --new-window https://www.faxxxmaster.cc"
             ]                                  # Commands run once when the session starts
 
 
@@ -221,7 +221,7 @@ empty_above = false                             # Keep one empty workspace above
 
 [appearance]
 prefer_no_csd = true                            # Prefer Umbriel's border-only decoration
-border_width = 1                                # Inner border width, 0-100 logical pixels
+border_width = 2                                # Inner border width, 0-100 logical pixels
 outer_border_width = 0                          # Optional outer ring, 0-100 logical pixels
 corner_radius = 10                              # Radius of the final decorated edge, 0-100
 drag_opacity = 0.75                             # Window opacity during a tiled or floating drag
@@ -387,9 +387,9 @@ follows_mouse = false                           # Focus on motion after scene ch
 # workspace rows.
 
 "Mod+Left" = "window-focus-left"
+"Mod+Right" = "window-focus-right"
 "Mod+Down" = "workspace-next"
 "Mod+Up" = "workspace-previous"
-"Mod+Right" = "window-focus-right"
 
 # Window state and layout
 "Mod+T" = "window-toggle-floating"
@@ -398,7 +398,7 @@ follows_mouse = false                           # Focus on motion after scene ch
 "Mod+M" = "window-toggle-maximize-to-edges"
 
 # Overview
-"Mod+O" = { action = "overview-toggle", repeat = false }
+"Ctrl+Tab" = { action = "overview-toggle", repeat = false }
 
 # Common keybinds
 "Mod+Escape" = "session-quit"
@@ -416,8 +416,8 @@ follows_mouse = false                           # Focus on motion after scene ch
 "Mod+F" = "window-toggle-maximize"
 "Mod+R" = "window-cycle-primary-extent"
 "Mod+Shift+R" = "window-cycle-primary-extent-back"
-# "Mod+Comma" = "window-consume-left"
-# "Mod+Period" = "window-consume-right"
+# Mod+C" = "window-consume-left"
+# "Mod+Ctrl+C" = "window-consume-right"
 # "Mod+WheelUp" = "window-focus-left"
 # "Mod+WheelDown" = "window-focus-right"
 
@@ -532,8 +532,8 @@ follows_mouse = false                           # Focus on motion after scene ch
 # Media and brightness
 # Documentation: https://docs.noctalia.dev/umbriel/keybinds/#example-media-and-brightness-keys
 
- "Alt+WheelUp" = "spawn:wpctl set-volume @DEFAULT_AUDIO_SINK@ 2%+"
- "Alt+WheelDown" = "spawn:wpctl set-volume @DEFAULT_AUDIO_SINK@ 2%-"
+ "Ctrl+WheelUp" = "spawn:wpctl set-volume @DEFAULT_AUDIO_SINK@ 2%+"
+ "Ctrl+WheelDown" = "spawn:wpctl set-volume @DEFAULT_AUDIO_SINK@ 2%-"
 
 
 # "XF86AudioRaiseVolume" = "spawn:wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
@@ -644,6 +644,7 @@ default_output = "DP-2"
 default_workspace = "CHAT"
 default_scrolling_extent = 0.6
 # firefox on big screen
+
 [[window_rule]]
 match.app_id = "^(kitty|firefox|steam)$"
 default_output = "DP-3"
@@ -756,11 +757,11 @@ default_pinned = true
 
  [[window_rule]]
  match.is_focused = false
- opacity = 0.80
+ opacity = 0.65
 
  [[window_rule]]
  match.is_focused = true
- opacity = 1.0
+ opacity = 0.85
 
  [[window_rule]]
  match.is_floating = true
@@ -772,6 +773,17 @@ match.app_id = "^Plex$"
 default_output = "HDMI-A-1"
 default_maximize = true
 opacity = 1.0
+
+[[window_rule]]
+match.app_id = "^(firefox|helium)$"
+match.is_focused = true
+opacity = 1.0
+
+[[window_rule]]
+match.app_id = "^(firefox|helium)$"
+match.is_focused = false
+opacity = 0.9
+
 
 # Fill the viewport for a workspace's lone tiled column.
 # [[window_rule]]
@@ -905,15 +917,15 @@ zoom = 0.2                                      # Workspace scale in overview, 0
 scroll_factor_horizontal = 1.0                  # Overview gesture/wheel multiplier, left and right, 0.1-10.0
 scroll_factor_vertical = 1.0                    # Overview gesture/wheel multiplier, up and down, 0.1-10.0
 # Pinned windows stay hidden until overview closes; visible scratchpads are dismissed.
-# background_blur = true                        # Blur the wallpaper behind overview rows
-# workspace_wallpaper = true                    # Mirror wallpapers inside workspace previews
-# shortcuts = true                              # Show keyboard shortcut badges on windows
-# shortcut_keys = "1234567890"                  # Badge keys in preference order
+background_blur = true                        # Blur the wallpaper behind overview rows
+workspace_wallpaper = true                    # Mirror wallpapers inside workspace previews
+shortcuts = true                              # Show keyboard shortcut badges on windows
+shortcut_keys = "1234567890"                  # Badge keys in preference order
 
 [hot_corners.top_left]
 enabled = true                                  # Open the overview after resting here
-delay_ms = 200                                  # 0 activates immediately; maximum is 10000
-action = "overview-open"                        # Any normal Umbriel action is accepted
+delay_ms = 500                                  # 0 activates immediately; maximum is 10000
+action = "overview-toggle"                        # Any normal Umbriel action is accepted
 
 [hot_corners.top_right]
 enabled = false
