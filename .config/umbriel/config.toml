@@ -37,11 +37,18 @@ files = []                                      # Example: ["~/.config/umbriel/n
 [general]
 autostart = [
             "noctalia",
-            "signal-desktop",
+#            "zapzap",
             "steam -silent -minimized",
             "netbird-ui",
             "kDrive",
-            "firefox --new-window https://www.faxxxmaster.cc"
+            "signal-desktop",
+            "kitty --title \"ol\"",
+            "Plex --platform xcb",
+            "sleep 1",
+            "firefox --new-window https://duckduckgo.com",
+            "zapzap & sleep 1 && vesktop discord://discord.com/channels/1401598189823590460/1401607794414850120",
+            "umbriel msg \"workspace-switch:BROWSER/DP-3\""
+
             ]                                  # Commands run once when the session starts
 
 
@@ -91,10 +98,10 @@ honor_restored_maximize = false                 # Honor restored maximized state
 # name, for example [output."Some Make Some Model ABC123"].
 
 [output."Ancor Communications Inc ASUS VE278 C7LMTF172573"]
- enabled = true                                # False removes the output but preserves its state
- mode = "1920x1080@60.000"                        # WIDTHxHEIGHT or WIDTHxHEIGHT@HZ
- position = [0, 0]                             # Logical top-left; omit for automatic placement
- scale = 1.00                                  # Logical size is mode size divided by scale
+enabled = true                                # False removes the output but preserves its state
+mode = "1920x1080@60.000"                        # WIDTHxHEIGHT or WIDTHxHEIGHT@HZ
+position = [0, 0]                             # Logical top-left; omit for automatic placement
+scale = 1.00                                  # Logical size is mode size divided by scale
 # transform = "normal"                          # normal, 90, 180, 270, or a flipped variant
 # vrr = "fullscreen"                            # disabled, always, or fullscreen
 # tearing = true                                # Permit eligible fullscreen asynchronous flips
@@ -105,17 +112,17 @@ honor_restored_maximize = false                 # Honor restored maximized state
 # workspace_axis = "horizontal"                 # vertical or horizontal workspace arrangement
 
 [output."AOC U34G2G4R3 0x000019A2"]
- enabled = true                                # False removes the output but preserves its state
+enabled = true                                # False removes the output but preserves its state
 mode = "3440x1440@99.982"                        # WIDTHxHEIGHT or WIDTHxHEIGHT@HZ
- position = [1920, -180]                             # Logical top-left; omit for automatic placement
- scale = 1.00                                  # Logical size is mode size divided by scale
+position = [1920, -180]                             # Logical top-left; omit for automatic placement
+scale = 1.00                                  # Logical size is mode size divided by scale
 # transform = "normal"                          # normal, 90, 180, 270, or a flipped variant
 # vrr = "fullscreen"                            # disabled, always, or fullscreen
 # tearing = true                                # Permit eligible fullscreen asynchronous flips
 direct_scanout = true                        # False forces composition on this output
-##hdr = "auto"                                  # off, on, auto, or fullscreen
+hdr = "auto"                                  # off, on, auto, or fullscreen
 # sdr_white = 203                               # SDR reference white in cd/m2 during HDR
-# workspaces = 5                                # Anonymous fixed positions; omit for dynamic
+workspaces = ["BROWSER", "TERMINAL", "GAMING","MUSIC", "SONST"]                                # Anonymous fixed positions; omit for dynamic
 # workspace_axis = "horizontal"                 # vertical or horizontal workspace arrangement
 
 [output."Samsung Electric Company LF24T450F HK7W201363"]
@@ -164,8 +171,7 @@ empty_above = false                             # Keep one empty workspace above
 # optionally scope by `output`.
 # Documentation: https://docs.noctalia.dev/umbriel/workspaces/#workspace-rules
 
-#
-#[[workspace]]
+# [[workspace]]
 # index = 2
 # output = "DP-1"
 # layout.mode = "dwindle"
@@ -178,10 +184,40 @@ empty_above = false                             # Keep one empty workspace above
 # workspace. Add `output = "DP-1"` to materialize it only there. A numeric
 # string such as name = "2" remains distinct from index = 2.
 
- [[workspace]]
- name = "CHAT"
- output = "DP-2"
- layout.mode = "scrolling"
+[[workspace]]
+output = "DP-2"
+name = "CHAT"
+layout.mode = "scrolling"
+
+[[workspace]]
+output = "DP-3"
+name = "BROWSER"
+layout.mode = "scrolling"
+
+[[workspace]]
+output = "DP-3"
+name = "TERMINAL"
+layout.mode = "scrolling"
+
+[[workspace]]
+output = "DP-3"
+name = "GAMING"
+layout.mode = "scrolling"
+
+[[workspace]]
+output = "DP-3"
+name = "MUSIC"
+layout.mode = "scrolling"
+
+[[workspace]]
+output = "DP-3"
+name = "SONST"
+layout.mode = "scrolling"
+
+
+
+
+
 
 # ─────────────────────────────── Colors ─────────────────────────────────────
 # Configure every color Umbriel paints. Values stay commented so an included
@@ -231,11 +267,11 @@ drag_opacity = 0.75                             # Window opacity during a tiled 
 # opt a surface into blur.
 enabled = true                                  # Disable blur and release per-output effect buffers
 optimized = true                                # Reuse one cached background blur per output
-passes = 3                                    # Blur passes, 0-8
+passes = 3                                      # Blur passes, 0-8
 radius = 3                                      # Blur radius, 0-100
 noise = 0.02                                    # Noise overlay, 0.0-1.0
 brightness = 0.9                                # 0.0-2.0
-contrast = 0.9                                # 0.0-2.0
+contrast = 0.9                                  # 0.0-2.0
 saturation = 1.1                                # 0.0-2.0
 
 [appearance.shadow]
@@ -301,7 +337,7 @@ hide_when_typing = true                        # Keep visible while typing
 hide_timeout_ms = 0                            # Idle hide timeout, 0 disables; maximum is 3600000
 
 [input.focus]
-follows_mouse = false                           # Focus on motion after scene changes and tiles revealed by closes
+follows_mouse = false                           # Focus on motion after scene changes, client fullscreen exits, and closes
 # Refuse hover focus when revealing a window would scroll farther than this
 # many viewport widths. Omit the key for no limit.
 # follows_mouse_max_scroll = 0.5
@@ -360,13 +396,16 @@ follows_mouse = false                           # Focus on motion after scene ch
 
 [keybinds]
 
+# screenshots
 "Print" = "spawn:noctalia msg screenshot-region"
 "Mod+Tab" = "spawn:noctalia msg window-switcher"
+
+# Session
+"Mod+Escape" = "spawn:systemctl poweroff"
 "pause" = "dpms-off"
 "Ctrl+pause" = "dpms-on"
 
-# Applications and session
-
+# Applications
 "Mod+Return" = "spawn:kitty"
 "Ctrl+Space" = "spawn:noctalia msg panel-toggle launcher"
 "Mod+Space" = "spawn:rofi -show drun"
@@ -391,6 +430,22 @@ follows_mouse = false                           # Focus on motion after scene ch
 "Mod+Down" = "workspace-next"
 "Mod+Up" = "workspace-previous"
 
+
+"Mod+Shift+Left" = "column-move-left"
+"Mod+Shift+Right" = "column-move-right"
+
+"Mod+Shift+Up" = "window-move-to-workspace-previous"
+"Mod+Shift+Down"= "window-move-to-workspace-next"
+
+
+"Mod+WheelUp" = { action = "workspace-previous", cooldown_ms = 150 }
+"Mod+WheelDown" = { action = "workspace-next", cooldown_ms = 150 }
+
+"Mod+Ctrl+right" = "output-focus-next"
+"Mod+Ctrl+left" = "output-focus-previous"
+
+
+
 # Window state and layout
 "Mod+T" = "window-toggle-floating"
 "Mod+Shift+T" = "window-focus-switch-floating"
@@ -401,22 +456,22 @@ follows_mouse = false                           # Focus on motion after scene ch
 "Ctrl+Tab" = { action = "overview-toggle", repeat = false }
 
 # Common keybinds
-"Mod+Escape" = "session-quit"
+# "Mod+Escape" = "session-quit"
 # "Mod+F1" = "window-focus-next"
 # "Mod+H" = "window-focus-left"
 # "Mod+J" = "window-focus-down"
 # "Mod+K" = "window-focus-up"
 # "Mod+L" = "window-focus-right"
-"Mod+Shift+Left" = "column-move-left"
 
-# "Mod+Shift+Down" = "window-move-down"
-# "Mod+Shift+Up" = "window-move-up"
-"Mod+Shift+Right" = "column-move-right"
+
+
 "Mod+Ctrl+F" = "window-toggle-fullscreen"             # Exit restores the previous layout size immediately
 "Mod+F" = "window-toggle-maximize"
 "Mod+R" = "window-cycle-primary-extent"
 "Mod+Shift+R" = "window-cycle-primary-extent-back"
-# Mod+C" = "window-consume-left"
+
+
+# "Mod+c" = "window-consume-right"
 # "Mod+Ctrl+C" = "window-consume-right"
 # "Mod+WheelUp" = "window-focus-left"
 # "Mod+WheelDown" = "window-focus-right"
@@ -498,21 +553,12 @@ follows_mouse = false                           # Focus on motion after scene ch
 # "Mod+Alt+Shift+R" = "window-cycle-secondary-extent-back"
 # "Mod+Grave" = "window-focus-last"
 # "Mod+BackSpace" = "window-consume-or-expel-left"
-# "Mod+C" = "column-center"
-# "Mod+Shift+C" = "window-center"
+ "Mod+C" = "column-center"
+ "Mod+Shift+C" = "window-center"
 # "Mod+Ctrl+T" = "workspace-set-layout:toggle"
 # "Mod+MouseMiddle" = "layout-scroll-drag"
 # "Mod+Alt+K" = "keyboard-layout-next"
- "Mod+WheelUp" = { action = "workspace-previous", cooldown_ms = 150 }
- "Mod+WheelDown" = { action = "workspace-next", cooldown_ms = 150 }
-# "Mod+Alt+Left" = "workspace-swap-active-output-left"
-# "Mod+Alt+Right" = "workspace-swap-active-output-right"
-# "Mod+Alt+Up" = "workspace-swap-active-output-up"
-# "Mod+Alt+Down" = "workspace-swap-active-output-down"
 
-# The -next and -previous output actions wrap, so one bind each reaches the
-# other screen of a two-monitor setup.
-# "Mod+Tab" = "output-focus-next"
 # "Mod+Shift+Tab" = "window-move-to-output-next"
 # "Mod+Alt+Tab" = "workspace-swap-active-output-next"
 
@@ -598,7 +644,7 @@ blur_optimized = false
 [[window_rule]]
 match.app_id = "^dev.noctalia.Noctalia$"
 default_floating = true
-default_floating_size_px = { width = 1020, height = 900 }
+default_floating_size_px = { width = 1500, height = 1000 }
 
 # Noctalia share picker
 [[window_rule]]
@@ -615,7 +661,7 @@ default_pinned = true
 default_position = { x = 20, y = 20, anchor = "bottom_right" }
 
 [[window_rule]]
-# match.app_id = "^firefox$"
+match.app_id = "^firefox$"
 match.title = "^Bild-im-Bild$"
 default_floating = true
 default_pinned = true
@@ -627,9 +673,6 @@ match.app_id = "^(steam_app_[0-9]+|gamescope)$"
 vrr = "fullscreen"
 default_maximize = true
 
-[[window_rule]]
-match.app_id = "^steam$"
-# default_maximize = true
 
 [[window_rule]]
 match.app_id = "^com\\.rtosta\\.zapzap$"
@@ -643,11 +686,32 @@ match.app_id = "^vesktop$"
 default_output = "DP-2"
 default_workspace = "CHAT"
 default_scrolling_extent = 0.6
-# firefox on big screen
+
 
 [[window_rule]]
-match.app_id = "^(kitty|firefox|steam)$"
+match.app_id = "^firefox$"
+match.title = "DuckDuckGo"
 default_output = "DP-3"
+default_workspace = "BROWSER"
+
+
+[[window_rule]]
+match.app_id = "^kitty$"
+match.title = "^ol$"
+default_output = "DP-3"
+default_workspace = "TERMINAL"
+
+
+[[window_rule]]
+match.app_id = "^steam$"
+default_output = "DP-3"
+default_workspace = "GAMING"
+
+[[window_rule]]
+match.app_id = "^Spotify$"
+default_output = "DP-3"
+default_workspace = "MUSIC"
+
 
 
 # Keep Steam notification toasts in the bottom-right corner without stealing
@@ -768,11 +832,24 @@ default_pinned = true
  match.is_scratchpad = false
  blur = true
 
+
+
 [[window_rule]]
 match.app_id = "^Plex$"
 default_output = "HDMI-A-1"
 default_maximize = true
 opacity = 1.0
+
+[[window_rule]]
+match.app_id = "^vesktop$"
+match.is_focused = true
+opacity = 1.0
+
+[[window_rule]]
+match.app_id = "^vesktop$"
+match.is_focused = false
+opacity = 0.7
+
 
 [[window_rule]]
 match.app_id = "^(firefox|helium)$"
@@ -782,7 +859,7 @@ opacity = 1.0
 [[window_rule]]
 match.app_id = "^(firefox|helium)$"
 match.is_focused = false
-opacity = 0.9
+opacity = 0.8
 
 
 # Fill the viewport for a workspace's lone tiled column.
@@ -825,7 +902,8 @@ enabled = true                                  # Master animation switch
 duration_ms = 250                               # Shared duration, 1-10000 ms
 curve = "easeout"                               # Built-in or registered bezier/spring curve name
 
-# Window opening
+# Window opening. A tiled window grows into the slot the layout opens for it;
+# popin and zoom scale inside that slot, and slide only fades for tiled windows.
 [animation.windows_in]
 enabled = true
 duration_ms = 150
@@ -834,7 +912,7 @@ style = "popin"                                 # popin, zoom, slide, fade, or n
 scale = 0.85                                    # Popin start scale, 0.1-1.0
 # shader = "shaders/reveal.glsl"      # Replaces the built-in opening style
 
-# Window closing
+# Window closing, using a snapshot that shrinks along with the layout.
 [animation.windows_out]
 enabled = true
 duration_ms = 150
@@ -842,8 +920,9 @@ curve = "easeout"
 style = "fade"                                  # fade or slide
 # shader = "shaders/reveal.glsl"
 
-# Window movement, resizing, and floating maximize. Visible scratchpad keybind
-# resizing uses this event too.
+# Window movement, resizing, layout reflow, maximize and restore, and floating
+# maximize. Visible scratchpad keybind resizing uses this event too. Every tiled
+# window on a workspace shares one transition here, so gaps survive the motion.
 [animation.windows_move]
 enabled = true
 duration_ms = 250
@@ -862,8 +941,8 @@ enabled = true
 duration_ms = 250
 curve = "easeout"
 # Filmstrip movement between workspace previews: wheel, keyboard, and touchpad
-# release alike. A spring curve keeps the release velocity; its final few pixels
-# stay monotonic on the logical layout grid.
+# release alike. A spring curve keeps the release velocity and follows its
+# physics until every possible remaining movement is subpixel.
 workspace_curve = "spring:1,1000"
 
 # Scratchpad show, hide, and backdrop
@@ -879,20 +958,20 @@ fullscreen = false                              # Make the scratchpad window ful
 
 # Focus border color
 [animation.border]
-enabled = true
+enabled = false
 duration_ms = 250
 curve = "easeout"
 
 # Unfocused window opacity
 [animation.dim_unfocused]
-enabled = true
+enabled = false
 duration_ms = 250
 curve = "easeout"
 dim = 0.0                                       # 0 disables dimming; maximum is 1.0
 
 # Layer-shell surface mapping and unmapping
 [animation.layers]
-enabled = true
+enabled = false
 duration_ms = 250
 curve = "easeout"
 
