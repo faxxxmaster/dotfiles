@@ -37,18 +37,13 @@ files = []                                      # Example: ["~/.config/umbriel/n
 [general]
 autostart = [
             "noctalia",
-#            "zapzap",
             "steam -silent -minimized",
             "netbird-ui",
             "kDrive",
             "signal-desktop",
-#            "kitty --title \"ol\"",
-#            "Plex --platform xcb",
-#            "sleep 1",
-            "firefox --new-window https://www.faxxxmaster.cc",
-#            "zapzap & sleep 1 && vesktop discord://discord.com/channels/1401598189823590460/1401607794414850120",
-#            "sleep 1",
-            "umbriel msg \"workspace-switch:BROWSER/DP-3\""
+            "firefox --new-window https://www.duckduckgo.com",
+            "kitty -e /home/gcn/.local/bin/greeter.sh",
+            "umbriel msg \"workspace-switch:TERMINAL/DP-3\""
             ]                                  # Commands run once when the session starts
 
 
@@ -97,7 +92,8 @@ honor_restored_maximize = false                 # Honor restored maximized state
 # display between machines or ports, replace the header with its quoted Config
 # name, for example [output."Some Make Some Model ABC123"].
 
-[output."Ancor Communications Inc ASUS VE278 C7LMTF172573"]
+# [output."Ancor Communications Inc ASUS VE278 C7LMTF172573"]
+[output.HDMI-A-1]
 enabled = true                                # False removes the output but preserves its state
 mode = "1920x1080@60.000"                        # WIDTHxHEIGHT or WIDTHxHEIGHT@HZ
 position = [0, 0]                             # Logical top-left; omit for automatic placement
@@ -111,7 +107,8 @@ scale = 1.00                                  # Logical size is mode size divide
 # workspaces = 5                                # Anonymous fixed positions; omit for dynamic
 # workspace_axis = "horizontal"                 # vertical or horizontal workspace arrangement
 
-[output."AOC U34G2G4R3 0x000019A2"]
+#[output."AOC U34G2G4R3 0x000019A2"]
+[output.DP-3]
 enabled = true                                # False removes the output but preserves its state
 mode = "3440x1440@99.982"                        # WIDTHxHEIGHT or WIDTHxHEIGHT@HZ
 position = [1920, -180]                             # Logical top-left; omit for automatic placement
@@ -122,10 +119,11 @@ scale = 1.00                                  # Logical size is mode size divide
 direct_scanout = true                        # False forces composition on this output
 hdr = "auto"                                  # off, on, auto, or fullscreen
 # sdr_white = 203                               # SDR reference white in cd/m2 during HDR
-workspaces = ["BROWSER", "TERMINAL", "GAMING","MUSIC", "SONST"]                                # Anonymous fixed positions; omit for dynamic
+workspaces = ["BROWSER", "TERMINAL", "GAMING","MUSIC", "DATEN", "REMOTE", "SONST"]                                # Anonymous fixed positions; omit for dynamic
 # workspace_axis = "horizontal"                 # vertical or horizontal workspace arrangement
 
-[output."Samsung Electric Company LF24T450F HK7W201363"]
+#[output."Samsung Electric Company LF24T450F HK7W201363"]
+[output.DP-2]
  enabled = true                                # False removes the output but preserves its state
  mode = "1920x1080@74.973"                        # WIDTHxHEIGHT or WIDTHxHEIGHT@HZ
  position = [5360, -650]                             # Logical top-left; omit for automatic placement
@@ -211,6 +209,16 @@ layout.mode = "scrolling"
 
 [[workspace]]
 output = "DP-3"
+name = "DATEN"
+layout.mode = "scrolling"
+
+[[workspace]]
+output = "DP-3"
+name = "REMOTE"
+layout.mode = "scrolling"
+
+[[workspace]]
+output = "DP-3"
 name = "SONST"
 layout.mode = "scrolling"
 
@@ -226,7 +234,7 @@ layout.mode = "scrolling"
 # ────────────────────────────────────────────────────────────────────────────
 
 [colors]
-# background = "#141419FF"                      # Internal panels and banners
+# background = "#141419FF"                      # Umbriel panels and banners
 # text_primary = "#E8E8EAFF"                    # Primary text
 # text_muted = "#8A8A92FF"                      # Secondary help and status text
 # accent_primary = "#7AA3FFFF"                  # Titles, key chords, and primary emphasis
@@ -420,7 +428,7 @@ follows_mouse = false                           # Focus on motion after scene ch
 "Mod+X" = "spawn:sh -c 'zapzap & sleep 1 && vesktop discord://discord.com/channels/1401598189823590460/1401607794414850120'"
 "Mod+G" = "spawn:steam"
 "Mod+V" = "spawn:noctalia msg panel-toggle clipboard"
-
+"Mod+N" ="spawn:kitty -e micro /home/gcn/.config/umbriel/config.toml"
 
 # Focus navigation. In overview, Mod+Up/Down retain normal layout focus, so they
 # traverse stacks in the default horizontal layout. Bare Up/Down move between
@@ -699,7 +707,7 @@ default_workspace = "BROWSER"
 
 [[window_rule]]
 match.app_id = "^kitty$"
-match.title = "^ol$"
+match.title = "^greeter\\.sh$"
 default_output = "DP-3"
 default_workspace = "TERMINAL"
 
@@ -858,7 +866,7 @@ opacity = 0.6
 [[window_rule]]
 match.app_id = "^com\\.rtosta\\.zapzap$"
 match.is_focused = false
-opacity = 0.5
+opacity = 0.6
 
 [[window_rule]]
 match.app_id = "^(firefox|helium)$"
@@ -915,28 +923,27 @@ curve = "easeout"                               # Built-in or registered bezier/
 [animation.windows_in]
 enabled = true
 duration_ms = 150
-curve = "easeout"
+curve = "spring:1,1000"
 style = "popin"                                 # popin, zoom, slide, fade, or none
 scale = 0.85                                    # Popin start scale, 0.1-1.0
-shader = "shaders/reveal.glsl"      # Replaces the built-in opening style
+# shader = "shaders/reveal.glsl"      # Replaces the built-in opening style
 
-# Window closing animation. The snapshot keeps its captured box while
-# established neighbours reflow independently using windows_move. Closing a
-# card from overview also uses this event.
+# Window closing animation
 [animation.windows_out]
 enabled = true
 duration_ms = 150
-curve = "easeout"
-style = "fade"                                  # fade or slide
-shader = "shaders/reveal.glsl"
+curve = "spring:1,1000"
+style = "fade"                                  # fade, slide, popin, or zoom
+scale = 0.8                                     # Popin end scale, 0.1-1.0
+# shader = "shaders/reveal.glsl"
 
 # Window movement, resizing, layout changes, maximize and restore, and visible
 # scratchpad resizing
 [animation.windows_move]
 enabled = true
-duration_ms = 250
-curve = "snappy"
-shader = "shaders/squash.glsl"      # Subtle compression and settle during move/resize
+duration_ms = 150
+curve = "spring:1,1000"
+# shader = "shaders/squash.glsl"      # Subtle compression and settle during move/resize
 
 # Workspace switching
 [animation.workspaces]
