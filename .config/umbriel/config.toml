@@ -113,18 +113,22 @@ follows_mouse = false                           # Focus on motion after scene ch
 # screenshots
 "Print" = "spawn:noctalia msg screenshot-region"
 
+#Tab
 "Mod+Tab" = "spawn:noctalia msg window-switcher"
 
 # Session
 "Mod+Escape" = "session-quit:skip-confirmation"
 "pause" = "dpms-off"
 "Ctrl+pause" = "dpms-on"
+"Mod+L" = "spawn:noctalia msg session lock && notify-send 'Session locked'"
+
+"Mod+Shift+Escape" = { action = "shortcuts-inhibit-toggle", allow_when_inhibited = true, repeat = false }
 
 # Applications
-"Mod+Return" = "spawn:kitty"
+"Mod+Return" = { action = "spawn:kitty", repeat = false }
 "Ctrl+Space" = "spawn:noctalia msg panel-toggle launcher"
 "Mod+Space" = "spawn:rofi -show drun"
-"Mod+Q" = "window-close"
+"Mod+Q" = { action = "window-close", repeat = false }
 "Mod+B" = "spawn:firefox --new-window https://www.faxxxmaster.cc"
 "Mod+Ctrl+B" = "spawn:helium-browser"
 "Ctrl+B" = "spawn:firefox"
@@ -135,7 +139,6 @@ follows_mouse = false                           # Focus on motion after scene ch
 "Mod+G" = "spawn:steam"
 "Mod+V" = "spawn:noctalia msg panel-toggle clipboard"
 "Mod+N" ="spawn:kitty -e micro /home/gcn/.config/umbriel/config.toml"
-"Mod+L" = "spawn:noctalia msg session lock && notify-send 'Session locked'"
 
 
 "Mod+Left" = "window-focus-left"
@@ -147,21 +150,25 @@ follows_mouse = false                           # Focus on motion after scene ch
 "Mod+Shift+Left" = "column-move-left"
 "Mod+Shift+Right" = "column-move-right"
 
-"Mod+Shift+Up" = "window-move-to-workspace-previous"
-"Mod+Shift+Down"= "window-move-to-workspace-next"
+"Mod+alt+Up" = "window-move-to-workspace-previous"
+"Mod+alt+Down"= "window-move-to-workspace-next"
+
+"Mod+alt+left" = "window-move-to-output-left"
+"Mod+alt+right"= "window-move-to-output-right"
+
+"Mod+Ctrl+right" = "output-focus-next"
+"Mod+Ctrl+left" = "output-focus-previous"
 
 
 "Mod+WheelUp" = { action = "workspace-previous", cooldown_ms = 150 }
 "Mod+WheelDown" = { action = "workspace-next", cooldown_ms = 150 }
 
-"Mod+Ctrl+right" = "output-focus-next"
-"Mod+Ctrl+left" = "output-focus-previous"
 
 # Window state and layout
-"Mod+T" = "window-toggle-floating"
-"Mod+Shift+T" = "window-focus-switch-floating"
-"Mod+Ctrl+P" = "window-toggle-pinned"
-"Mod+M" = "window-toggle-maximize-to-edges"
+"Mod+T" = { action = "window-toggle-floating", repeat = false }
+"Mod+Shift+T" = { action = "window-focus-switch-floating", repeat = false }
+"Mod+Ctrl+P" = { action = "window-toggle-pinned", repeat = false }
+"Mod+M" = { action = "window-toggle-maximize-to-edges", repeat = false }
 
 # Overview
 "Ctrl+Tab" = { action = "overview-toggle", repeat = false }
@@ -190,15 +197,15 @@ follows_mouse = false                           # Focus on motion after scene ch
 "Mod+Shift+8" = "window-move-to-workspace:8"
 "Mod+Shift+9" = "window-move-to-workspace:9"
 
-"Mod+Ctrl+S" = "window-move-to-scratchpad"
+"Mod+Ctrl+S" = { action = "window-move-to-scratchpad", repeat = false }
 "Mod+S" = "scratchpad-toggle"
-"Alt+S" = "window-restore-from-scratchpad"
+"Alt+S" = { action = "window-restore-from-scratchpad", repeat = false }
 "Alt+Tab" = "scratchpad-focus-next"
- "Mod+C" = "column-center"
- "Mod+Shift+C" = "window-center"
+"Mod+C" = "column-center"
+"Mod+Shift+C" = "window-center"
 
- "Ctrl+WheelUp" = "spawn:wpctl set-volume @DEFAULT_AUDIO_SINK@ 2%+"
- "Ctrl+WheelDown" = "spawn:wpctl set-volume @DEFAULT_AUDIO_SINK@ 2%-"
+"Ctrl+WheelUp" = "spawn:wpctl set-volume @DEFAULT_AUDIO_SINK@ 2%+"
+"Ctrl+WheelDown" = "spawn:wpctl set-volume @DEFAULT_AUDIO_SINK@ 2%-"
 
 
 # ──────────────────────────────── Layout  ─────────────────────────────────────
@@ -248,6 +255,12 @@ default_floating = true
 default_maximize = false
 default_pinned = true
 default_position = { x = 20, y = 20, anchor = "bottom_right" }
+
+[[window_rule]]
+match.title = "^notificationtoasts_.+_desktop"
+default_position = { x = 0, y = 0, anchor = "bottom_right" }
+default_focused = false
+default_pinned = true
 
 
 [[window_rule]]
@@ -316,13 +329,6 @@ default_workspace = "GAMING"
 match.app_id = "^Spotify$"
 default_output = "DP-3"
 default_workspace = "MUSIC"
-
-
-[[window_rule]]
-match.title = "^notificationtoasts_.+_desktop"
-default_position = { x = 0, y = 0, anchor = "bottom_right" }
-default_focused = false
-default_pinned = true
 
 
 [[window_rule]]
@@ -402,27 +408,60 @@ blur_optimized = false
 
 # ────────────────────────────── Animation ───────────────────────────────────
 
-# Window opening animation
+[animation]
+enabled = true
+duration_ms = 250
+curve = "snappy"
+
 [animation.windows_in]
 enabled = true
-curve = "spring:1,1900"                         # 278 ms critically damped settle
-style = "popin"                                 # popin, zoom, slide, fade, or none
-scale = 0.85                                    # Popin start scale, 0.1-1.0
-# shader = "shaders/reveal.glsl"      # Replaces the built-in opening style
+curve = "spring:1,900"
+style = "zoom"
+scale = 0.5
+#shader = "/usr/share/umbriel/shaders/reveal.glsl"
 
-# Window closing animation
 [animation.windows_out]
 enabled = true
-curve = "spring:1,900"                          # 403 ms critically damped settle
-style = "fade"                                  # fade, slide, popin, or zoom
-scale = 0.8                                     # Popin end scale, 0.1-1.0
-# shader = "shaders/reveal.glsl"
+curve = "spring:1,1400"
+style = "slide"
+scale = 0.8
+#shader = "/usr/share/umbriel/shaders/reveal.glsl"
 
-# scratchpad resizing
 [animation.windows_move]
 enabled = true
-curve = "spring:1,4400"                         # 183 ms critically damped settle
-# shader = "shaders/squash.glsl"      # Subtle compression and settle during move/resize
+curve = "spring:1,900"
+shader = "/usr/share/umbriel/shaders/squash.glsl"
+
+[animation.workspaces]
+enabled = true
+curve = "spring:1,800"
+
+[animation.overview]
+enabled = true
+curve = "spring:1,800"
+workspace_curve = "spring:1,1000"
+
+[animation.scratchpad]
+enabled = true
+curve = "spring:1,800"
+dim = 0.8
+blur = false
+scale = 0.0
+maximize = false
+fullscreen = false
+
+[animation.border]
+enabled = true
+curve = "spring:1,900"
+
+[animation.dim_unfocused]
+enabled = false
+dim = 0.0
+
+[animation.layers]
+enabled = false
+
+
 
 
 # ─────────────────────── Overview and Hot Corners ───────────────────────────
