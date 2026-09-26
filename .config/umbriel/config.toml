@@ -1,8 +1,8 @@
 [include]
-files = ["noctalia.toml"]                                      # Example: ["appearance.toml", "outputs.toml"]
+files = []                                      # Example: ["appearance.toml", "outputs.toml"]
 
 [include.optional]
-files = []
+files = ["noctalia.toml"]
 
 # ==============================================================================
 # General
@@ -14,10 +14,12 @@ autostart = [
             "netbird-ui",
             "kDrive",
             "signal-desktop",
-            "firefox --new-window https://www.duckduckgo.com",
-            "kitty -e /home/gcn/.local/bin/greeter.sh",
-            "umbriel msg \"workspace-switch:TERMINAL/DP-3\""
-            ]
+            "firefox --new-window https://www.faxxxmaster.cc",
+#            "kitty -e /home/gcn/.local/bin/greeter.sh",
+#            "~/.local/bin/autostart.sh"
+            "umbriel msg workspace-switch:BROWSER/DP-3"
+             ]
+
 
 # ==============================================================================
 # Outputs
@@ -34,6 +36,7 @@ enabled = true                                # False removes the output but pre
 mode = "1920x1080@60.000"                        # WIDTHxHEIGHT or WIDTHxHEIGHT@HZ
 position = [0, 0]                             # Logical top-left; omit for automatic placement
 scale = 1.00                                  # Logical size is mode size divided by scale
+cyclic_workspaces = true
 # transform = "normal"                          # normal, 90, 180, 270, or a flipped variant
 # vrr = "fullscreen"                            # disabled, always, or fullscreen
 # tearing = true                                # Permit eligible fullscreen asynchronous flips
@@ -56,6 +59,7 @@ direct_scanout = true                        # False forces composition on this 
 hdr = "auto"                                  # off, on, auto, or fullscreen
 # sdr_white = 203                               # SDR reference white in cd/m2 during HDR
 workspaces = ["BROWSER", "TERMINAL", "GAMING","MUSIC", "DATEN", "REMOTE", "SONST"]                                # Anonymous fixed positions; omit for dynamic
+cyclic_workspaces = true
 # workspace_axis = "horizontal"                 # vertical or horizontal workspace arrangement
 
 #[output."Samsung Electric Company LF24T450F HK7W201363"]
@@ -72,7 +76,7 @@ workspaces = ["BROWSER", "TERMINAL", "GAMING","MUSIC", "DATEN", "REMOTE", "SONST
 # sdr_white = 203                               # SDR reference white in cd/m2 during HDR
 workspaces = ["CHAT","LESEN"]                  # Anonymous fixed positions; omit for dynamic
 workspace_axis = "horizontal"       # vertical or horizontal workspace arrangement
-
+cyclic_workspaces = true
 
 [appearance.blur]
 radius = 3                                      # Blur radius, 0-100
@@ -117,7 +121,7 @@ follows_mouse = false                           # Focus on motion after scene ch
 "Mod+Tab" = "spawn:noctalia msg window-switcher"
 
 # Session
-"Mod+Escape" = "session-quit:skip-confirmation"
+"Mod+Escape" = "session-quit"
 "pause" = "dpms-off"
 "Ctrl+pause" = "dpms-on"
 "Mod+L" = "spawn:noctalia msg session lock && notify-send 'Session locked'"
@@ -268,6 +272,7 @@ match.app_id = "^firefox$"
 match.title = "^Bild-im-Bild$"
 default_floating = true
 default_pinned = true
+border_width = 0
 default_position = { x = 10, y = 10, anchor = "top_right" }
 
 
@@ -275,12 +280,14 @@ default_position = { x = 10, y = 10, anchor = "top_right" }
 match.app_id = "^mpv$"
 default_floating = true
 default_pinned = true
+border_width = 0
 default_position = { x = 10, y = 10, anchor = "top_right" }
 
 [[window_rule]]
 match.app_id = "^fladder$"
 default_floating = true
 default_pinned = true
+border_width = 0
 default_position = { x = 10, y = 10, anchor = "top_right" }
 default_output = "HDMI-A-1"
 
@@ -317,7 +324,7 @@ match.app_id = "^kitty$"
 match.title = "^greeter\\.sh$"
 default_output = "DP-3"
 default_workspace = "TERMINAL"
-
+default_focused = true
 
 [[window_rule]]
 match.app_id = "^steam$"
