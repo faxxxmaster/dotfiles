@@ -1,5 +1,9 @@
 [include]
-files = []                                      # Example: ["appearance.toml", "outputs.toml"]
+files = [
+"shaders/community/border/accent-pulse/effect.toml",
+"shaders/community/window/rolling-clouds/effect.toml",
+ ]
+
 
 [include.optional]
 files = ["noctalia.toml"]
@@ -14,9 +18,8 @@ autostart = [
             "netbird-ui",
             "kDrive",
             "signal-desktop",
-            "firefox --new-window https://www.faxxxmaster.cc",
-#            "kitty -e /home/gcn/.local/bin/greeter.sh",
-#            "~/.local/bin/autostart.sh"
+#            "firefox --new-window https://duckduckgo.com",
+            "kitty -e /home/gcn/.local/bin/greeter.sh",
             "umbriel msg workspace-switch:BROWSER/DP-3"
              ]
 
@@ -49,7 +52,7 @@ cyclic_workspaces = true
 #[output."AOC U34G2G4R3 0x000019A2"]
 [output.DP-3]
 enabled = true                                # False removes the output but preserves its state
-mode = "3440x1440@99.982"                        # WIDTHxHEIGHT or WIDTHxHEIGHT@HZ
+mode = "3440x1440@100" # WIDTHxHEIGHT or WIDTHxHEIGHT@HZ
 position = [1920, -180]                             # Logical top-left; omit for automatic placement
 scale = 1.00                                  # Logical size is mode size divided by scale
 # transform = "normal"                          # normal, 90, 180, 270, or a flipped variant
@@ -114,8 +117,11 @@ follows_mouse = false                           # Focus on motion after scene ch
 
 [keybinds]
 
+"Mod+a" = "spawn:~/.local/bin/autostart.sh"
 # screenshots
 "Print" = "spawn:noctalia msg screenshot-region"
+
+
 
 #Tab
 "Mod+Tab" = "spawn:noctalia msg window-switcher"
@@ -210,7 +216,7 @@ follows_mouse = false                           # Focus on motion after scene ch
 
 "Ctrl+WheelUp" = "spawn:wpctl set-volume @DEFAULT_AUDIO_SINK@ 2%+"
 "Ctrl+WheelDown" = "spawn:wpctl set-volume @DEFAULT_AUDIO_SINK@ 2%-"
-
+"Ctrl+Mod+M" = "spawn:noctalia msg volume-mute"
 
 # ──────────────────────────────── Layout  ─────────────────────────────────────
 
@@ -323,8 +329,9 @@ default_workspace = "BROWSER"
 match.app_id = "^kitty$"
 match.title = "^greeter\\.sh$"
 default_output = "DP-3"
-default_workspace = "TERMINAL"
-default_focused = true
+default_workspace = "BROWSER"
+window_effect = "window.rolling-clouds"
+#default_focused = true
 
 [[window_rule]]
 match.app_id = "^steam$"
@@ -362,7 +369,6 @@ opacity = 1.0
 [[window_rule]]
 match.app_id = "^mpv$"
 opacity = 1.0
-
 
 [[window_rule]]
 match.app_id = "^Fladder$"
@@ -414,61 +420,18 @@ blur_popups = true
 blur_optimized = false
 
 # ────────────────────────────── Animation ───────────────────────────────────
+[effects]
+border = "accent-pulse"
 
 [animation]
-enabled = true
-duration_ms = 250
-curve = "snappy"
+# enabled = true
 
 [animation.windows_in]
-enabled = true
-curve = "spring:1,900"
-style = "zoom"
-scale = 0.5
-#shader = "/usr/share/umbriel/shaders/reveal.glsl"
-
-[animation.windows_out]
-enabled = true
-curve = "spring:1,1400"
-style = "slide"
-scale = 0.8
-#shader = "/usr/share/umbriel/shaders/reveal.glsl"
 
 [animation.windows_move]
-enabled = true
-curve = "spring:1,900"
-shader = "/usr/share/umbriel/shaders/squash.glsl"
+#  effect = "squash"
 
-[animation.workspaces]
-enabled = true
-curve = "spring:1,800"
-
-[animation.overview]
-enabled = true
-curve = "spring:1,800"
-workspace_curve = "spring:1,1000"
-
-[animation.scratchpad]
-enabled = true
-curve = "spring:1,800"
-dim = 0.8
-blur = false
-scale = 0.0
-maximize = false
-fullscreen = false
-
-[animation.border]
-enabled = true
-curve = "spring:1,900"
-
-[animation.dim_unfocused]
-enabled = false
-dim = 0.0
-
-[animation.layers]
-enabled = false
-
-
+[animation.windows_out]
 
 
 # ─────────────────────── Overview and Hot Corners ───────────────────────────
