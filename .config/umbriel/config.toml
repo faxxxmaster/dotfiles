@@ -2,7 +2,11 @@
 files = [
 "shaders/community/border/accent-pulse/effect.toml",
 "shaders/community/window/rolling-clouds/effect.toml",
+"shaders/community/animation/tv-glitch/effect.toml",
+"shaders/community/animation/squash/effect.toml",
+"shaders/community/animation/shower/effect.toml",
  ]
+
 
 
 [include.optional]
@@ -52,7 +56,7 @@ cyclic_workspaces = true
 #[output."AOC U34G2G4R3 0x000019A2"]
 [output.DP-3]
 enabled = true                                # False removes the output but preserves its state
-mode = "3440x1440@100" # WIDTHxHEIGHT or WIDTHxHEIGHT@HZ
+mode = "3440x1440@99.982" # WIDTHxHEIGHT or WIDTHxHEIGHT@HZ
 position = [1920, -180]                             # Logical top-left; omit for automatic placement
 scale = 1.00                                  # Logical size is mode size divided by scale
 # transform = "normal"                          # normal, 90, 180, 270, or a flipped variant
@@ -142,7 +146,7 @@ follows_mouse = false                           # Focus on motion after scene ch
 "Mod+B" = "spawn:firefox --new-window https://www.faxxxmaster.cc"
 "Mod+Ctrl+B" = "spawn:helium-browser"
 "Ctrl+B" = "spawn:firefox"
-"Mod+E" = "spawn:vscodium"
+"Mod+E" = "spawn:vscodium ~/Dokumente/docs"
 "Mod+D" = "spawn:nemo"
 "Mod+P" = "spawn:Plex --platform xcb"
 "Mod+X" = "spawn:sh -c 'zapzap & sleep 1 && vesktop discord://discord.com/channels/1401598189823590460/1401607794414850120'"
@@ -424,14 +428,30 @@ blur_optimized = false
 border = "accent-pulse"
 
 [animation]
-# enabled = true
+enabled = true
 
 [animation.windows_in]
+#effect = "tv-glitch"
+#duration_ms = 600
+#curve = "linear"
+effect = "shower"
+duration_ms = 800
+curve = "linear"
 
 [animation.windows_move]
-#  effect = "squash"
+enabled = true
+effect = "squash"
+duration_ms = 250
+curve = "easeout"
+
 
 [animation.windows_out]
+#effect = "tv-glitch"
+#duration_ms = 600
+#curve = "linear"
+effect = "shower"
+duration_ms = 800
+curve = "linear"
 
 
 # ─────────────────────── Overview and Hot Corners ───────────────────────────
