@@ -160,15 +160,17 @@ vec4 getMasks(float progress, vec2 uv, bool opening) {
   return vec4(showerMask, streakMask, atomMask, windowMask);
 }
 
-vec4 animation(vec2 uv) {
+vec4 animation(vec2 uv0) {
   bool opening    = umbriel_direction > 0.0;
+  // Beim Schließen von unten nach oben: Effekt-Koordinaten vertikal spiegeln.
+  vec2 uv = opening ? uv0 : vec2(uv0.x, 1.0 - uv0.y);
   float uProgress = umbriel_clamped_progress;
   float progress  = easeOutQuad(uProgress);
 
   vec4 masks = getMasks(progress, uv, opening);
 
   // Premultiplied -> straight alpha für die Berechnung.
-  vec4 src    = umbriel_sample(uv);
+  vec4 src    = umbriel_sample(uv0);
   vec4 oColor = vec4(src.rgb / max(src.a, 0.0001), src.a);
 
   // Fenster zu Effektfarbe / Transparenz auflösen.
