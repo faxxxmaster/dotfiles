@@ -5,6 +5,7 @@ files = [
 "shaders/community/animation/tv-glitch/effect.toml",
 "shaders/community/animation/squash/effect.toml",
 "shaders/community/animation/shower/effect.toml",
+"shaders/community/animation/wobbly-move/effect.toml",
  ]
 
 
@@ -440,8 +441,10 @@ curve = "linear"
 
 [animation.windows_move]
 enabled = true
-effect = "squash"
-duration_ms = 250
+#effect = "squash"
+#curve = "spring:1,900"
+effect = "wobbly-move"
+duration_ms = 650
 curve = "easeout"
 
 
