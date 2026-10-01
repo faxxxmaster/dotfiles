@@ -1,5 +1,5 @@
 // Faxxxmaster 2026
-// shower für Umbriel (animation-Preset, GLSL ES 1.00)
+// beam für Umbriel (animation-Preset, GLSL ES 1.00)
 // Port eines Burn-My-Windows-Effekts (Shower/Streaks/Atoms)
 // SPDX-FileCopyrightText: Simon Schneegans <code@simonschneegans.de>
 // SPDX-License-Identifier: GPL-3.0-or-later
