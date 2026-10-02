@@ -196,6 +196,9 @@ follows_mouse = false                           # Focus on motion after scene ch
 "Mod+R" = "window-cycle-primary-extent"
 "Mod+Shift+R" = "window-cycle-primary-extent-back"
 
+"Mod+C" = "column-center"
+
+
 # Workspaces. Bare digits are positions on the output under the pointer.
 "Mod+1" = "workspace-switch:1"
 "Mod+2" = "workspace-switch:2"
@@ -216,12 +219,11 @@ follows_mouse = false                           # Focus on motion after scene ch
 "Mod+Shift+8" = "window-move-to-workspace:8"
 "Mod+Shift+9" = "window-move-to-workspace:9"
 
-"Mod+Ctrl+S" = { action = "window-move-to-scratchpad", repeat = false }
+"Alt+Shift+S" = { action = "window-move-to-scratchpad", repeat = false }
 "Mod+S" = "scratchpad-toggle"
 "Alt+S" = { action = "window-restore-from-scratchpad", repeat = false }
 "Alt+Tab" = "scratchpad-focus-next"
-"Mod+C" = "column-center"
-"Mod+Shift+C" = "window-center"
+
 
 "Ctrl+WheelUp" = "spawn:wpctl set-volume @DEFAULT_AUDIO_SINK@ 2%+"
 "Ctrl+WheelDown" = "spawn:wpctl set-volume @DEFAULT_AUDIO_SINK@ 2%-"
