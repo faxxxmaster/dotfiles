@@ -1,6 +1,7 @@
 {
     "autosave": 0,
     "backupdir": "~/.config/micro/backups",
+    // local "external" und auf dem server "terminal"
     "clipboard": "external",
     "colorcolumn": 100,
     "colorscheme": "one-dark",
