@@ -1,23 +1,28 @@
 {
-    "backupdir": "~/.config/micro/backups",
-    "clipboard": "terminal",
     "autosave": 0,
+    "backupdir": "~/.config/micro/backups",
+    "clipboard": "external",
     "colorcolumn": 100,
     "colorscheme": "one-dark",
     "diffgutter": true,
     "divider": true,
+    "eofnewline": true,
     "hlsearch": true,
-    "ignorecase": false,
-    "pluginchannels": [
-        "https://raw.githubusercontent.com/micro-editor/plugin-channel/master/channel.json"
-    ],
+    "hltrailingws": true,
+    "ignorecase": true,
+    "matchbrace": true,
+    "matchbracestyle": "highlight",
+    "mkparents": true,
     "relativeruler": true,
     "rmtrailingws": true,
+    "savecursor": true,
     "saveundo": true,
     "showmatching": true,
     "smartcase": true,
     "spellerrors": true,
+    "tabsize": 4,
     "tabstospaces": true,
-    "matchbrace": true,
-    "matchbracestyle": "highlight"
+    "*.md": {
+        "rmtrailingws": false
+    }
 }
