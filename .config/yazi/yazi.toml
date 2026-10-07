@@ -1,0 +1,19 @@
+#:schema https://yazi-rs.github.io/schemas/yazi.json
+
+[mgr]
+ratio          = [ 1, 3, 3 ]
+sort_by        = "natural"
+sort_dir_first = true
+show_hidden    = true
+linemode       = "size"
+scrolloff      = 8
+
+[preview]
+max_width  = 1600
+max_height = 1200
+
+[opener]
+edit = [
+	{ run = '${EDITOR:-micro} %s', desc = "$EDITOR", for = "unix", block = true },
+	{ run = 'zeditor %s',          desc = "zed",     for = "unix", orphan = true },
+]

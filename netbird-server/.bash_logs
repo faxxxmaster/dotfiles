@@ -1,0 +1,67 @@
+# ================= Caddy / CrowdSec Logs =================
+_CJQ='[(.ts|localtime|strftime("%d.%m. %H:%M:%S")), .request.remote_ip, .request.host, .request.method, .request.uri, .status] | @tsv'
+_CJQ_D='[(.ts|localtime|strftime("%d.%m. %H:%M:%S")), .request.remote_ip, .request.host, .request.method, .request.uri, .status] | @tsv'
+_CLOGS='/var/log/caddy/access-*.log.gz /var/log/caddy/access.log'
+
+# ---- Caddy ----
+# Live: Subdomains (access.log)
+caddy-live() { tail -F /var/log/caddy/access.log | jq -r --unbuffered "$_CJQ"; }
+# Live: Default-Logger im Journal (Apex-Host, IP-Zugriffe, Port-80-Redirects)
+caddy-apex() { journalctl -u caddy -f -o cat | grep --line-buffered http.log.access | jq -R -r --unbuffered "fromjson? | $_CJQ"; }
+# Beide Streams parallel, [sub] / [def] als Präfix
+caddy-all() {
+  (
+    trap 'kill $(jobs -p) 2>/dev/null' EXIT
+    caddy-live | sed -u 's/^/[sub] /' &
+    caddy-apex | sed -u 's/^/[def] /' &
+    wait
+  )
+}
+# Live nach Subdomain: caddy-host audiobook
+caddy-host() { tail -F /var/log/caddy/access.log | jq -r --unbuffered "select(.request.host|startswith(\"$1\")) | $_CJQ"; }
+# Live im Journal nach exaktem Host: caddy-jhost faxxxmaster.cc
+caddy-jhost() { journalctl -u caddy -f -o cat | grep --line-buffered http.log.access | jq -R -r --unbuffered "fromjson? | select(.request.host==\"$1\") | $_CJQ"; }
+# 24h: alles / nur Fehler (>=400) / Top-IPs / Journal
+caddy-24h() { zcat -f $_CLOGS 2>/dev/null | jq -r "select(.ts > (now-86400)) | $_CJQ_D" | less; }
+caddy-err() { zcat -f $_CLOGS 2>/dev/null | jq -r "select(.ts > (now-86400) and .status >= 400) | $_CJQ_D" | less; }
+caddy-top() { zcat -f $_CLOGS 2>/dev/null | jq -r 'select(.ts > (now-86400)) | .request.remote_ip' | sort | uniq -c | sort -rn | head -${1:-15}; }
+caddy-apex-24h() { journalctl -u caddy --since "24 hours ago" -o cat | grep http.log.access | jq -R -r "fromjson? | $_CJQ_D" | less; }
+
+# ---- CrowdSec (Logs liegen in Dateien) ----
+# Live: Erkennung + Bouncer + API, ohne Rauschen
+alias cs-alerts='cscli alerts list --since 24h'
+alias cs-bans='cscli decisions list'
+alias cs-bans-all='cscli decisions list -a | head -30'
+alias cs-watch="watch -n 5 'cscli alerts list --since 1h; cscli decisions list'"
+alias cs-metrics='cscli metrics show acquisition'
+alias cs-unban='cscli decisions delete --ip'   # cs-unban 1.2.3.4
+
+# Status auf einen Blick
+cs-status() {
+  echo "== Dienste =="
+  for u in crowdsec crowdsec-firewall-bouncer caddy; do printf '%-28s %s\n' "$u" "$(systemctl is-active $u)"; done
+  echo; echo "== Bouncer =="; cscli bouncers list
+  echo; echo "== Lokale Bans: $(cscli decisions list -o json | jq 'length') | Alerts 24h: $(cscli alerts list --since 24h --limit 0 -o json | jq 'length') =="
+  echo; echo "== Quellen =="; cscli metrics show acquisition
+}
+
+# 24h-Auswertung: Szenarien, Top-IPs, Länder
+cs-report() {
+  J=$(cscli alerts list --since 24h --limit 0 -o json)
+  echo "== Alerts 24h: $(echo "$J" | jq 'length') =="
+  echo; echo "-- Szenarien --"; echo "$J" | jq -r '.[]?.scenario' | sort | uniq -c | sort -rn | head -10
+  echo; echo "-- Top-IPs --";   echo "$J" | jq -r '.[]? | .source.ip' | sort | uniq -c | sort -rn | head -10
+  echo; echo "-- Länder --";    echo "$J" | jq -r '.[]? | .source.cn // "?"' | sort | uniq -c | sort -rn | head -10
+}
+
+logs-help() {
+  echo "CADDY: caddy-live caddy-apex caddy-all caddy-host <n> caddy-jhost <host> caddy-24h caddy-err caddy-top [n] caddy-apex-24h"
+  echo "CS:    cs-all cs-live cs-api cs-bouncer cs-24h cs-err cs-alerts cs-bans cs-bans-all cs-watch cs-metrics cs-unban <ip> cs-status cs-report"
+}
+_csfmt() { sed -u -E 's/^time="([0-9]{4})-([0-9]{2})-([0-9]{2})T([0-9:]{8})[^"]*" /\3.\2.\1 \4 /; s/level=(error|fatal)/\x1b[31m&\x1b[0m/; s/level=warning/\x1b[33m&\x1b[0m/'; }
+cs-live()    { tail -F /var/log/crowdsec.log | _csfmt; }
+cs-api()     { tail -F /var/log/crowdsec_api.log | _csfmt; }
+cs-bouncer() { tail -${1:-30} /var/log/crowdsec-firewall-bouncer.log | _csfmt; }
+cs-err()     { grep -iE "level=(warning|error|fatal)" /var/log/crowdsec.log | grep -v "Using API key auth" | tail -${1:-50} | _csfmt; }
+cs-24h()     { grep -E "time=\"($(date +%F)|$(date -d yesterday +%F))" /var/log/crowdsec.log | _csfmt | less -R; }
+cs-all() { tail -q -n 10 -F /var/log/crowdsec.log /var/log/crowdsec-firewall-bouncer.log /var/log/crowdsec_api.log 2>/dev/null | _csfmt; }

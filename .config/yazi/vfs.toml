@@ -1,0 +1,16 @@
+[sftp.docker]
+host = ""
+user = ""
+port = 22
+
+[sftp.piflix]
+host = ""
+user = ""
+password = ""
+port = 22
+
+[sftp.backup]
+host = ""
+user = ""
+password = ""
+port = 22

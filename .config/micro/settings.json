@@ -1,0 +1,29 @@
+{
+    "autosave": 0,
+    "backupdir": "~/.config/micro/backups",
+    // local "external" und auf dem server "terminal"
+    "clipboard": "external",
+    "colorcolumn": 100,
+    "colorscheme": "one-dark",
+    "diffgutter": true,
+    "divider": true,
+    "eofnewline": true,
+    "hlsearch": true,
+    "hltrailingws": true,
+    "ignorecase": true,
+    "matchbrace": true,
+    "matchbracestyle": "highlight",
+    "mkparents": true,
+    "relativeruler": true,
+    "rmtrailingws": true,
+    "savecursor": true,
+    "saveundo": true,
+    "showmatching": true,
+    "smartcase": true,
+    "spellerrors": true,
+    "tabsize": 4,
+    "tabstospaces": true,
+    "*.md": {
+        "rmtrailingws": false
+    }
+}
