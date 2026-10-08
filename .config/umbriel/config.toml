@@ -1,10 +1,7 @@
 [include]
 files = [
-"shaders/community/window/rolling-clouds/effect.toml",
 "shaders/community/animation/tv-glitch/effect.toml",
-"shaders/community/animation/squash/effect.toml",
 "shaders/community/border/accent-pulse/effect.toml",
-"shaders/community/animation/shower/effect.toml",
 "shaders/community/animation/wobbly-move/effect.toml",
 "shaders/community/animation/beam/effect.toml",
  ]
@@ -20,30 +17,33 @@ files = ["noctalia.toml"]
 [general]
 autostart = [
             "noctalia",
-            "steam -silent -minimized",
+#            "steam -silent -minimized",
             "netbird-ui",
             "kDrive",
             "signal-desktop",
-#            "firefox --new-window https://duckduckgo.com",
             "kitty -e /home/gcn/.local/bin/greeter.sh",
-            "umbriel msg workspace-switch:BROWSER/DP-3"
              ]
 
 
-# ==============================================================================
-# Outputs
-
 # mod_key = "Super"                             # Force Super instead of nested-session Alt
-xwayland = true                                 # Requires xwayland-satellite; restart to change
-xwayland_native_resolution = true
+xwayland = true                                # Requires xwayland-satellite; restart to change
+xwayland_native_resolution = false
 show_cheatsheet = false                         # Show the keybind overlay on startup
 focus_on_activate = true                       # Do not let unsolicited requests steal focus
 honor_restored_maximize = false                 # Honor restored maximized state
 
 
+[environment]
+ELECTRON_OZONE_PLATFORM_HINT = "auto"
+SDL_VIDEODRIVER = "wayland,x11"
+
+# ==============================================================================
+# Outputs
+
+
 [output.HDMI-A-1]
 enabled = true                                # False removes the output but preserves its state
-mode = "1920x1080@60.000"                        # WIDTHxHEIGHT or WIDTHxHEIGHT@HZ
+mode = "1920x1080@60.000"                     # WIDTHxHEIGHT or WIDTHxHEIGHT@HZ
 position = [0, 0]                             # Logical top-left; omit for automatic placement
 scale = 1.00                                  # Logical size is mode size divided by scale
 cyclic_workspaces = true
@@ -67,8 +67,9 @@ tearing = false                               # Permit eligible fullscreen async
 direct_scanout = false                        # False forces composition on this output
 hdr = "off"                                  # off, on, auto, or fullscreen
 bit_depth = 10
+focus_at_startup = true
 # sdr_white = 203                               # SDR reference white in cd/m2 during HDR
-workspaces = ["BROWSER", "TERMINAL", "GAMING","MUSIC", "DATEN", "REMOTE", "SONST"]                                # Anonymous fixed positions; omit for dynamic
+#workspaces = ["BROWSER", "TERMINAL", "GAMING","MUSIC", "DATEN", "REMOTE", "SONST"]                                # Anonymous fixed positions; omit for dynamic
 #cyclic_workspaces = true
 # workspace_axis = "horizontal"                 # vertical or horizontal workspace arrangement
 
@@ -124,9 +125,10 @@ follows_mouse = false                           # Focus on motion after scene ch
 
 [keybinds]
 
-"mod+U" = "spawn:sh -c 'zeditor & sleep 1; umbriel msg window-move-to-scratchpad'"
-
+# tests
+#"mod+U" = "spawn:sh -c 'zeditor & sleep 1; umbriel msg window-move-to-scratchpad'"
 "Mod+a" = "spawn:~/.local/bin/autostart.sh"
+
 # screenshots
 "Print" = "spawn:noctalia msg screenshot-region"
 
@@ -138,7 +140,6 @@ follows_mouse = false                           # Focus on motion after scene ch
 "pause" = "dpms-off"
 "Ctrl+pause" = "dpms-on"
 "Mod+L" = "spawn:noctalia msg session lock && notify-send 'Session locked'"
-
 "Mod+Shift+Escape" = { action = "shortcuts-inhibit-toggle", allow_when_inhibited = true, repeat = false }
 
 # Applications
@@ -154,8 +155,8 @@ follows_mouse = false                           # Focus on motion after scene ch
 "Mod+P" = "spawn:Plex --platform xcb"
 
 "Mod+X" = "spawn:sh -c 'zapzap & sleep 1 && vesktop discord://discord.com/channels/1401598189823590460/1401607794414850120'"
-#"Mod+G" = "spawn:steam"
-"Mod+G" = "spawn:steam steam://open/main"
+"Mod+G" = "spawn:steam"
+#"Mod+G" = "spawn:steam steam://open/main'"
 "Mod+V" = "spawn:noctalia msg panel-toggle clipboard"
 "Mod+N" ="spawn:kitty -e micro /home/gcn/.config/umbriel/config.toml"
 
@@ -200,8 +201,7 @@ follows_mouse = false                           # Focus on motion after scene ch
 
 "Mod+W" = { action = "column-toggle-tabbed", repeat = false }
 
-
-# Workspaces. Bare digits are positions on the output under the pointer.
+# Workspaces..
 "Mod+1" = "workspace-switch:1"
 "Mod+2" = "workspace-switch:2"
 "Mod+3" = "workspace-switch:3"
@@ -230,6 +230,13 @@ follows_mouse = false                           # Focus on motion after scene ch
 "Ctrl+WheelUp" = "spawn:wpctl set-volume @DEFAULT_AUDIO_SINK@ 2%+"
 "Ctrl+WheelDown" = "spawn:wpctl set-volume @DEFAULT_AUDIO_SINK@ 2%-"
 "Ctrl+Mod+M" = "spawn:noctalia msg volume-mute"
+
+
+#"Mod+Comma" = "window-consume-left"
+#"Mod+Period" = "window-consume-right"
+#"Mod+Ctrl+Comma" = "window-consume-from-left"
+#"Mod+Ctrl+Period" = "window-consume-from-right"
+
 
 # ──────────────────────────────── Layout  ─────────────────────────────────────
 
@@ -313,7 +320,7 @@ default_output = "HDMI-A-1"
 
 [[window_rule]]
 match.app_id = "^(steam_app_[0-9]+|gamescope)$"
-vrr = "fullscreen"
+# vrr = "fullscreen"
 default_maximize = true
 
 
@@ -332,30 +339,17 @@ default_scrolling_extent = 0.6
 
 
 [[window_rule]]
-match.app_id = "^firefox$"
-match.title = "DuckDuckGo"
-default_output = "DP-3"
-default_workspace = "BROWSER"
+match.app_id = "^steam$"
+match.title = "^(Freundesliste|Friends List)$"
+default_floating = true
+default_floating_size_px = { width = 450, height = 900 }
+default_focused = true
 
-
-[[window_rule]]
-match.app_id = "^kitty$"
-match.title = "^greeter\\.sh$"
-default_output = "DP-3"
-default_workspace = "BROWSER"
-window_effect = "window.rolling-clouds"
-#default_focused = true
 
 [[window_rule]]
 match.app_id = "^steam$"
-default_output = "DP-3"
-default_workspace = "GAMING"
-
-
-[[window_rule]]
-match.app_id = "^Spotify$"
-default_output = "DP-3"
-default_workspace = "MUSIC"
+match.title = "^Steam$"
+default_focused = true
 
 
 [[window_rule]]
@@ -421,6 +415,10 @@ opacity = 0.8
 [[window_rule]]
 match.app_id = "^firefox$"
 match.title = "^Bild-im-Bild$"
+opacity = 1.0
+
+[[window_rule]]
+match.app_id = "^(steam_app_[0-9]+|gamescope)$"
 opacity = 1.0
 
 # 75% width when the window is alone, the default width when another window opens.
